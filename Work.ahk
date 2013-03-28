@@ -21,12 +21,16 @@ SysGet, MonitorWorkArea, MonitorWorkArea
 
 SetNumlockState, AlwaysOn
 
-total := 0
-IncludedFiles = AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.A_AhkPath
-Loop, Parse, IncludedFiles, |
-	total += TF_CountLines(A_LoopField)
+;total := 0
+;IncludedFiles = AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.A_AhkPath
+;Loop, Parse, IncludedFiles, |
+;	total += TF_CountLines(A_LoopField)
+;Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
-Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
+
+FileGetTime, Time, %A_ScriptFullPath%, M
+FormatTime, ModifiedDate, %Time%, ddd, M/dd, h:mm tt
+Notify(A_ScriptName . " Started!",ModifiedDate,-3,"Style=Mine")
 
 global Editor = "C:\Program Files\Sublime Text 2\sublime_text.exe"
 
@@ -73,7 +77,7 @@ If A_ComputerName = ELLIOT-PC
 ^NumpadEnter::Run %editor% Shortcuts.ahk
 ^!h::Run %editor% Hotstrings.ahk
 ^!a::Run %editor% AppSpecific.ahk
-!t::Run C:\Users\elliotd\Dropbox\HomeShare\test.ahk
+!t::Run Test.ahk
 
 ^!x::AHKPanic(1,0,0,1)
 

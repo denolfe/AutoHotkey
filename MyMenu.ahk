@@ -1,6 +1,8 @@
 #SingleInstance force
 #NoTrayIcon
 
+#Include lib\Notify.ahk
+
 A_ProgramFiles86 := "C:\Program Files (x86)\"
 
 Menu,Main,Add,AHK Documentation, AHKDocumentation
@@ -68,6 +70,7 @@ FormatURL:
 	{
 		clipboard := RegExReplace(clipboard, "(\\\\katrina\\public\\)", "http://www.salespad.net/public/")
 		clipboard := RegExReplace(clipboard, "(\\)", "/")
+		Notify("URL Converted",clipboard,-3,"Style=Mine")
 	}
 	Else
 	{
