@@ -12,14 +12,14 @@ Run AutoCorrect.ahk
 Run VolumeControl.ahk
 
 total := 0
-total += TF_CountLines("Home.ahk")
-total += TF_CountLines("MyMethods.ahk")
-total += TF_CountLines("VolumeControl.ahk")
+IncludedFiles = Home.ahk|MyMethods.ahk|VolumeControl.ahk
+Loop, Parse, IncludedFiles, |
+	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
-Menu, Tray, Icon, lib\Portal.ico
+Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
-SoundPlay, lib\load.wav
+SoundPlay, lib\sounds\load.wav
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
 #Include lib\LedControl.ahk
@@ -72,16 +72,16 @@ NumLock::
 	if device = Headphones
 	{
 		ini_replaceValue(ini, SoundDevices, "Playback", "Speakers")
-		Run, nircmd.exe setdefaultsounddevice Speakers
+		Run, Utilities\nircmd.exe setdefaultsounddevice Speakers
 	}
 	else
 	{
 		ini_replaceValue(ini, SoundDevices, "Playback", "Headphones")
-		Run, nircmd.exe setdefaultsounddevice Headphones
+		Run, Utilities\nircmd.exe setdefaultsounddevice Headphones
 	}
 	Notify(ini_getValue(ini, SoundDevices, "Playback"),"Sound Device Changed",-1,"Style=Mine")
 	path := ini_save(ini, "Home.ini")
-	SoundPlay, lib\meta-online.wav
+	SoundPlay, lib\sounds\meta-online.wav
 	Return
 	
 	+Pause::
