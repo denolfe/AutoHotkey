@@ -1,6 +1,3 @@
-
-
-
 ~LButton::
 
 	If (( A_PriorHotKey = A_ThisHotKey && A_TimeSincePriorHotkey < 200 ) && MouseIsOver("ahk_class Shell_TrayWnd"))
@@ -14,31 +11,7 @@ Return
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad0:: 
-
-aDown:=A_TickCount
-	Keywait Numpad0
-	If ((A_TickCount-aDown)<400)
-	{
-		ShowDir("C:\Users\elliotd\Dropbox\Ss")
-	}
-	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<1000)
-	{
-		Loop, C:\Users\elliotd\Dropbox\Ss\*.png
-		{
-			FileGetTime, Time, %A_LoopFileFullPath%, C
-			If (Time > Time_Orig)
-			{
-				Time_Orig := Time
-				File := A_LoopFileFullPath
-			}
-		}
-	Run, %File%
-	}
-	Return
-
-
-
+!Numpad0::ShowDir("C:\Users\elliotd\Dropbox\HomeShare\AutoHotkey")
 !NumpadDot:: ShowDir("C:\Users\elliotd\Downloads")
 !Numpad1:: ShowDir("C:\Users\elliotd\Dropbox")
 !Numpad2:: ShowDir("C:\Users\elliotd\Dropbox\HomeShare")

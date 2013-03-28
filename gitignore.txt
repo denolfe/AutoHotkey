@@ -1,3 +1,0 @@
-SalesPad.ahk
-WIP/
-Scripts/
