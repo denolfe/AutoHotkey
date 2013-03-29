@@ -2,6 +2,7 @@
 #NoTrayIcon
 
 #Include lib\Notify.ahk
+#Include lib\HttpQueryInfo.ahk
 
 A_ProgramFiles86 := "C:\Program Files (x86)\"
 
@@ -71,8 +72,13 @@ FormatURL:
 	{
 		clipboard := RegExReplace(clipboard, "(\\\\katrina\\public\\)", "http://www.salespad.net/public/")
 		clipboard := RegExReplace(clipboard, "(\\)", "/")
-		Notify("URL Converted",clipboard,-3,"Style=Mine")
-	}
+
+		res := HttpQueryInfo(clipboard)
+		if InStr(res, "200 OK")
+  			Notify("URL Converted",clipboard,-3,"Style=Mine")
+		else
+  			msgbox, URL Conversion failed.
+  	}
 	Else
 	{
 		MsgBox, Clipboard does not contain UNC path!`n`n%clipboard%
