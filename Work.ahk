@@ -7,6 +7,7 @@ SetTitleMatchMode, RegEx
 SetNumlockState, AlwaysOn
 SetCapsLockState, AlwaysOff
 CoordMode, Mouse, Screen
+DetectHiddenWindows, On
 
 If FileExist("lib\images\eve.ico")
 	Menu, Tray, Icon, lib\images\eve.ico
@@ -34,14 +35,11 @@ If A_ComputerName = ELLIOT-PC
 	Run %A_ScriptDir%\VolumeControl.ahk
 	Run %A_ScriptDir%\AutoCorrect.ahk
 
+	Run %A_ScriptDir%\ConfigTests.ahk
+	WinWait, Test Configuration
+	WinMinimize, Test Configuration
+	
 	+Pause::Suspend
-
-	If ! WinExist("Test Configuration")
-	{
-		Run %A_ScriptDir%\ConfigTests.ahk
-		WinWait, Test Configuration
-		WinMinimize, Test Configuration
-	}
 }
 
 #Include %A_ScriptDir%\MyMethods.ahk
