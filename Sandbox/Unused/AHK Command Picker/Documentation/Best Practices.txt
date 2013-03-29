@@ -1,0 +1,6 @@
+!! Organizing Your AHK Command Picker Commands
+While you could dump all of your commands into the "Commands\General.ahk" file, that file may soon become large and unwieldly.  Also, this file is often updated when new versions of AHK Command Picker are released, so you may run into conflicts when updating the file.  You will likely want to create some new .ahk files in the Commands folder and add a reference to the new files in the "CommandScriptsToInclude.ahk" file.  Maybe try to keep them logically separated, such as putting commands you typically use at work in a "Commands\Work.ahk" file, and home ones in "Commands\Home.ahk".  However you want to organize them is up to you.
+
+One important thing to note is that whenever a hotkey is encountered, any commands that may have been defined after it will not be processed and added to the AHK Command Picker's list of commands.  So it is important that all hotkeys and hotstrings be declared AFTER ALL commands.  It is generally a good idea to put all hotkeys and hotstrings into their own files, and reference these files last in the "CommandScriptsToInclude.ahk" file.
+
+

@@ -1,0 +1,19 @@
+*Project Description*
+An AutoHotkey (AHK) script that allows you to easily call AHK functions and run other AHK scripts. (Requires AutoHotkey_L).
+
+Instead of having to remember what hotkey maps to each of your AHK scripts (as you could have hundreds), this displays a list of Commands and allows you to quickly and easily run them, where a Command is just a pointer to one of your AHK functions.  You can also easily provide parameters to your commands, allowing you to change the functionality of a command with a few keystrokes.
+
+*How To Use AHK Command Picker*
+To launch AHK Command Picker run the _AHKCommandPicker.ahk_ script.
+
+Press the Caps Lock key to bring up the AHK Command Picker GUI.  From there just type the name of the command that you want to run and hit enter to run it.  You can still toggle Caps Lock on and off by pressing Shift+Caps Lock.
+
+To add your own commands to AHK Command Picker, see the [url:documentation|http://ahkcommandpicker.codeplex.com/documentation].
+
+*Screen Shots*
+All commands:
+[image:AHKCommandPicker-AllCommands.png]
+
+Commands filtered as you type:
+[image:AHKCommandPicker-FilteredCommands.png]
+

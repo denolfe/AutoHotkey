@@ -1,0 +1,8 @@
+CPShowAHKScriptInSystemTray=1
+WindowWidthInPixels=700
+NumberOfCommandsToShow=20
+CommandMatchMethod=Type Ahead
+ShowSelectedCommandWindow=1
+NumberOfSecondsToShowSelectedCommandWindowFor=2.0
+ShowSelectedCommandWindowWhenInfoIsReturnedFromCommand=1
+NumberOfSecondsToShowSelectedCommandWindowForWhenInfoIsReturnedFromCommand=4.0

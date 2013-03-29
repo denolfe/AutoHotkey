@@ -1,0 +1,37 @@
+! Tips And Tricks
+
+
+!! How To Reference The Currently Active Window
+If you try to reference the currently active window to perform a command on it (e.g. using WinActive("A")), you will instead get a reference to the AHK Command Picker window since it was the last one opened (in order for you to run the command).  Instead you need to use the _cpAciveWindowID global variable.  Here is an example of creating a command to use this global variable to close the currently active window:
+{{
+AddCommand("CloseWindow", "Closes the currently active window")
+CloseWindow()
+{   global _cpActiveWindowID
+    WinClose, ahk_id %_cpActiveWindowID%
+}
+}}In this example you can see that the global variable "_cpActiveWindowID" contains the AHK ID of the window that was active before the AHK Command Picker window was opened.  Use this variable whenever you need to reference the last active window from a AHK Command Picker command.
+
+
+!! Reporting Errors Or Extra Information From A Command
+After a command runs its name and description are displayed for a short period to give the user confirmation that the actions were indeed performed.  If a command returns some text, this text will also be displayed.
+
+For example, if we wanted our ExploreDirectory command to tell us which directories it is opening, we could add the line "return %directories% to the bottom of the ExploreDirectory() function, like so:
+{{
+ExploreDirectory(directoriesToOpen = "")
+{
+	Loop, Parse, directoriesToOpen, CSV
+	{
+		directoryToOpen := A_LoopField
+		Run, explore "%directoryToOpen%"
+	}
+}
+
+return Opening %directories%
+}}
+
+!! Have AHK Command Picker Automatically Start When You Log Into Windows
+Open up the Windows Start Menu, navigate to the Startup folder within All Programs, right-click on it and choose Open All Users (or navigate to "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp").  Then simply paste a shortcut to AHK Command Picker's "AHKCommandPicker.ahk" file in this folder.  That's it; the script will now launch whenever any user logs into Windows.  If you only want the script to run when YOU log into Windows (no other users), then just choose Open instead of Open All Users when right-clicking on the Startup folder ("C:\Users\Dan Schroeder\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup").
+
+You can also check out [url:my blog post|http://geekswithblogs.net/deadlydog/archive/2012/09/10/autohotkey-cannot-interact-with-windows-8-windowshellipor-can-it.aspx] to see how to have the script run as an administrator at login, which is required in order to launch the AHK Command Picker GUI when an application running as administrator has focus.
+
+
