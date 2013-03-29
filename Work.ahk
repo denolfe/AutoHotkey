@@ -13,32 +13,16 @@ If FileExist("lib\images\eve.ico")
 
 Menu, Tray, Tip, Work Script
 
-;Menu, Tray, Add, GetLatest, GetLatest
-
-
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 
-SetNumlockState, AlwaysOn
-
-;total := 0
-;IncludedFiles = AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.A_AhkPath
-;Loop, Parse, IncludedFiles, |
-;	total += TF_CountLines(A_LoopField)
-;Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
-
-
-FileGetTime, Time, %A_ScriptFullPath%, M
-FormatTime, ModifiedDate, %Time%, ddd, M/dd, h:mm tt
-Notify(A_ScriptName . " Started!",ModifiedDate,-3,"Style=Mine")
+total := 0
+IncludedFiles = AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.A_AhkPath
+Loop, Parse, IncludedFiles, |
+	total += TF_CountLines(A_LoopField)
+Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
 global Editor = "C:\Program Files\Sublime Text 2\sublime_text.exe"
-
-;; Debug
-global DebugMsgBox_ShowMessages = false
-If DebugMsgBox_ShowMessages
-	Notify("Debugging Enabled","",-3,"Style=Alert")
-;DebugMsgBox("Debugging Enabled.")
 
 If ! A_IsAdmin
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
@@ -47,7 +31,6 @@ If ! A_IsAdmin
 
 If A_ComputerName = ELLIOT-PC
 {
-
 	Run %A_ScriptDir%\VolumeControl.ahk
 	Run %A_ScriptDir%\AutoCorrect.ahk
 
@@ -80,11 +63,6 @@ If A_ComputerName = ELLIOT-PC
 !t::Run Test.ahk
 
 ^!x::AHKPanic(1,0,0,1)
-
-;GetLatest:
-	;Run, buildprompt.ahk
-;return
-
 
 #Include %A_ScriptDir%\lib\VA.ahk
 #Include %A_ScriptDir%\lib\TF.ahk
