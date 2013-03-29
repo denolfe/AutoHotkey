@@ -57,12 +57,13 @@ SQLFormatter:
 	clipboard = 
 	Send ^x
 	ClipWait
-	FileDelete, clipboard.sql
-	FileAppend, %clipboard%, clipboard.sql
-	RunWait, %comspec% /c "sqlformatter.exe clipboard.sql" ,, Hide
-	FileRead, clipboard, clipboard.sql
+	FileDelete, Utilities\clipboard.sql
+	FileAppend, %clipboard%, Utilities\clipboard.sql
+	RunWait, %comspec% /c "Utilities\sqlformatter.exe Utilities\clipboard.sql" ,, Hide
+	FileRead, clipboard, Utilities\clipboard.sql
 	Send ^v
-	FileDelete, clipboard.sql
+	FileDelete, Utilities\clipboard.sql
+	FileDelete, Utilities\clipboard.sql.bak
 return
 
 FormatURL:
