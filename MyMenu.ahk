@@ -77,7 +77,7 @@ FormatURL:
 		if InStr(res, "200 OK")
   			Notify("URL Converted",clipboard,-3,"Style=Mine")
 		else
-  			msgbox, URL Conversion failed.
+  			msgbox, URL is not valid.
   	}
 	Else
 	{
