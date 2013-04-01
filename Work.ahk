@@ -18,10 +18,10 @@ SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 
 total := 0
-IncludedFiles = AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.A_AhkPath
+IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
-Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
+Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
 global Editor = "C:\Program Files\Sublime Text 2\sublime_text.exe"
 
@@ -52,12 +52,12 @@ If A_ComputerName = ELLIOT-PC
 
 
 ^!r::Reload
-^!e::Run %editor% %A_ScriptName%
-^!t::Run %editor% test.ahk	
+^!e::Run %Editor% %A_ScriptName%
+^!t::Run %Editor% test.ahk	
 ^!d::
-^NumpadEnter::Run %editor% Shortcuts.ahk
-^!h::Run %editor% Hotstrings.ahk
-^!a::Run %editor% AppSpecific.ahk
+^NumpadEnter::Run %Editor% Shortcuts.ahk
+^!h::Run %Editor% Hotstrings.ahk
+^!a::Run %Editor% AppSpecific.ahk
 !t::Run Test.ahk
 
 ^!x::AHKPanic(1,0,0,1)
