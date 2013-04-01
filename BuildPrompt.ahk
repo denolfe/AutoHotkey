@@ -88,9 +88,9 @@ Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\%Folder%\*WithCardControl.exe
 
 build := RegExReplace(build, "F9_", "")
 
-If FileExist("C:\Program Files (x86)\SalesPad.GP " . build . "\" . Folder)
+If FileExist("C:\Program Files (x86)\SalesPad.GP " build "\" Folder)
 {
-	Run % "C:\Program Files (x86)\SalesPad.GP " . build . "\" . Folder . "\SalesPad.exe"
+	Run % "C:\Program Files (x86)\SalesPad.GP " build "\" Folder "\SalesPad.exe"
 	If A_ComputerName = elliot-pc
 	{
 		path := ini_load(ini, "Work.ini") 
@@ -142,7 +142,7 @@ WinGetTitle, Title, A
 StringReplace, Title, Title, SalesPad.GP
 StringReplace, Title, Title, Setup
 StringReplace, Title, Title, %A_SPACE%,,All
-path := "C:\Program Files (x86)\SalesPad.GP " . build . "\" . Title
+path := "C:\Program Files (x86)\SalesPad.GP " build "\" Title
 SendInput % path
 Send {Enter}
 Sleep 100

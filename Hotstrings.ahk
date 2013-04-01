@@ -33,7 +33,7 @@
 :*:dbr;::UPDATE spDatabaseVersion `nSET [Database_Version] = -1`nGO`nUPDATE dwDatabaseVersion `nSET [Database_Version] = -1`n{Backspace}
 :*:backup;::BACKUP DATABASE DYNAMICS`nTO DISK = 'C:\.bak'`nWith INIT{Up}{End}{Ctrl Down}{Left 2}{Ctrl Up}{Left}
 :*:fresh;::
-	Send % "use master `nexec restoreDB 'NEW','NEW', '\\draven\Testing\Database Files\" . GetGPVersion() . "\NEW.bak'"
+	Send % "use master `nexec restoreDB 'NEW','NEW', '\\draven\Testing\Database Files\" GetGPVersion() "\NEW.bak'"
 :*:rtv;::drop view spvPurchaseReceipt_base`n`ndrop view spvpurchasereceiptlineitem_base
 :*:restoretwo::
     RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
@@ -76,7 +76,7 @@
 	lastbranch := ini_getValue(ini, "LastInstall", "Branch")
 	lastbuild :=  ini_getValue(ini, "LastInstall", "Build")
 	nextbuild := (lastbranch = "HotFix") ? ". Fix will be in next Release." : ""
-	Send % "Passed Testing in Latest " . lastbranch . " " . lastbuild . nextbuild
+	Send % "Passed Testing in Latest " lastbranch " " lastbuild . nextbuild
 	return
 
 :*:lu;:: OrderBy:LastEdited
