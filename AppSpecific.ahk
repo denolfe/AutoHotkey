@@ -21,7 +21,7 @@ GroupAdd, Game, ahk_class WarsowWndClass
 
 	+Enter::		
 		StatusBarGetText, Title
-		Run C:\Program Files\Sublime Text 2\sublime_text.exe "%Title%"
+		Run %Editor% "%Title%"
 		WinActivate, ahk_class PX_WINDOW_CLASS
 	Return
 
@@ -96,7 +96,7 @@ GroupAdd, Game, ahk_class WarsowWndClass
 
 	+Enter::
 		sel := Explorer_GetSelected()
-		Run C:\Program Files\Sublime Text 2\sublime_text.exe "%sel%" 
+		Run %Editor% "%sel%" 
 
 #IfWinActive ahk_class SearchPane
 	Tab::Send {Tab}{Down}{Enter}

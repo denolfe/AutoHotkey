@@ -3,10 +3,19 @@ SetTitleMatchMode, 2
 #SingleInstance force
 
 #Include lib\ini.ahk
-#Include lib\ShellFileOperation(FO,Source,Target,FOF).ahk
+#Include lib\ShellFileOperation.ahk
 			 		 
-;SplashImage,,b , Choose Build, Get Latest Build
-Notify("Choose Build","1 = Release`r2 = HotFix`r3 = ServPack`r4 = Custom`r5 = CustomRelease",-15,"Style=Mine")
+message = 
+	(ltrim 
+		1 = Release
+		2 = HotFix
+		3 = ServPack
+		4 = Custom
+		5 = CustomRelease
+		6 = Ret To Vend
+	)
+
+Notify("Choose Build", message,-15,"Style=Mine")
 
 Loop 
 	{
