@@ -1,5 +1,0 @@
-Object:                                           # a simple Key, since there is no value it is an object
-Key: Value                                       # this key is saved in above object and is assigned a value
-  Sequence:                                       # sequence elements can be accessed using digit keys
-    - Element 1                                 # yaml.1.Object.Sequence.1
-    - Element 2
