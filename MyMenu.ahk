@@ -6,20 +6,21 @@
 
 A_ProgramFiles86 := "C:\Program Files (x86)\"
 
-Menu,Main,Add,AHK Documentation, AHKDocumentation
-Menu,Main,Add,
+Menu,AutoHotkey,Add,AHK Documentation, AHKDocumentation
+Menu,AutoHotkey,Add,Ahk2Exe
+Menu,AutoHotkey,Add,SmartGUI
+Menu,AutoHotkey,Add,Dynamic Function Tester, DynamicFunctionTester
+
 Menu,Main,Add,Clipboard Replace, ClipboardReplace
 Menu,Main,Add,Format URL, FormatURL
-
-;Menu,Main,Add,Reference,:Reference
-Menu,Main,Add,
 Menu,Main,Add,SQL Formatter, SQLFormatter
+Menu,Main,Add,
 Menu,Main,Add,Lightning Renamer, LightningRenamer
-Menu,Main,Add,KDiff3
-Menu,Main,Add,SmartGUI
 Menu,Main,Add,Directory Compare, DirectoryCompare
-Menu,Main,Add,Ahk2Exe
-Menu,Main,Add,Dynamic Function Tester, DynamicFunctionTester
+Menu,Main,Add,KDiff3
+Menu,Main,Add,Colorette, Colorette
+Menu,Main,Add,
+Menu,Main,Add, AutoHotkey, :AutoHotkey
 
 
 Menu,Main,show
@@ -48,6 +49,10 @@ return
 
 DynamicFunctionTester:
 Run, Utilities\DynamicFunctionTester.ahk
+return
+
+Colorette:
+Run, Utilities\Colorette.ahk
 return
 
 ClipboardReplace:
