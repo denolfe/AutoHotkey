@@ -499,6 +499,8 @@ FindLatest(build)
         }
     }
     FormatTime, CreationDate,%Time_Orig%, M/dd h:mm
+    FormatTime, CreationDay,%Time_Orig%, M/dd
+    FormatTime, Today, A_Now, M/dd
     ;msgbox % CreationDate "`n" build "`n" version
     Version := RegExReplace(Version, "(SalesPad.GP.Setup.|.WithCardControl.exe)", "")
 
@@ -525,8 +527,23 @@ FindLatest(build)
     ;    Guicontrol,, Latest%build%TestNeeded, 0
 
     ;msgbox % Version
-    GuiControl,,Latest%build%, % Version
-    GuiControl,,Latest%build%Date, % CreationDate
+
+    if (CreationDay = Today)
+    {
+        Gui, Font, cGreen Bold
+        GuiControl, Font, Latest%build%
+        GuiControl, Font, Latest%build%Date
+        GuiControl,,Latest%build%, % Version
+        GuiControl,,Latest%build%Date, % CreationDate
+    }        
+    Else
+    {
+        Gui, Font, cBlack w400
+        GuiControl, Font, Latest%build%
+        GuiControl, Font, Latest%build%Date
+        GuiControl,,Latest%build%, % Version
+        GuiControl,,Latest%build%Date, % CreationDate
+    }
 }
 
 
