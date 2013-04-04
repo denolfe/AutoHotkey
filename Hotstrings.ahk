@@ -46,8 +46,8 @@
 ;;;;;;;;; Code ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-:*:curr;::{{}0:${#},{#}{#}0.00{}}
-:*:date;::{{}0:M/d/yyyy{}}
+:*:currfmt::{{}0:${#},{#}{#}0.00{}}
+:*:datefmt::{{}0:M/d/yyyy{}}
 :*:numfmt::{{}0:{#},{#}{#}0.00{}}
 :*:msgbox;::Messenger.Show(){Left}
 :*:sl;::foreach (SalesPad.Bus.SalesLineItem sl in sd.LineItems)`n{{}`n`n{}}{up}{tab}

@@ -29,7 +29,7 @@ Return
 	}
 	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<1500)
 	{
-		Run, C:\Program Files\Sublime Text 2\sublime_text.exe "\\draven\testing\testcomplete\TestComplete.ahk"
+		Run, %Editor% "\\draven\testing\testcomplete\TestComplete.ahk"
 		Return
 	}
 Return
@@ -237,12 +237,12 @@ CapsLock & ,::
 
 ^Numpad2::ShowStart("SPLLC", "C:\Program Files (x86)\SalesPad.QBC\SalesPad.QBC.exe")
 ^Numpad3::
-	ShowStart("ahk_class PX_WINDOW_CLASS", "C:\Program Files\Sublime Text 2\sublime_text.exe")
+	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
 	WinMove, ahk_class PX_WINDOW_CLASS,, 1920,0,1317,1073
 	Return
 ^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe")	
-^Numpad5::ShowStart("Microsoft Visual Studio", "C:\Dev\SalesPad4\ServPack\source\SalesPad\SalesPad.sln")
+^Numpad5::Run, "C:\Program Files (x86)\Microsoft Dynamics\GP2010\Dynamics.exe" Dynamics.set
 
 ^Numpad6::
 	aDown:=A_TickCount
@@ -255,13 +255,13 @@ CapsLock & ,::
 	
 ^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
 ^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
-^Numpad9::Run, Replace.ahk
+^Numpad9::ShowStart("Microsoft Visual Studio", "C:\Dev\SalesPad4\ServPack\source\SalesPad\SalesPad.sln")
 
 ^NumpadSub::
 	WinWaitActive, TWI, 2
 	If ErrorLevel
 		Return
-	Items=128 SDRAM|100XLG|WIRE-MCD-0001|WIRE-SCD-0001|PHON-BUS-1250|ZZ-NI
+	Items := "128 SDRAM|100XLG|WIRE-MCD-0001|WIRE-SCD-0001|PHON-BUS-1250|ZZ-NI"
 	Loop,Parse,Items,|
 	{
 		Send !n
