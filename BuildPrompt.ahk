@@ -59,6 +59,12 @@ Loop
 			break
 		}
 
+		KeyWait, numpad7, D T0.02
+		If not ErrorLevel 
+		{
+			build := "Main"
+			break
+		}
 
 		Sleep 10
 
@@ -82,8 +88,6 @@ Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\*, 2, 0
           Folder := A_LoopFileName
      }
 }
-
-
 
 Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\%Folder%\*WithCardControl.exe, 0, 1
 {
@@ -127,7 +131,6 @@ if FileExist(setupfile)
 
 ;; Copy and rename installer
 ;FileCopy, %FullFile%, %setupfile%
-;Run, C:\Users\elliotd\Dropbox\HomeShare\lib\ShellFileOperation\ShellFileOperation.exe FO_COPY %FullFile%, %setupfile%
 ShellFileOperation("FO_COPY", FullFile, setupfile)
 WinWaitClose, ahk_class OperationStatusWindow
 ;; Stop if file was not pulled

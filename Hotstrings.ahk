@@ -63,6 +63,12 @@
 		Return
 	Send {Backspace}{right 6}{Space}
 	Return
+
+:*:+la::(?=){Left}
+:*:-la::(?`!){Left}
+:*:+lb::(?<=){Left}
+:*:-lb::(?<`!){Left}
+
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;; FogBugz ;;;;;;;;;;;

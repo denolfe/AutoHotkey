@@ -12,21 +12,16 @@ Run AutoCorrect.ahk
 Run VolumeControl.ahk
 
 total := 0
-IncludedFiles = Home.ahk|MyMethods.ahk|VolumeControl.ahk
+IncludedFiles := "Home.ahk|MyMethods.ahk|AppSpecific.ahk|VolumeControl.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
+global Editor := "C:\Program Files\Sublime Text 2\sublime_text.exe"
+
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SoundPlay, lib\sounds\load.wav
-#Include lib\VA.ahk
-#Include lib\Notify.ahk
-#Include lib\LedControl.ahk
-#Include lib\ini.ahk
-#Include MyMethods.ahk
-#Include AppSpecific.ahk
-#Include Hotstrings.ahk
 
 ^!s::
 	IfWinNotExist Everything
@@ -94,7 +89,7 @@ NumLock::
 
 ^NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
 
-^Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", "C:\Program Files\Sublime Text 2\sublime_text.exe")
+^Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 ^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe?")	
 ^Numpad5::Run, C:\Dev\adt-bundle-windows-x86_64\eclipse\eclipse.exe
 ^Numpad7::ShowStart("Inbox", "chrome.exe www.gmail.com")
@@ -116,12 +111,22 @@ NumLock::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 !Numpad1:: Run B:\Dropbox
-!Numpad2:: Run %A_ScriptDir%
+!Numpad2:: Run B:\Dropbox\HomeShare
+!Numpad3:: Run B:\
+!Numpad0:: Run %A_ScriptDir%
 !NumpadDot:: Run B:\Downloads\
 
 ^!r::Reload	
-^!e::Run C:\Program Files\Sublime Text 2\sublime_text.exe %A_ScriptName%
-^!t::Run C:\Program Files\Sublime Text 2\sublime_text.exe test.ahk
-!t::Run %A_ScriptDir%\test.ahk
+^!e::Run %Editor% %A_ScriptName%
+^!t::Run %Editor% Test.ahk
+!t::Run %A_ScriptDir%\Test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
+#Include MyMethods.ahk
+#Include AppSpecific.ahk
+#Include Hotstrings.ahk
+
+#Include lib\VA.ahk
+#Include lib\Notify.ahk
+#Include lib\LedControl.ahk
+#Include lib\ini.ahk

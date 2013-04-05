@@ -104,6 +104,7 @@ GroupAdd, Game, ahk_class WarsowWndClass
 #IfWinActive ahk_class FileSearchAppWindowClass
 
 #IfWinActive ahk_class PX_WINDOW_CLASS
+	^b::
 	+Enter::
 		Send ^s
 		SetTitleMatchMode, 2
@@ -112,8 +113,9 @@ GroupAdd, Game, ahk_class WarsowWndClass
 			WinClose
 		SetTitleMatchMode, RegEx
 		WinGetTitle, Title, A
-		Title := RegExReplace(Title, "(\s-\s).*", "")
-		Run %Title%
+		;Title := RegExReplace(Title, "(\s-\s).*", "")
+		;Run %Title%
+		Run % Substr(Title, RegExMatch(Title, "P)\S+.ahk", matchlength), matchlength)
 		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
 		Return
 
@@ -180,7 +182,7 @@ F1::
 	Send ^c
 	ClipWait
 	SetTitleMatchMode, RegEx
-	;Run C:\Program Files (x86)\KeyTools\KeyHH.exe -MyHelp -#klink "%ClipBoard%" C:\Program Files (x86)\AutoHotkey\AutoHotkey.chm,,Max
+	;Run Utilities\KeyHH.exe -MyHelp -#klink "%ClipBoard%" Utilities\AutoHotkey.chm,,Max
 	Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Autohotkey"
 	;SetTitleMatchMode, 2
 	Return

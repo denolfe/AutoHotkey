@@ -44,8 +44,7 @@ If A_ComputerName = ELLIOT-PC
 
 #Include %A_ScriptDir%\MyMethods.ahk
 #Include %A_ScriptDir%\Shortcuts.ahk
-
-
+#Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
 #Include *i %A_ScriptDir%\SalesPad.ahk

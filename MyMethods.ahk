@@ -404,7 +404,7 @@ DebugMsgBox(message = "")
         MsgBox, %message%
 }
 
-RxMatch(string, regex)
+RxMatch(string, pattern)
 {
-    return % Substr(string, RegExMatch(string, "P)" regex, matchlength), matchlength)
+    return % Substr(string, RegExMatch(string, "P)" pattern, matchlength), matchlength)
 }

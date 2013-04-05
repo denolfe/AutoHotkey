@@ -8,6 +8,8 @@
 SendMode Input 
 SetWorkingDir %A_ScriptDir%
 
+Editor := "C:\Users\elliotd\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+
 RunNum := 1
 DebugFile := "\\draven\Testing\debug.log"
 DebugHistFile := "\\draven\Testing\debughist.log"
@@ -418,7 +420,7 @@ LogsFolder:
 return
 
 EditScript:
-    Run C:\Program Files\Sublime Text 2\sublime_text.exe %A_ScriptFullPath%
+    Run %Editor% %A_ScriptFullPath%
 return
 
 ReloadMenu:
@@ -436,18 +438,16 @@ ReloadAll:
     FileAppend, , \\draven\Testing\TestComplete\SQL2005.reload
 Return
 
-
-
 TCFileMenu:
-    Run C:\Program Files\Sublime Text 2\sublime_text.exe %TCFile% 
+    Run %Editor% %TCFile% 
 Return
 
 TestsiniMenu:
-    Run C:\Program Files\Sublime Text 2\sublime_text.exe %Testsini% 
+    Run %Editor% %Testsini% 
 Return
 
 DebugFileMenu:
-    Run C:\Program Files\Sublime Text 2\sublime_text.exe %DebugFile%
+    Run %Editor% %DebugFile%
 Return
 
 ClearDebugFileMenu:
