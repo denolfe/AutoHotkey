@@ -116,6 +116,14 @@ NumLock::
 !Numpad0:: Run %A_ScriptDir%
 !NumpadDot:: Run B:\Downloads\
 
+;; Media Keys
++F5::F5
++F6::F6
++F7::F7
+F5::Send {Media_Prev}
+F6::Send {Media_Play_Pause}
+F7::Send {Media_Next}
+
 ^!r::Reload	
 ^!e::Run %Editor% %A_ScriptName%
 ^!t::Run %Editor% Test.ahk
