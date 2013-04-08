@@ -13,6 +13,7 @@ message =
 		4 = Custom
 		5 = CustomRelease
 		6 = Ret To Vend
+		7 = Main
 	)
 
 Notify("Choose Build", message,-15,"Style=Mine")
