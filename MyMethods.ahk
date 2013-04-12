@@ -172,7 +172,7 @@ IsOnline(machine)
 Cl(command, hide = 1)
 {
 	if hide
-		RunWait, %comspec% /c %command%,, Hide
+		RunWait, %comspec% /c "%command%",, Hide
 	Else
 		Run, %comspec% /c %command%
 }
@@ -232,6 +232,16 @@ GetSQLDriver()
         return "SQL Server Native Client 11.0"  ;SQL 2012
 }
 
+CreateXCut(path, shortcut, name)
+{
+    If FileExist(path)
+    {
+        FileCreateShortcut, %path%, %shortcut%, C:\, "%A_ScriptFullPath%", %name%
+        msgbox, exists
+    }
+    Else
+        Msgbox, File Does Not Exist!
+}
 
 
 

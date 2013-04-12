@@ -1,11 +1,8 @@
 ~LButton::
-
-	If (( A_PriorHotKey = A_ThisHotKey && A_TimeSincePriorHotkey < 200 ) && MouseIsOver("ahk_class Shell_TrayWnd"))
-	{
+	MouseGetPos, mx ,my
+	If (( A_PriorHotKey = A_ThisHotKey && A_TimeSincePriorHotkey < 200 ) && MouseIsOver("ahk_class Shell_TrayWnd") && ( mx < 1534)  )
 		Send #d
-	}
 Return
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Folder Shortcuts ;;;;;
@@ -20,7 +17,7 @@ Return
 !Numpad5:: ShowDir("\\draven\Builds\SalesPad4")
 !Numpad6:: ShowDir("C:\Users\elliotd\Dropbox\Reports")
 !Numpad7:: 
-	aDown:=A_TickCount
+	aDown := A_TickCount
 	Keywait Numpad7
 	If ((A_TickCount-aDown)<400)
 	{
@@ -41,7 +38,7 @@ Return
 #p::Run, C:\Program Files (x86)\
 
 #NumPad1::ShowStart("(testing-pc).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.147")
-#Numpad2::ShowStart("(gp2013).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.113")
+#Numpad2::ShowStart("(dynamics).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.119")
 #Numpad3::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
 #NumPad4::ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.164")
 #NumPad5::ShowStart("(testingmultibin).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.157")
@@ -63,25 +60,14 @@ AppsKey::Run, MyMenu.ahk
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 	
-NumLock::ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1) ;
-
-
-/*~CapsLock::
-*ScrollLock::
-	KeyboardLED(2,"off")
-	Return
-	*/
-	
+NumLock::ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 	
 #WheelDown::Send {WheelRight 5}
 #WheelUp::Send {WheelLeft 5}
 
-XButton1 & RButton::Send {Enter}
-*XButton1::XButton1
-
 ;;;;; CapsNav ;;;;;;;
-/*
-CapsLock & i::
+
+CapsLock & k::
        if getkeystate("alt") = 0
                Send,{Up}
        else
@@ -95,14 +81,14 @@ CapsLock & l::
                Send,+{Right}
 Return
 
-CapsLock & j::
+CapsLock & h::
        if getkeystate("alt") = 0
                Send,{Left}
        else
                Send,+{Left}
 Return
 
-CapsLock & k::
+CapsLock & j::
        if getkeystate("alt") = 0
                Send,{Down}
        else
@@ -137,11 +123,11 @@ CapsLock & m::
 Return
 
 CapsLock & u::
-CapsLock & h::
+;CapsLock & h::
 CapsLock & `;::
 CapsLock & ,::
 	Return
-*/
+
 	
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;;;;;;;; Launcher ;;;;;;;;;;
@@ -194,7 +180,7 @@ CapsLock & ,::
 ^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 	
 ^Numpad1::
-	aDown:=A_TickCount
+	aDown := A_TickCount
 	Keywait Numpad1
 	If ((A_TickCount-aDown)<400)
 	{
@@ -280,17 +266,6 @@ Return
 		IfWinNotExist, ahk_class CabinetWClass
 			break
 	}
-	loop
-	{
-		WinClose, Greenshot image editor
-		IfWinExist, Save image?
-		{
-			WinActivate
-			Send {Enter}
-		}
-		IfWinNotExist, Greenshot image editor
-			break
-	}
 	WinClose ahk_class EVERYTHING
 	Notify("Windows Purged","",-1,"GC=555555 TC=White MC=White")
 	Return
@@ -316,8 +291,8 @@ Return
 	if RegExMatch(clipboard, ".+(.com|.net|.co.uk)")
 		Run, chrome.exe %clipboard%
 	Return
-
-^!g::ShowStart("ahk_class #32770 grepWin", "C:\Program Files\grepWin\grepWin.exe")
+	
+^!g::ShowStart("grepWin", "C:\Program Files\grepWin\grepWin.exe")
 
 ; Append to clipboard
 ^+c::
@@ -328,7 +303,7 @@ Return
 	Return
 
 !`::
-	aDown:=A_TickCount
+	aDown := A_TickCount
 	Keywait ``
 	If ((A_TickCount-aDown)<200)
 	{
@@ -338,9 +313,6 @@ Return
 	else
 		WinActivate, ahk_id %last_id%
 	Return
-
-;!Wheelup::Win__Fling("M", false, -1)
-;!WheelDown::Win__Fling("M", false, 1)
 
 #pgup::
 	DetectHiddenWindows, On 

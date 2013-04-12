@@ -56,7 +56,7 @@ Run, Utilities\Colorette.ahk
 return
 
 ClipboardReplace:
-	Run, %A_ScriptDir%\Replace.ahk
+	Run, Utilities\Replace.ahk
 return
 
 SQLFormatter:

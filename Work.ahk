@@ -35,9 +35,12 @@ If A_ComputerName = ELLIOT-PC
 	Run %A_ScriptDir%\VolumeControl.ahk
 	Run %A_ScriptDir%\AutoCorrect.ahk
 
-	Run %A_ScriptDir%\ConfigTests.ahk
-	WinWait, Test Configuration
-	WinMinimize, Test Configuration
+	IfWinNotExist, Test Configuration
+	{
+		Run %A_ScriptDir%\ConfigTests.ahk
+		WinWait, Test Configuration
+		WinMinimize, Test Configuration
+	}
 	
 	+Pause::Suspend
 }

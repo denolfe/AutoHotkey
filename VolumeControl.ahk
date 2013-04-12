@@ -27,34 +27,34 @@ Return
 
 MouseIsOver(WinTitle) 
 {
-    MouseGetPos,,, Win
-    return WinExist(WinTitle . " ahk_id " . Win)
+	MouseGetPos,,, Win
+	return WinExist(WinTitle . " ahk_id " . Win)
 }
 
 #If top or MouseIsOver("ahk_class Shell_TrayWnd")
-  WheelUp:: 
-    Volume := (VA_GetMasterVolume() + Inc)  
-    VA_SetMasterVolume(Volume)
-        
-    if(Volume < 1)
-        VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 220)
-    else
-        VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 169)
-      
-    Notify("","",VA_GetMasterVolume(),"Progress",VolumeNotifyID)
-    Return
+ 	WheelUp:: 
+		Volume := (VA_GetMasterVolume() + Inc)  
+		VA_SetMasterVolume(Volume)
+			
+		if(Volume < 1)
+			VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 220)
+		else
+			VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 169)
+	  	
+		Notify("","",VA_GetMasterVolume(),"Progress",VolumeNotifyID)
+	Return
 
   ~WheelDown:: 
-    Volume := (VA_GetMasterVolume() - Inc)
-    VA_SetMasterVolume(Volume)
-    
-    if(Volume < 1)
-        VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 220)
-    else
-        VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 169)
-      
-    Notify("","",VA_GetMasterVolume(),"Progress",VolumeNotifyID)
-    Return
+		Volume := (VA_GetMasterVolume() - Inc)
+		VA_SetMasterVolume(Volume)
+		
+		if(Volume < 1)
+			VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 220)
+		else
+			VolumeNotifyID := Notify("Volume","",-2,"PG=100 PW=250 GC=555555 SI=0 SC=0 ST=0 TC=White MC=White AC=ToggleMute", 169)
+	  	
+		Notify("","",VA_GetMasterVolume(),"Progress",VolumeNotifyID)
+	Return
 #If   
 
 
@@ -124,15 +124,15 @@ _Notify_:
   IfInString, Options, = 
   { 
    Loop,Parse,Options,%A_Space% 
-    If (Option:= SubStr(A_LoopField,1,2)) 
-     %Option%:= SubStr(A_LoopField,4) 
+	If (Option:= SubStr(A_LoopField,1,2)) 
+	 %Option%:= SubStr(A_LoopField,4) 
    If NO = Reset 
    { 
-    Options := "GF=50 GL=74 GC=FFFFAA GR=9 GT=Off " 
-     . "TS=8 TW=625 TC=Black TF=Arial MS=8 MW=550 MC=Black MF=Arial " 
-     . "BC=Black BW=2 BR=9 BT=105 BF=150 SC=300 SI=250 ST=100 " 
-     . "IW=32 IH=32 IN=0 PG=0 PW=350 PC=cDefault PB=BackgroundDefault" 
-    Goto, _Notify_ 
+	Options := "GF=50 GL=74 GC=FFFFAA GR=9 GT=Off " 
+	 . "TS=8 TW=625 TC=Black TF=Arial MS=8 MW=550 MC=Black MF=Arial " 
+	 . "BC=Black BW=2 BR=9 BT=105 BF=150 SC=300 SI=250 ST=100 " 
+	 . "IW=32 IH=32 IN=0 PG=0 PW=350 PC=cDefault PB=BackgroundDefault" 
+	Goto, _Notify_ 
    } 
   } 
   Else If Options = Wait 
@@ -150,7 +150,7 @@ _Notify_:
    Break 
   Else 
   If (++GN > GL) 
-    Return 0              ;=== too many notifications open! 
+	Return 0              ;=== too many notifications open! 
  NotifyList .= "|" GN 
  GN2 := GN + GL - GF + 1 
  If AC <> 
@@ -163,10 +163,10 @@ _Notify_:
  WinGet, id, list,NotifyGui
  Loop, %id%
  {
-    this_id := id%A_Index%
-    WinGetPos, OtherX, ly
-    if(ly < OtherY || A_Index = 1)
-        OtherY := ly
+	this_id := id%A_Index%
+	WinGetPos, OtherX, ly
+	if(ly < OtherY || A_Index = 1)
+		OtherY := ly
  }
 
  ; If (WinExist("NotifyGui"))  ;=== find all Notifications from ALL scripts, for placement 
@@ -245,7 +245,7 @@ _Notify_:
  if (Duration != "")
  {
   If (Duration) 
-    SetTimer, % "_Notify_Kill_" GN - GF + 1, % - Abs(Duration) * 1000 
+	SetTimer, % "_Notify_Kill_" GN - GF + 1, % - Abs(Duration) * 1000 
   Else 
    SetTimer, % "_Notify_Flash_" GN - GF + 1, % BF 
  }
@@ -265,12 +265,12 @@ _Notify_Action:
   Loop,Parse,ActionList,| 
    If ((Action := SubStr(A_LoopField,1,2)) = A_Gui) 
    { 
-    Temp_Notify_Action:= SubStr(A_LoopField,4) 
-    StringReplace, ActionList, ActionList, % "|" A_Gui "=" Temp_Notify_Action, , All 
-    If IsLabel(_Notify_Action := Temp_Notify_Action) 
-     Gosub, %_Notify_Action% 
-    _Notify_Action = 
-    Break 
+	Temp_Notify_Action:= SubStr(A_LoopField,4) 
+	StringReplace, ActionList, ActionList, % "|" A_Gui "=" Temp_Notify_Action, , All 
+	If IsLabel(_Notify_Action := Temp_Notify_Action) 
+	 Gosub, %_Notify_Action% 
+	_Notify_Action = 
+	Break 
    } 
  StringReplace, NotifyList, NotifyList, % "|" GN, , All 
  SetTimer, % "_Notify_Flash_" A_Gui - GF + 1, Off 
@@ -363,9 +363,9 @@ _Notify_Wait_:
    WinWaitClose, , , % Abs(Duration) 
    If (ErrorLevel && Duration < 1) 
    { 
-    Gui, % Image + GL - GF + 1 ":Destroy" 
-    DllCall("AnimateWindow","UInt",NotifyGuiID,"Int",ST,"UInt","0x00050001") 
-    Gui, %Image%:Destroy 
+	Gui, % Image + GL - GF + 1 ":Destroy" 
+	DllCall("AnimateWindow","UInt",NotifyGuiID,"Int",ST,"UInt","0x00050001") 
+	Gui, %Image%:Destroy 
    } 
   } 
  } 
@@ -379,9 +379,9 @@ _Notify_Wait_:
    WinWaitClose, , , % Abs(Duration) 
    If (ErrorLevel && Duration < 1) 
    { 
-    Gui, % Image + GL - GF + 1 ":Destroy" 
-    DllCall("AnimateWindow","UInt",NotifyGuiID,"Int",ST,"UInt","0x00050001") 
-    Gui, %Image%:Destroy 
+	Gui, % Image + GL - GF + 1 ":Destroy" 
+	DllCall("AnimateWindow","UInt",NotifyGuiID,"Int",ST,"UInt","0x00050001") 
+	Gui, %Image%:Destroy 
    } 
   } 
  } 
@@ -396,7 +396,7 @@ _Update_Progress_:
   {
    Gui %Image%:+LastFound 
    If WinExist() 
-    GuiControl, %Image%:,msctls_progress321,%Duration%
+	GuiControl, %Image%:,msctls_progress321,%Duration%
   }
  } 
 Return
@@ -410,11 +410,11 @@ _Update_Text_:
    Gui %Image%:+LastFound 
    If WinExist() 
    {
-    Gui %Image%:Add, Text, hwndTextHwnd, %Duration%
-    ControlGetPos ,,, Width, Height, , ahk_id %TextHwnd%
-    WinKill ahk_id %TextHwnd%
-    GuiControl, %Image%:,static3,%Duration%
-    GuiControl, %Image%:Move,static3,W%Width%
+	Gui %Image%:Add, Text, hwndTextHwnd, %Duration%
+	ControlGetPos ,,, Width, Height, , ahk_id %TextHwnd%
+	WinKill ahk_id %TextHwnd%
+	GuiControl, %Image%:,static3,%Duration%
+	GuiControl, %Image%:Move,static3,W%Width%
    }
   }
  } 

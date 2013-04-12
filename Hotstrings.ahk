@@ -81,8 +81,7 @@
 	path := ini_load(ini, "Work.ini")
 	lastbranch := ini_getValue(ini, "LastInstall", "Branch")
 	lastbuild :=  ini_getValue(ini, "LastInstall", "Build")
-	nextbuild := (lastbranch = "HotFix") ? ". Fix will be in next Release." : ""
-	Send % "Passed Testing in Latest " lastbranch " " lastbuild . nextbuild
+	Send % "Passed Testing in Latest " lastbranch " " lastbuild
 	return
 
 :*:lu;:: OrderBy:LastEdited

@@ -16,8 +16,6 @@ DebugHistFile := "\\draven\Testing\debughist.log"
 Testsini := "\\draven\Testing\TestComplete\TestComplete.ini"
 TCFile := "\\draven\Testing\TestComplete\TestComplete.ahk"
 
-;Run, newbuildmonitor.ahk
-
 Begin:
 
 Menu, Tray, NoStandard
@@ -189,7 +187,7 @@ Start:
     if GP2010_2 = 1
         FileAppend, , \\draven\Testing\TestComplete\SMARTBEAR.trigger
     if GP2013 = 1
-        FileAppend, , \\draven\Testing\TestComplete\GP2013.trigger
+        FileAppend, , \\draven\Testing\TestComplete\DYNAMICS.trigger
 
     ;RunWait, %comspec% /c "schtasks /run /s "gp2013" /tn LaunchTests",, Hide  
 
@@ -434,7 +432,7 @@ Return
 ReloadAll:
     FileAppend, , \\draven\Testing\TestComplete\TESTING-PC.reload
     FileAppend, , \\draven\Testing\TestComplete\SMARTBEAR.reload
-    FileAppend, , \\draven\Testing\TestComplete\GP2013.reload
+    FileAppend, , \\draven\Testing\TestComplete\DYNAMICS.reload
     FileAppend, , \\draven\Testing\TestComplete\SQL2005.reload
 Return
 
@@ -475,7 +473,6 @@ CheckBuilds:
         Found("New Custom Build - ", "Custom")
 return
 
-
 FindLatest:
     FindLatest("Release")
     FindLatest("HotFix")
@@ -483,9 +480,6 @@ FindLatest:
     FindLatest("CustomRelease")
     FindLatest("ServPack")
 Return
-
-
-
 
 FindLatest(build)
 {
@@ -510,23 +504,7 @@ FindLatest(build)
             VersionPassed := A_LoopFileName
     }
 
-    /*
-        If RegExMatch(GPVersion, "P)\d+", matchlength)
-        GPVersion := "GP" . SubStr(GPVersion, RegExMatch(GPVersion, "P)\d+", matchlength), matchlength)
-*/
-    ;If RegExMatch(VersionPassed, "P)^[\d+|.]+", matchlength)
-    ;    msgbox % SubStr(VersionPassed, RegExMatch(VersionPassed, "P)^[\d+|.]+", matchlength), matchlength)
-
     VersionPassed := SubStr(VersionPassed, RegExMatch(VersionPassed, "P)^[\d+|.]+", matchlength), matchlength)
-
-    ;msgbox % Version "`n" VersionPassed
-
-    ;If ! (Version = Version_Passed)
-    ;    Guicontrol,, Latest%build%TestNeeded, 1
-    ;Else
-    ;    Guicontrol,, Latest%build%TestNeeded, 0
-
-    ;msgbox % Version
 
     if (CreationDay = Today)
     {
@@ -545,8 +523,6 @@ FindLatest(build)
         GuiControl,,Latest%build%Date, % CreationDate
     }
 }
-
-
 
 countBuilds(branch)   
 {

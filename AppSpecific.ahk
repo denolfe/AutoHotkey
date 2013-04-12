@@ -94,6 +94,7 @@ GroupAdd, Game, ahk_class WarsowWndClass
 		}
 	Return
 
+	^e::
 	+Enter::
 		sel := Explorer_GetSelected()
 		Run %Editor% "%sel%" 
@@ -104,7 +105,6 @@ GroupAdd, Game, ahk_class WarsowWndClass
 #IfWinActive ahk_class FileSearchAppWindowClass
 
 #IfWinActive ahk_class PX_WINDOW_CLASS
-	^b::
 	+Enter::
 		Send ^s
 		SetTitleMatchMode, 2
@@ -163,17 +163,8 @@ GroupAdd, Game, ahk_class WarsowWndClass
 		SendInput chrome`:`/`/chrome`/extensions`/{Enter}
 		Return
 
-/*
-#If WinActive("ahk_class Chrome_WidgetWin_1") && !FocusOn("Chrome_OmniBoxView1")
-	~e::IfNotEqual,A_Cursor,IBeam, Send, ^+{Tab}
-	~r::IfNotEqual,A_Cursor,IBeam, Send, ^{Tab}
-	~d::IfNotEqual,A_Cursor,IBeam, Send, !{Left}
-	~f::IfNotEqual,A_Cursor,IBeam, Send, !{Right}
-	~x::IfNotEqual,A_Cursor,IBeam, Send, ^{F4}
-	~z::Send ^+t ;undoclosetab
-#If
-*/
-
+	^LButton::Send, ^+{Tab} ;Tab Left
+	^RButton::Send, ^{Tab}	;Tab Right
 
 ;http://www.autohotkey.com/community/viewtopic.php?t=50364&start=15#p551784
 #IfWinActive .*ahk .*
