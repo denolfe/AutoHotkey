@@ -4,7 +4,8 @@ SetTitleMatchMode, 2
 
 #Include lib\ini.ahk
 #Include lib\ShellFileOperation.ahk
-			 		 
+
+
 message = 
 	(ltrim 
 		1 = Release
@@ -141,37 +142,11 @@ if ! FileExist(setupfile)
 	ExitApp
 }
 ;; Run installer
-Run, %setupfile%
-
-
-WinWaitActive, SalesPad.GP, License Agreement
+path := "C:\Program Files (x86)\SalesPad.GP " build "\" Folder
+RunWait, %setupfile% /S /D=%path%
+Run, %path%\SalesPad.exe
 
 SetTimer, KeepActive, 50
-
-
-
-Send, {Enter}
-WinGetTitle, Title, A
-StringReplace, Title, Title, SalesPad.GP
-StringReplace, Title, Title, Setup
-StringReplace, Title, Title, %A_SPACE%,,All
-path := "C:\Program Files (x86)\SalesPad.GP " build "\" Title
-SendInput % path
-Send {Enter}
-Sleep 100
-Send {Enter}
-
-Loop 
-{
-	ControlGet, OutputVar, Enabled,, Button2, SalesPad.GP
-	;msgbox % OutputVar
-	if OutputVar = 1
-	  break
-	Sleep 500
-}
-Sleep 500
-Send {Enter}
-Gosub, logini
 
 RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SalesPad, Last Connection, TWI
 RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SalesPad, Last User, elliotd
@@ -193,7 +168,11 @@ Send {Enter}
 IfWinNotExist, SalesPad, Update is Available
 	ExitApp
 Sleep 50
-Send {Space}{Tab 3}{Space}{Tab 2}{Enter}
+
+if (build = "Main") or (build = "HotFix")
+	Send {Space}{Tab 4}{Space}{Tab 2}{Enter}
+Else
+	Send {Space}{Tab 3}{Space}{Tab 2}{Enter}
 
 Loop {
 
@@ -206,12 +185,12 @@ Loop {
 }
 Sleep 1000
 Send {Enter}
-
+Gosub, logini
 Exitapp
 
 KeepActive:
-	WinActivate, SalesPad.GP
-	If ! WinExist("SalesPad.GP")
+	WinActivate, Setup,,ahk_class CabinetWClass
+	If ! WinExist("Setup")
 		SetTimer, KeepActive, Off
 	return
 
@@ -220,39 +199,11 @@ If A_ComputerName = elliot-pc
 {
 	path := ini_load(ini, "Work.ini") 
 	ini_replaceValue(ini, "LastInstall", "Branch", build)
-	ini_replaceValue(ini, "LastInstall", "Build", Title)
+	ini_replaceValue(ini, "LastInstall", "Build", Folder)
 	ini_save(ini, "Work.ini")
 }
 return
 
-/*
-Loop 
-{
-  WinGetText, VisText, ahk_class WindowsForms10.Window.8.app.0.25bb5ff_r15_ad1
-  msgbox % VisText
-  If Instr(Vistext, "Welcome to SalesPad")
-    break
-  Sleep 500 
-}
-Send {Enter}
-*/
-
-/*
-Send {Enter}
-Sleep 50
-Send {Space}
-Sleep 50
-Send {Tab 3}
-Sleep 50
-Send {Space}
-Sleep 500
-Send {Tab 2}
-Sleep 50
-Send {Space}
-*/
-
-
-	
 ExitApp
 
 Numpad1::Return
@@ -260,4 +211,7 @@ Numpad2::Return
 Numpad3::Return
 Numpad4::Return
 Numpad5::Return
+Numpad6::Return
+Numpad7::Return
+Numpad8::Return
 ~Esc::ExitApp
