@@ -64,6 +64,9 @@ Gui, Add, Button, x245 y120 w65 h25 gStart, Start Tests
 Gui, Add, GroupBox, x170 y5 w140 h110 , Testing Machines
 Gui, Font, w600
 
+
+TestingMachines := "SMARTBEAR|DYNAMICS" ;Removed Testing-PC
+
 ; Check if environments are online
 If IsOnline("TESTING-PC")
     ;Guicontrol,, GP2010, 1
@@ -74,7 +77,7 @@ Gui, Add, Text, c%statuscolor% x262 y48 w40 h22 , % statusname
 If IsOnline("SQL2005")
    ; Guicontrol,, GP10, 1
 Gui, Add, Text, c%statuscolor% x262 y88 w40 h22 , % statusname
-If IsOnline("GP2013")
+If IsOnline("DYNAMICS")
    ; Guicontrol,, GP2013, 1
 Gui, Add, Text, c%statuscolor% x262 y68 w40 h20 , % statusname
 sections := ini_getAllSectionNames(ini)
@@ -430,10 +433,8 @@ ExitMenu:
 Return
 
 ReloadAll:
-    FileAppend, , \\draven\Testing\TestComplete\TESTING-PC.reload
-    FileAppend, , \\draven\Testing\TestComplete\SMARTBEAR.reload
-    FileAppend, , \\draven\Testing\TestComplete\DYNAMICS.reload
-    FileAppend, , \\draven\Testing\TestComplete\SQL2005.reload
+    Loop,Parse,TestingMachines,|
+        FileAppend, , \\draven\Testing\TestComplete\%A_LoopField%.reload
 Return
 
 TCFileMenu:

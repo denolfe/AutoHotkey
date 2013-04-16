@@ -6,10 +6,10 @@
 
 A_ProgramFiles86 := "C:\Program Files (x86)\"
 
-Menu,AutoHotkey,Add,AHK Documentation, AHKDocumentation
 Menu,AutoHotkey,Add,Ahk2Exe
 Menu,AutoHotkey,Add,SmartGUI
 Menu,AutoHotkey,Add,Dynamic Function Tester, DynamicFunctionTester
+Menu,AutoHotkey,Add,AHK Documentation, AHKDocumentation
 
 Menu,Main,Add,Clipboard Replace, ClipboardReplace
 Menu,Main,Add,Format URL, FormatURL

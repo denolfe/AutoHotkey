@@ -61,7 +61,7 @@ ShowStart(title, exe, toggle = 0)
             	Run, %exe%,, UseErrorLevel
                 If ErrorLevel
                 {
-                    msgbox, File not found
+                    Notify("File not found", title,-3,"Style=Mine")
                     Return
                 }
                 WinActivate

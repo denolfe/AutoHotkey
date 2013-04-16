@@ -169,7 +169,7 @@ IfWinNotExist, SalesPad, Update is Available
 	ExitApp
 Sleep 50
 
-if (build = "Main") or (build = "HotFix")
+if (build = "Main") or (build = "HotFix") or (build = "Custom")
 	Send {Space}{Tab 4}{Space}{Tab 2}{Enter}
 Else
 	Send {Space}{Tab 3}{Space}{Tab 2}{Enter}
