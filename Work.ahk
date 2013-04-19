@@ -24,7 +24,7 @@ Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
-global Editor = "C:\Users\elliotd\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+global Editor := "C:\Users\elliotd\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
 
 If ! A_IsAdmin
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?

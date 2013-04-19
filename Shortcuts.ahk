@@ -227,7 +227,7 @@ CapsLock & ,::
 	WinWaitActive ahk_class PX_WINDOW_CLASS
 	WinMove, ahk_class PX_WINDOW_CLASS,, 1920,0,1317,1073
 	Return
-^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe")	
+^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
 ^Numpad5::Run, "C:\Program Files (x86)\Microsoft Dynamics\GP2010\Dynamics.exe" Dynamics.set
 
 ^Numpad6::

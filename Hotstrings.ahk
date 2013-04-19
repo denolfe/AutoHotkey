@@ -1,4 +1,3 @@
-	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;; Hotstrings ;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -19,7 +18,7 @@
 :*:findc::select TABLE_NAME, COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME like '`%`%' order by TABLE_NAME{left 22}
 :*:findp::select SPECIFIC_NAME from INFORMATION_SCHEMA.ROUTINES where ROUTINE_NAME like '%%' order by SPECIFIC_NAME{left 25}
 :*:like;::like '`%`%'{left 2}
-:*:temp;::IF object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
+:*:temp;::If object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
 :*:ssf::select * from{Space}
 :*:ssi::select * into{Space}
 :*:scf::select COUNT(*) from{Space}
@@ -94,8 +93,8 @@
 ;;;;;;; File Paths ;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-:*:%pd::`%ProgramData`%
-:*:%ad::`%AppData`%
+:*:pd;::`%ProgramData`%
+:*:ad;::`%AppData`%
 :*:epc;::\\elliot-pc\c$\Users\elliotd\Dropbox\HomeShare\
 
 :*:unc;::

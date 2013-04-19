@@ -213,27 +213,6 @@ F1::
 			Send {End}{Shift Down}{Home}{Shift Up}
 		Return
 
-#IfWinActive Notepad++
-	
-	CapsLock & Enter::
-		MouseClick, left,  136,  41
-		Sleep, 100
-		MouseClick, left,  266,  181
-		Sleep, 100
-		MouseClick, left,  525,  178
-		Return
-		
-	^t::Send ^{n}
-		
-	;;;http://www.autohotkey.com/forum/topic75978.html  ???
-	+Enter::
-		Send ^s
-		WinGetTitle, Title, A
-		StringReplace, Title, Title,  - Notepad++, , All
-		Run %Title%
-		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
-		Return
-
 #IfWinActive ahk_class ConsoleWindowClass
 	^V::SendInput {Raw}%clipboard%
 
@@ -251,7 +230,7 @@ F1::
 
 #IfWinActive, ahk_class TvnWindowClass
 	CapsLock::
-		(state:=!state)
+		(state := !state)
 		if state 
 			MoveTaskbar(3,"right")	
 		Else

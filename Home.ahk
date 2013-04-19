@@ -110,11 +110,11 @@ NumLock::
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad1:: Run B:\Dropbox
-!Numpad2:: Run B:\Dropbox\HomeShare
-!Numpad3:: Run B:\
+!Numpad1:: Run D:\Dropbox
+!Numpad2:: Run D:\Dropbox\HomeShare
+!Numpad3:: Run D:\
 !Numpad0:: Run %A_ScriptDir%
-!NumpadDot:: Run B:\Downloads\
+!NumpadDot:: Run D:\Downloads\
 
 ;; Media Keys
 +F5::F5
@@ -130,9 +130,112 @@ F7::Send {Media_Next}
 !t::Run %A_ScriptDir%\Test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
+#IfWinActive ahk_class EVERYTHING
+	Tab::Down
+	+Tab::Send, {Up}{Shift Up}
+	Shift::Return
+
+	+Enter::		
+		StatusBarGetText, Title
+		Run %Editor% "%Title%"
+		WinActivate, ahk_class PX_WINDOW_CLASS
+	Return
+
+	^j::
+		StatusBarGetText, FullFileName
+		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
+		Run, %dir%
+		return
+
+	^k::
+		StatusBarGetText, FullFileName
+		clipboard := FullFileName
+		ClipWait
+		Notify("Full Filename Copied",clipboard,-1,"Style=Mine")
+		return
+
+	^l::
+		StatusBarGetText, FullFileName
+		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
+		clipboard := dir
+		ClipWait
+		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		return
+
+	CapsLock::
+		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
+		{
+			Send {F2}^{a}
+			Sleep 50
+			clipboard = ; Empty the clipboard
+			Send ^{c}			
+			Send {Esc}
+			ClipWait
+			Notify("Filename Copied",clipboard,-1,"GC=555555 SI=0 SC=0 ST=500 TC=White MC=White")
+		}
+	Return
+
+#IfWinActive ahk_class CabinetWClass
+	Esc::
+		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
+			WinClose
+		Else
+			Send, {Esc}
+		Return
+		
+	+Backspace::Send !{Up}
+
+	^k::
+		fullfilename := Explorer_GetSelected()
+		clipboard := fullfilename
+		ClipWait
+		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		return
+
+	^l::
+		dir := Explorer_GetPath()
+		clipboard := dir
+		ClipWait
+		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		return
+
+	CapsLock::
+		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
+		{		
+			FullFileName := Explorer_GetSelected()
+			SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
+			clipboard := name
+			ClipWait
+			Notify("Filename Copied",clipboard,-1,"Style=Mine")
+		}
+	Return
+
+#IfWinActive ahk_class PX_WINDOW_CLASS
+	+Enter::
+		Send ^s
+		SetTitleMatchMode, 2
+		sleep, 200
+    	IfWinExist, unregistered
+			WinClose
+		SetTitleMatchMode, RegEx
+		WinGetTitle, Title, A
+		;Title := RegExReplace(Title, "(\s-\s).*", "")
+		;Run %Title%
+		Run % Substr(Title, RegExMatch(Title, "P)\S+.ahk", matchlength), matchlength)
+		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
+		Return
+
+	~^s::
+		SetTitleMatchMode, 2
+		sleep, 200
+    	IfWinExist, unregistered
+			WinClose
+		SetTitleMatchMode, RegEx
+		Return
+
+#IfWinActive
+
 #Include MyMethods.ahk
-#Include AppSpecific.ahk
-#Include Hotstrings.ahk
 
 #Include lib\VA.ahk
 #Include lib\Notify.ahk

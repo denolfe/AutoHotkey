@@ -59,11 +59,11 @@
 #NoEnv ; For security
 #SingleInstance force
 Menu, Tray, Tip, Auto Correct
-
-If A_ComputerName = elliot-pc
-	Menu, Tray, Icon, lib\images\AutoCorrect.ico
-else
-	Menu, Tray, NoIcon
+#NoTrayIcon
+;If A_ComputerName = elliot-pc
+;	Menu, Tray, Icon, lib\images\AutoCorrect.ico
+;else
+;	Menu, Tray, NoIcon
 
 ;------------------------------------------------------------------------------
 ; AUto-COrrect TWo COnsecutive CApitals.

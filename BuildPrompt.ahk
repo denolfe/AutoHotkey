@@ -180,7 +180,7 @@ Loop {
 	if RegExMatch(thetext, "The Database Update was Successful")
 		break
 	if RegExMatch(thetext, "NOT")
-		return
+		Return
 	Sleep 50
 }
 Sleep 1000
@@ -192,7 +192,7 @@ KeepActive:
 	WinActivate, Setup,,ahk_class CabinetWClass
 	If ! WinExist("Setup")
 		SetTimer, KeepActive, Off
-	return
+	Return
 
 logini:
 If A_ComputerName = elliot-pc
@@ -202,7 +202,7 @@ If A_ComputerName = elliot-pc
 	ini_replaceValue(ini, "LastInstall", "Build", Folder)
 	ini_save(ini, "Work.ini")
 }
-return
+Return
 
 ExitApp
 
