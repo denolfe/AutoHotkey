@@ -4,7 +4,6 @@
 # But not these files...
 !.gitignore
 !Work.ahk
-!Home.ahk
 !Shortcuts.ahk
 !AppSpecific.ahk
 !Hotstrings.ahk

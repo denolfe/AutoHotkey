@@ -1,53 +1,5 @@
-RDP(comp, pw, title = "Remote Connection", message = "Are you sure you want to remote in?")
-{
-	MsgBox, 36, %title%, %message%
-	IfMsgBox Yes
-	{
-		Run mstsc.exe /console
-		WinWaitActive Remote Desktop Connection
-		Send %comp%{Enter}
-		WinWaitActive Windows Security
-		Send %pw%{Enter}
-		Return
-	}
-	Else
-		Return
-}
-
-AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) {
-DetectHiddenWindows, On
-WinGet, IDList ,List, ahk_class AutoHotkey
-Loop %IDList%
-  {
-  ID:=IDList%A_Index%
-  WinGetTitle, ATitle, ahk_id %ID%
-  IfNotInString, ATitle, %A_ScriptFullPath%
-    {
-    If Suspend
-      PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend. 
-    If Pause
-      PostMessage, 0x111, 65306,,, ahk_id %ID%  ; Pause.
-    If Kill
-      WinClose, ahk_id %ID% ;kill
-    }
-  }
-If SelfToo
-  {
-  If Suspend
-    Suspend, Toggle  ; Suspend. 
-  If Pause
-    Pause, Toggle, 1  ; Pause.
-  If Kill
-    ExitApp
-  }
-}
-
-
 ShowStart(title, exe, toggle = 0)
 {
-
-    ;msgbox % RegExReplace(exe, "\s+\S*$","")
-
 	If WinActive(title) and toggle
 		WinMinimize %title%
 	Else
@@ -56,22 +8,20 @@ ShowStart(title, exe, toggle = 0)
 			WinActivate
 		else
 		{
-            ;If FileExist(RegExReplace(exe, "\s+\S*$","")) ;removes everything after last space
-            ;{
-            	Run, %exe%,, UseErrorLevel
-                If ErrorLevel
-                {
-                    Notify("File not found", title,-3,"Style=Mine")
-                    Return
-                }
-                WinActivate
-            ;}
+        	Run, %exe%,, UseErrorLevel
+            If ErrorLevel
+            {
+                Notify("Executable not found", title,-3,"Style=Mine")
+                Return
+            }
+            WinActivate
 		}
 	}
 }
 
 ShowDir(title)
 {
+    ;RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState , FullPath, 1
 	SetTitleMatchMode, 3
 	IfWinExist, %title% ahk_class CabinetWClass
 		WinActivate
@@ -83,11 +33,62 @@ ShowDir(title)
 	SetTitleMatchMode, 2
 }
 
+SublimeOpen(file) ; Refocuses Sublime if file is opened while focused
+{
+    Run %Editor% %file%
+    Sleep 50
+    WinActivate, ahk_class PX_WINDOW_CLASS
+}
+
+CapsNav(action, initmod = "", mod = "+")
+{
+	If ! GetKeyState("alt")
+		Send % initmod "{" action "}"
+	Else
+		Send % mod . initmod "{" action "}"
+	SetCapsLockState, AlwaysOff
+}
+
+ProcExists(p)
+{    
+    Process, Exist, % p
+    Return ErrorLevel
+}
+
+ClipSave(mode = 1)
+{
+    global
+    if (mode = 1)
+        clipboard_backup := clipboard
+    else if (mode = 2)
+    	clipboard_backup := ClipboardAll
+}
+
+Copy()
+{
+	global
+	clipboard =
+	Send ^c
+	ClipWait, 4
+}
+
+ClipRestore()
+{
+    global
+    clipboard := clipboard_backup
+}
+
+ClipClear()
+{
+    global
+    clipboard = ;nothing
+}
+
 WinWaitText(text)
 {
     Loop
     {
-        WinGetText, A
+        WinGetText, thetext, A
         if RegExMatch(thetext, text)
             break  
     }
@@ -117,14 +118,14 @@ FadeIn(window = "A", TotalTime = 500, transfinal = 255)
 	}
 }
 
-FadeOut(window = "A", TotalTime = 500)
+FadeOut(window = "A", TotalTime = 500, FinalTrans = 0)
 {
 	StartTime := A_TickCount
 	Loop
 	{
 	   Trans := ((TimeElapsed := A_TickCount-StartTime) < TotalTime) ? 100*(1-(TimeElapsed/TotalTime)) : 0
 	   WinSet, Transparent, %Trans%, %window%
-	   if (Trans = 0)
+	   if (Trans = FinalTrans)
 		  break
 	   Sleep, 10
 	}
@@ -141,6 +142,12 @@ MouseIsOverClass(WinClass) {
     return (class = winClass)
 }
 
+MouseIsOverControl(winControl)
+{
+	MouseGetPos, , , , Control
+	return (Control = winControl)
+}
+
 Show(window = "A")
 {
 	WinSet, Transparent, 255, %window%
@@ -151,7 +158,8 @@ Hide(window = "A")
 	WinSet, Transparent, 0, %window%
 }
 
-ActiveControlIsOfClass(Class) {
+ActiveControlIsOfClass(Class) 
+{
     ControlGetFocus, FocusedControl, A
     ControlGet, FocusedControlHwnd, Hwnd,, %FocusedControl%, A
     WinGetClass, FocusedControlClass, ahk_id %FocusedControlHwnd%
@@ -160,10 +168,7 @@ ActiveControlIsOfClass(Class) {
 
 IsOnline(machine)
 {
-	Runwait,%comspec% /c ping -n 1 -w 50 %machine%>ping.log,,hide 
-	FileRead, StrTemp, ping.log
-	FileDelete ping.log
-	if Instr(StrTemp, "Received = 1")
+    IfExist, \\%machine%\c$
 		return 1
 	else
 		return 0
@@ -201,15 +206,18 @@ IsTextSelected()
 {
 
     ; BlockInput, on 
-    prevClipboard = %clipboard% 
-    clipboard = 
+    clipSave() 
+    clipClear()
     Send, ^c 
     ClipWait, 2 
-    clipboard = %prevClipboardAll%
-    if ErrorLevel = 0 
+    if StrLen(clipboard) > 0
+    { 
+        msgbox % clipboard "`n" strlen(clipboard)
         return 1
+    }
     else
         return 0
+    clipRestore()
 } 
 
 Log(text, file = "debug.log")
@@ -232,6 +240,31 @@ GetSQLDriver()
         return "SQL Server Native Client 11.0"  ;SQL 2012
 }
 
+GetSQLVersion()
+{
+    RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
+    If RegExMatch(SQLVersion, "P)\d*", matchlength)
+        Return % SubStr(SQLVersion, 1, matchlength) ;Returns 9, 10, or 11
+    Else
+        Log("Unable to get SQL Version")
+}
+
+GetGPVersion()
+{
+
+    RegRead, GPVersion1, HKLM, SOFTWARE\Classes\Installer\Products\6A0A09CD09D2E394D8315DA41D329BDF, ProductName
+    RegRead, GPVersion2, HKLM, SOFTWARE\Classes\Installer\Products\15C013CBD27B75C4EAE95A280A09C32F, ProductName
+    RegRead, GPVersion3, HKLM, SOFTWARE\Classes\Installer\Products\7CCCD69894796DD4ABFE949F9AEC2E59, ProductName
+    ;; Spanish
+    RegRead, GPVersionSpan, HKLM, SOFTWARE\Classes\Installer\Products\7C2554F0E4E82C84689AE7086A8B1E8E, ProductName
+    GPVersion := GPVersion1 . GPVersion2 . GPVersion3 . GpVersionSpan
+
+    If RegExMatch(GPVersion, "P)\d+", matchlength)
+        GPVersion := "GP" . SubStr(GPVersion, RegExMatch(GPVersion, "P)\d+", matchlength), matchlength)
+    Return GPVersion
+
+}
+
 CreateXCut(path, shortcut, name)
 {
     If FileExist(path)
@@ -243,6 +276,34 @@ CreateXCut(path, shortcut, name)
         Msgbox, File Does Not Exist!
 }
 
+AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0) 
+{
+    DetectHiddenWindows, On
+    WinGet, IDList ,List, ahk_class AutoHotkey
+    Loop %IDList%
+    {
+        ID:=IDList%A_Index%
+        WinGetTitle, ATitle, ahk_id %ID%
+        IfNotInString, ATitle, %A_ScriptFullPath%
+        {
+            If Suspend
+                PostMessage, 0x111, 65305,,, ahk_id %ID%  ; Suspend. 
+            If Pause
+                PostMessage, 0x111, 65306,,, ahk_id %ID%  ; Pause.
+            If Kill
+                WinClose, ahk_id %ID% ;kill
+        }
+    }
+    If SelfToo
+    {
+        If Suspend
+            Suspend, Toggle  ; Suspend. 
+        If Pause
+            Pause, Toggle, 1  ; Pause.
+        If Kill
+            ExitApp
+    }
+}
 
 
 
@@ -250,8 +311,29 @@ CreateXCut(path, shortcut, name)
 
 
 
-
-
+DynaRun(TempScript, pipename="")
+{
+   static _:="uint",@:="Ptr"
+   If pipename =
+      name := "AHK" A_TickCount
+   Else
+      name := pipename
+   __PIPE_GA_ := DllCall("CreateNamedPipe","str","\\.\pipe\" name,_,2,_,0,_,255,_,0,_,0,@,0,@,0)
+   __PIPE_    := DllCall("CreateNamedPipe","str","\\.\pipe\" name,_,2,_,0,_,255,_,0,_,0,@,0,@,0)
+   if (__PIPE_=-1 or __PIPE_GA_=-1)
+      Return 0
+   Run, %A_AhkPath% "\\.\pipe\%name%",,UseErrorLevel HIDE, PID
+   If ErrorLevel
+      MsgBox, 262144, ERROR,% "Could not open file:`n" __AHK_EXE_ """\\.\pipe\" name """"
+   DllCall("ConnectNamedPipe",@,__PIPE_GA_,@,0)
+   DllCall("CloseHandle",@,__PIPE_GA_)
+   DllCall("ConnectNamedPipe",@,__PIPE_,@,0)
+   script := (A_IsUnicode ? chr(0xfeff) : (chr(239) . chr(187) . chr(191))) TempScript
+   if !DllCall("WriteFile",@,__PIPE_,"str",script,_,(StrLen(script)+1)*(A_IsUnicode ? 2 : 1),_ "*",0,@,0)
+        Return A_LastError,DllCall("CloseHandle",@,__PIPE_)
+   DllCall("CloseHandle",@,__PIPE_)
+   Return PID
+}
 
 
 
@@ -396,17 +478,6 @@ MoveTaskbar(dspNumber, edge)
     SendInput {Enter}
 }
 
-
-GetGPVersion()
-{
-    If (A_ComputerName = "ELLIOT-PC" or A_ComputerName = "TESTING-PC" or A_ComputerName = "SMARTBEAR")
-        return "GP2010"
-    Else If (A_ComputerName = "SQL2005")
-        return "GP10"
-    Else If (A_ComputerName = "GP2013")
-        return "GP2013"
-}
-
 DebugMsgBox(message = "")
 {   
     global DebugMsgBox_ShowMessages
@@ -417,4 +488,160 @@ DebugMsgBox(message = "")
 RxMatch(string, pattern)
 {
     return % Substr(string, RegExMatch(string, "P)" pattern, matchlength), matchlength)
+}
+
+StringFormat(string, zero, one = "", two = "", three = "", four = "", five = "")
+{
+    StringReplace, string, string, `{0`}, % zero
+    StringReplace, string, string, `{1`}, % one
+    StringReplace, string, string, `{2`}, % two
+    StringReplace, string, string, `{3`}, % three
+    StringReplace, string, string, `{4`}, % four
+    StringReplace, string, string, `{5`}, % five
+    return string
+}
+
+
+RunIfExist(exe, response = 0)
+{
+    If FileExist(exe)
+        Run "%exe%"
+    Else
+    {
+        If response = 0
+            return
+        Else If response = 1
+            msgbox, %exe% does not exist.
+    }
+}
+
+StartDBGView()
+{
+	if(FileExist(A_ScriptDir "\Utilities\DebugView\Dbgview.exe"))
+	{
+		CoordMode, Mouse, Relative 
+		;Debug view
+		a_scriptPID := DllCall("GetCurrentProcessId")	; get script's PID
+		if(WinExist("ahk_class dbgviewClass")) ; kill it if the debug viewer is running from an older instance
+		{
+			winactivate, ahk_class dbgviewClass
+			Winwaitactive, ahk_class dbgviewClass
+			winclose, ahk_class dbgviewClass
+			WinWaitNotActive ahk_class dbgviewClass
+		}
+		Run %A_ScriptDir%\Utilities\DebugView\Dbgview.exe /f,,UseErrorLevel
+		winwait, ahk_class dbgviewClass
+		winactivate, ahk_class dbgviewClass
+		Winwaitactive, ahk_class dbgviewClass
+		Send ^l
+		winwait, DebugView Filter
+		winactivate, DebugView Filter
+		Winwaitactive, DebugView Filter
+		MouseGetPos, x,y
+		mouseclick, left, 125, 85,,0
+		MouseMove, x,y,0
+		send, [%a_scriptPID%*{Enter}
+		;send, !M{Down}{Enter}
+		Coordmode, Mouse, Screen
+		OutputDebug, DBGView Filtering on %A_ScriptName%
+	}
+}
+
+varize(var, autofix = true) 
+{
+	;var = "€:\Dév\« ÂùtöH°tkéÿ™ »\¡Dœ©s & Inf¤ß!"
+	;MsgBox, % "var:`t" . var . "`nautofix:`t" . varize(var) . "`nerrors:`t" varize(var, false)
+	Loop, Parse, var
+	{ c = %A_LoopField%
+		x := Asc(c)
+		If (x > 47 and x < 58) or (x > 64 and x < 91) or (x > 96 and x < 123)
+			or c = "#" or c = "_" or c = "@" or c = "$" or c = "?" or c = "[" or c = "]"
+			IfEqual, autofix, 1, SetEnv, nv, %nv%%c%
+			Else er++
+	} If StrLen(var) > 254
+		IfEqual, autofix, 1, StringLeft, var, var, 254
+		Else er++
+	IfEqual, autofix, 1, Return, nv
+	Else Return, er
+}
+
+UnJson(string)
+{
+    return % RegExReplace(string, "\\/", "/")
+}
+
+json(ByRef js, s, v = "") {
+    j = %js%
+    Loop, Parse, s, .
+    {
+        p = 2
+        RegExMatch(A_LoopField, "([+\-]?)([^[]+)((?:\[\d+\])*)", q)
+        Loop {
+            If (!p := RegExMatch(j, "(?<!\\)(""|')([^\1]+?)(?<!\\)(?-1)\s*:\s*((\{(?:[^{}]++|(?-1))*\})|(\[(?:[^[\]]++|(?-1))*\])|"
+                . "(?<!\\)(""|')[^\7]*?(?<!\\)(?-1)|[+\-]?\d+(?:\.\d*)?|true|false|null?)\s*(?:,|$|\})", x, p))
+                Return
+            Else If (x2 == q2 or q2 == "*") {
+                j = %x3%
+                z += p + StrLen(x2) - 2
+                If (q3 != "" and InStr(j, "[") == 1) {
+                    StringTrimRight, q3, q3, 1
+                    Loop, Parse, q3, ], [
+                    {
+                        z += 1 + RegExMatch(SubStr(j, 2, -1), "^(?:\s*((\[(?:[^[\]]++|(?-1))*\])|(\{(?:[^{\}]++|(?-1))*\})|[^,]*?)\s*(?:,|$)){" . SubStr(A_LoopField, 1) + 1 . "}", x)
+                        j = %x1%
+                    }
+                }
+                Break
+            }
+            Else p += StrLen(x)
+        }
+    }
+    If v !=
+    {
+        vs = "
+        If (RegExMatch(v, "^\s*(?:""|')*\s*([+\-]?\d+(?:\.\d*)?|true|false|null?)\s*(?:""|')*\s*$", vx)
+            and (vx1 + 0 or vx1 == 0 or vx1 == "true" or vx1 == "false" or vx1 == "null" or vx1 == "nul"))
+            vs := "", v := vx1
+        StringReplace, v, v, ", \", All
+        js := SubStr(js, 1, z := RegExMatch(js, ":\s*", zx, z) + StrLen(zx) - 1) . vs . v . vs . SubStr(js, z + StrLen(x3) + 1)
+    }
+    Return, j == "false" ? 0 : j == "true" ? 1 : j == "null" or j == "nul"
+        ? "" : SubStr(j, 1, 1) == """" ? SubStr(j, 2, -1) : j
+}
+
+/*
+    Function: DateParse
+        Converts almost any date format to a YYYYMMDDHH24MISS value.
+
+    Parameters:
+        str - a date/time stamp as a string
+
+    Returns:
+        A valid YYYYMMDDHH24MISS value which can be used by FormatTime, EnvAdd and other time commands.
+
+    Example:
+> time := DateParse("2:35 PM, 27 November, 2007")
+
+    License:
+        - Version 1.05 <http://www.autohotkey.net/~polyethene/#dateparse>
+        - Dedicated to the public domain (CC0 1.0) <http://creativecommons.org/publicdomain/zero/1.0/>
+*/
+DateParse(str) {
+    static e2 = "i)(?:(\d{1,2}+)[\s\.\-\/,]+)?(\d{1,2}|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*)[\s\.\-\/,]+(\d{2,4})"
+    str := RegExReplace(str, "((?:" . SubStr(e2, 42, 47) . ")\w*)(\s*)(\d{1,2})\b", "$3$2$1", "", 1)
+    If RegExMatch(str, "i)^\s*(?:(\d{4})([\s\-:\/])(\d{1,2})\2(\d{1,2}))?"
+        . "(?:\s*[T\s](\d{1,2})([\s\-:\/])(\d{1,2})(?:\6(\d{1,2})\s*(?:(Z)|(\+|\-)?"
+        . "(\d{1,2})\6(\d{1,2})(?:\6(\d{1,2}))?)?)?)?\s*$", i)
+        d3 := i1, d2 := i3, d1 := i4, t1 := i5, t2 := i7, t3 := i8
+    Else If !RegExMatch(str, "^\W*(\d{1,2}+)(\d{2})\W*$", t)
+        RegExMatch(str, "i)(\d{1,2})\s*:\s*(\d{1,2})(?:\s*(\d{1,2}))?(?:\s*([ap]m))?", t)
+            , RegExMatch(str, e2, d)
+    f = %A_FormatFloat%
+    SetFormat, Float, 02.0
+    d := (d3 ? (StrLen(d3) = 2 ? 20 : "") . d3 : A_YYYY)
+        . ((d2 := d2 + 0 ? d2 : (InStr(e2, SubStr(d2, 1, 3)) - 40) // 4 + 1.0) > 0
+            ? d2 + 0.0 : A_MM) . ((d1 += 0.0) ? d1 : A_DD) . t1
+            + (t1 = 12 ? t4 = "am" ? -12.0 : 0.0 : t4 = "am" ? 0.0 : 12.0) . t2 + 0.0 . t3 + 0.0
+    SetFormat, Float, %f%
+    Return, d
 }
