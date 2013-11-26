@@ -1,5 +1,13 @@
-SalesPad.ahk
-Test.ahk
-Work.ini
-Home.ini
-Sandbox/
+# Ignore Everything
+*
+
+# But not these files...
+!.gitignore
+!Work.ahk
+!Home.ahk
+!Shortcuts.ahk
+!AppSpecific.ahk
+!Hotstrings.ahk
+!MyMethods.ahk
+!MyMenu.ahk
+!AutoCorrect.ahk
