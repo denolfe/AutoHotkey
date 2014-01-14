@@ -1,53 +1,80 @@
-~LButton::
-	MouseGetPos, mx ,my
-	If (( A_PriorHotKey = A_ThisHotKey && A_TimeSincePriorHotkey < 200 ) && MouseIsOver("ahk_class Shell_TrayWnd") && ( mx < 1534)  )
-		Send #d
-Return
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad0::ShowDir("C:\Users\elliotd\Dropbox\HomeShare\AutoHotkey")
-!NumpadDot:: ShowDir("C:\Users\elliotd\Downloads")
-!Numpad1:: ShowDir("C:\Users\elliotd\Dropbox")
-!Numpad2:: ShowDir("C:\Users\elliotd\Dropbox\HomeShare")
-!Numpad3:: ShowDir("C:\Users\elliotd\Dropbox\Scripts")
-!Numpad4:: ShowDir("\\katrina\public\LatestRelease\")
-!Numpad5:: ShowDir("\\draven\Builds\SalesPad4")
-!Numpad6:: ShowDir("C:\Users\elliotd\Dropbox\Reports")
+!Numpad0::		ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
+!NumpadDot:: 	ShowDir("D:\Downloads")
+!Numpad1:: 		ShowDir("D:\Dropbox")
+!Numpad2:: 		ShowDir("D:\Dropbox\HomeShare")
+!Numpad3:: 		ShowDir("D:\Dropbox\ScreenShots")
+!Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
+!Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad4")
+!Numpad6:: 		ShowDir("\\Nasus\Testing\Database Files\")
 !Numpad7:: 
 	aDown := A_TickCount
 	Keywait Numpad7
 	If ((A_TickCount-aDown)<400)
 	{
-		ShowDir("\\draven\Testing\TestComplete")
+		ShowDir("\\Nasus\Testing")
 		Return
 	}
 	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<1500)
 	{
-		Run, %Editor% "\\draven\testing\testcomplete\TestComplete.ahk"
+		Run, %Editor% "\\Testing-PC\c$\TestComplete\Scripts\TestComplete.ahk"
 		Return
 	}
 Return
 
-!Numpad8:: ShowDir("\\draven\Shared Folders")
-!Numpad9:: ShowDir("\\draven\Testing\Logs")
+!Numpad8:: ShowDir("\\Nasus\Shared Folders")
+!Numpad9:: ShowDir("\\Nasus\Testing\Logs")
 
 #c::Run, C:\
-#p::Run, C:\Program Files (x86)\
+#p::ShowDir("C:\Program Files (x86)\")
 
-#NumPad1::ShowStart("(testing-pc).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.147")
-#Numpad2::ShowStart("(dynamics).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.119")
-#Numpad3::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
-#NumPad4::ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.164")
-#NumPad5::ShowStart("(testingmultibin).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.157")
-#NumPad6::ShowStart("(ShipToTesting).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.99")
+#NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
+#Numpad1::ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
+#NumPad2::ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
+#NumPad3::ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
+#Numpad4::ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
+#Numpad5::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
+;#Numpad6::ShowStart("(Spanish).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe panishsql")
+;#NumPad7::ShowStart("(ShipToTesting).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.99")
 
+
+!#NumpadDot::ShowDir("\\Testing-PC\c$")
+!#Numpad1::ShowDir("\\testing1\c$")
+!#NumPad2::ShowDir("\\smartbear\c$")
+!#NumPad3::ShowDir("\\testing3\c$")
+!#Numpad4::ShowDir("\\testing4\c$")
+!#Numpad5::ShowDir("\\sql2005\c$")
+;!#Numpad6::ShowDir("")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;s
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+~Media_Next::
+	KeyboardLED(7,"off")
+	Sleep, 50
+	KeyboardLED(4,"switch")
+	Sleep, 50
+	KeyboardLED(2,"switch")
+	Sleep, 50
+	KeyboardLED(1,"switch")
+	Sleep, 50
+	KeyboardLED(0,"off")
+Return
+
+~Media_Play_Pause::
+	Loop, 2 ; flash all LEDs
+	{
+		KeyboardLED(7,"on")
+		Sleep, 100
+		KeyboardLED(7,"off")
+		Sleep, 100
+	}
+	KeyboardLED(0,"off")
+Return
 
 AppsKey::Run, MyMenu.ahk
 +AppsKey::AppsKey
@@ -55,79 +82,53 @@ AppsKey::Run, MyMenu.ahk
 +CapsLock::CapsLock
 
 #l::
-	Run,%A_WinDir%\System32\rundll32.exe user32.dll`,LockWorkStation
+	Run, %A_WinDir%\System32\rundll32.exe user32.dll`, LockWorkStation
 	Sleep 1000
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 	
-NumLock::ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
-	
+NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
+		WinGetClass, this_class, A
+		If (RegExMatch(this_class, "Spotify")) ; Toggle
+			WinMinimize, ahk_class SpotifyMainWindow
+		Else
+		{
+			If WinExist("Spotify")
+				WinActivate, % "Spotify"
+			else
+			{
+	        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
+	            If ErrorLevel
+	            {
+	                Notify("File not found", title,-3,"Style=Mine")
+	                Return
+	            }
+	            WinActivate
+			}
+		}
+	Return
 #WheelDown::Send {WheelRight 5}
 #WheelUp::Send {WheelLeft 5}
 
 ;;;;; CapsNav ;;;;;;;
 
-CapsLock & k::
-       if getkeystate("alt") = 0
-               Send,{Up}
-       else
-               Send,+{Up}
-Return
+CapsLock & h::CapsNav("Left")
+CapsLock & j::CapsNav("Down")
+CapsLock & k::CapsNav("Up")
+CapsLock & l::CapsNav("Right")
 
-CapsLock & l::
-       if getkeystate("alt") = 0
-               Send,{Right}
-       else
-               Send,+{Right}
-Return
-
-CapsLock & h::
-       if getkeystate("alt") = 0
-               Send,{Left}
-       else
-               Send,+{Left}
-Return
-
-CapsLock & j::
-       if getkeystate("alt") = 0
-               Send,{Down}
-       else
-               Send,+{Down}
-Return
-
-CapsLock & n::
-   if getkeystate("alt") = 0
-               Send,{Home}
-       else
-               Send,+{Home}
-Return
-
-CapsLock & p::
-   if getkeystate("alt") = 0
-           Send,{End}
-   else
-           Send,+{End}
-Return
+CapsLock & n::CapsNav("Home")
+CapsLock & p::CapsNav("End")
 
 CapsLock & o::
-   if getkeystate("alt") = 0
-           Send,^{Right}
-   else
-           Send,+^{Right}
-Return
-CapsLock & m::
-   if getkeystate("alt") = 0
-           Send,^{Left}
-   else
-           Send,+^{Left}
-Return
+CapsLock & .::CapsNav("Right", "!")
+CapsLock & m::CapsNav("Left", "!")
 
 CapsLock & u::
-;CapsLock & h::
 CapsLock & `;::
 CapsLock & ,::
-	Return
-
+CapsLock & i::
+Return
 	
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;;;;;;;; Launcher ;;;;;;;;;;
@@ -136,45 +137,44 @@ CapsLock & ,::
 ^!s::
 	IfWinNotExist Everything
 	{
-		Run C:\Program Files (x86)\Everything\Everything.exe
+		Run C:\Program Files (x86)\Everything\Everything.exe	
 		WinActivate
 	}
 	Else
 	{
 		WinActivate ahk_class EVERYTHING
 		WinWaitActive ahk_class EVERYTHING
-		;ControlFocus, Edit1
-		;Send, {Shift Down}{Home}{Shift Up}
+		ControlFocus, Edit1
+		Send, {Shift Down}{Home}{Shift Up}
 	}
 	WinWaitActive ahk_class EVERYTHING
-	if MonitorCount = 1
-	{
-		WinMove, ahk_class EVERYTHING,, 0,432,A_ScreenWidth/1.45,MonitorWorkAreaBottom - 432 ;can't get to re-expand when reselected
+	;if MonitorCount = 1
+	;{
+	;	WinMove, ahk_class EVERYTHING,, 0,432,A_ScreenWidth/1.45,MonitorWorkAreaBottom - 432
+	;	WinWaitNotActive
+	;	WinMove, ahk_class EVERYTHING,, 0, 716, A_ScreenWidth/1.45, MonitorWorkAreaBottom - 716
+	;}
+	;Else
+	;{
+		WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
 		WinWaitNotActive
-		WinMove, ahk_class EVERYTHING,, 0, 716, A_ScreenWidth/1.45, MonitorWorkAreaBottom - 716
-	}
-	Else
-	{
-		WinMove, ahk_class EVERYTHING,, A_ScreenWidth,432,A_ScreenWidth/1.45,A_ScreenHeight - 432  ;can't get to re-expand when reselected
-		WinWaitNotActive
-		WinMove, ahk_class EVERYTHING,, A_ScreenWidth, 716, A_ScreenWidth/1.45, A_ScreenHeight - 716
-	}
+		WinMove, ahk_class EVERYTHING,, A_ScreenWidth, A_ScreenHeight*0.65, A_ScreenWidth*0.7, A_ScreenHeight*0.35
+	;}
 	
 	Return
 
 ^NumPad0::
-	/*IfWinExist ahk_class icoTrilly
-		WinActivate
-	else
-		WinShow ahk_class icoTrilly
-		WinMove, ahk_class icoTrilly,, 3649,0,191,416
-	*/
+	WinMove, ahk_class Win32UserWindow,, 1920,0,334,1080
+	WinActivate, ahk_class Win32UserWindow
 
 	IfWinExist Buddy List
 		WinActivate Buddy List
 	else
 		WinShow Buddy List
 	WinMove, Buddy List,, 3605,0,234,1080
+
+
+
 	Return
 	
 ^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
@@ -225,10 +225,10 @@ CapsLock & ,::
 ^Numpad3::
 	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
-	WinMove, ahk_class PX_WINDOW_CLASS,, 1920,0,1317,1073
+	WinMove, ahk_class PX_WINDOW_CLASS,, 1920, 0, 1317, A_ScreenHeight
 	Return
 ^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
-^Numpad5::Run, "C:\Program Files (x86)\Microsoft Dynamics\GP2010\Dynamics.exe" Dynamics.set
+^Numpad5::ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
 
 ^Numpad6::
 	aDown:=A_TickCount
@@ -236,28 +236,12 @@ CapsLock & ,::
 	If ((A_TickCount-aDown)<400)
 		ShowStart("Microsoft SQL Server Management Studio", "C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\Ssms.exe")
 	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<800)
-		Run, "C:\Users\elliotd\Dropbox\Scripts\SQL\sandbox.sql"
+		Run, "D:\Dropbox\Scripts\SQL\sandbox.sql"
 	Return
 	
 ^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
 ^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
-^Numpad9::ShowStart("Microsoft Visual Studio", "C:\Dev\SalesPad4\ServPack\source\SalesPad\SalesPad.sln")
-
-^NumpadSub::
-	WinWaitActive, TWI, 2
-	If ErrorLevel
-		Return
-	Items := "128 SDRAM|100XLG|WIRE-MCD-0001|WIRE-SCD-0001|PHON-BUS-1250|ZZ-NI"
-	Loop,Parse,Items,|
-	{
-		Send !n
-		Send % A_LoopField
-		Send {Tab 2}
-		Send 5
-	}
-Return
-
-
+^Numpad9::Return
 
 #NumpadEnter::
 	loop
@@ -274,6 +258,9 @@ Return
 	Run, Utilities\ViewScriptProcesses.ahk
 	Return
 	
+ScrollLock::
+#NumpadSub::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
+
 #NumpadAdd::
 	MsgBox, 36, Reset DB, Reset the database version?
 	IfMsgBox Yes
@@ -292,15 +279,17 @@ Return
 		Run, chrome.exe %clipboard%
 	Return
 	
-^!g::ShowStart("grepWin", "C:\Program Files\grepWin\grepWin.exe")
+^!g::ShowStart("grepWin", "C:\Program Files\grepWin\grepWin.exe /searchpath:D:\Dropbox\")
+^!i::ShowStart("MINGW32", """C:\Program Files (x86)\Git\bin\sh.exe"" --login -i")
 
 ; Append to clipboard
 ^+c::
-   bak = %clipboard%
-   Send, ^c
-   Notify("Appended to Clipboard",clipboard,-1,"GC=555555 TC=White MC=White")
-   clipboard = %bak%`r`n%clipboard%
-	Return
+	bak = %clipboard%
+	Send, ^c
+	Sleep, 50
+	clipboard = %bak%`r`n%clipboard%
+	Notify("Appended to Clipboard",clipboard,-1,"Style=Mine")
+Return
 
 !`::
 	aDown := A_TickCount
@@ -316,11 +305,11 @@ Return
 
 #pgup::
 	DetectHiddenWindows, On 
-	ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow 
+	ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
 	DetectHiddenWindows, Off 
 	Return 
 
-+pgdn::
+#pgdn::
 	DetectHiddenWindows, On 
 	ControlSend, ahk_parent, ^{Down}, ahk_class SpotifyMainWindow 
 	DetectHiddenWindows, Off 
@@ -341,9 +330,29 @@ Return
 		ControlSend, ahk_parent, ^{tab}, ahk_class Chrome_WidgetWin_1
 		url_list .= url . " "
 	}
-	Sleep, 2000
+	Sleep, 500
 	WinClose, ahk_class Chrome_WidgetWin_1
-	Sleep, 2000
+	Sleep, 500
 	Run, Chrome.exe %url_list%
 	url_list = ;empty
 	return
+
+^!+F5::
+	Notify("Running Clipboard",,-2,"Style=Mine")
+	DynaRun(clipboard, "Clipboard Run")
+	Return
+
+^!+End::
+	WinGet, pid, PID, A
+	Process, Close, %pid%
+Return
+
+^!d::
+	;RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState, FullPath, 1
+	wikiPath := "D:\Dropbox\HomeShare\DokuWikiStick\dokuwiki\data\pages"
+	Run, C:\Program Files (x86)\Everything\Everything.exe -path "%wikiPath%"
+	WinWaitActive, Everything,, 3
+	If Errorlevel
+		Return
+	Send {End}
+Return
