@@ -10,6 +10,8 @@ SetCapsLockState, AlwaysOff
 CoordMode, Mouse, Screen
 DetectHiddenWindows, On
 
+SetScrollLockState, Off
+
 If FileExist("lib\images\eve.ico")
 	Menu, Tray, Icon, lib\images\eve.ico
 
@@ -19,32 +21,56 @@ SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 
 total := 0
-IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.ahk"
+global IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
-global Editor := "C:\Users\elliotd\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+global Editor := "..\Sublime-Portable\sublime_text.exe"
+
+SetTimer, AutoUpdate, 1000
 
 If ! A_IsAdmin
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
 	IfMsgBox No
 		ExitApp
 
-If A_ComputerName = ELLIOT-PC
+If A_UserName = elliotd
 {
 	Run %A_ScriptDir%\VolumeControl.ahk
 	Run %A_ScriptDir%\AutoCorrect.ahk
 
+	SplitPath, A_ScriptName, , , , OutNameNoExt 
+	LinkFile := A_Startup "\" OutNameNoExt ".lnk"
+	IfNotExist, %LinkFile%
+	{
+		FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
+		Notify("Startup Shortcut Created.","",-3,"Style=Alert")
+	}
+
 	IfWinNotExist, Test Configuration
 	{
-		Run %A_ScriptDir%\ConfigTests.ahk
-		WinWait, Test Configuration
+		;Run %A_ScriptDir%\ConfigTests.ahk
+		WinWait, Test Configuration, 2
 		WinMinimize, Test Configuration
 	}
-	
-	+Pause::Suspend
 }
+Return ;End Auto-Execute
+
+AutoUpdate:
+	Loop, Parse, IncludedFiles, |
+	{	
+		FileGetAttrib, Attribs, %A_LoopField%
+		IfInString, Attribs, A
+		{
+			FileSetAttrib, -A, %A_LoopField%
+			Notify("Reloading Script","",-1,"Style=Alert")
+			Sleep 750
+			Reload
+		}
+	}
+Return
+
 
 #Include %A_ScriptDir%\MyMethods.ahk
 #Include %A_ScriptDir%\Shortcuts.ahk
@@ -52,16 +78,17 @@ If A_ComputerName = ELLIOT-PC
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
 #Include *i %A_ScriptDir%\SalesPad.ahk
-
+#Include %A_ScriptDir%\Utilities\FormatAHK.ahk
 
 ^!r::Reload
-^!e::Run %Editor% %A_ScriptName%
-^!t::Run %Editor% test.ahk	
-^!d::
-^NumpadEnter::Run %Editor% Shortcuts.ahk
-^!h::Run %Editor% Hotstrings.ahk
-^!a::Run %Editor% AppSpecific.ahk
+^!e::SublimeOpen(A_ScriptName)
+^!t::SublimeOpen("test.ahk")
+^NumpadEnter::SublimeOpen("Shortcuts.ahk")
+^!h::SublimeOpen("Hotstrings.ahk")
+^!a::SublimeOpen("AppSpecific.ahk")
+^!m::SublimeOpen("MyMethods.ahk")
 !t::Run Test.ahk
++Pause::Suspend
 
 ^!x::AHKPanic(1,0,0,1)
 
@@ -69,3 +96,4 @@ If A_ComputerName = ELLIOT-PC
 #Include %A_ScriptDir%\lib\TF.ahk
 #Include %A_ScriptDir%\lib\Notify.ahk
 #Include %A_ScriptDir%\lib\Explorer.ahk
+#Include %A_ScriptDir%\lib\Ledcontrol.ahk
