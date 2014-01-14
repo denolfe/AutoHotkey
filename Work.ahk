@@ -9,7 +9,6 @@ SetNumlockState, AlwaysOn
 SetCapsLockState, AlwaysOff
 CoordMode, Mouse, Screen
 DetectHiddenWindows, On
-
 SetScrollLockState, Off
 
 If FileExist("lib\images\eve.ico")
@@ -50,7 +49,6 @@ If A_UserName = elliotd
 
 	IfWinNotExist, Test Configuration
 	{
-		;Run %A_ScriptDir%\ConfigTests.ahk
 		WinWait, Test Configuration, 2
 		WinMinimize, Test Configuration
 	}

@@ -10,26 +10,12 @@
 !Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
 !Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad4")
 !Numpad6:: 		ShowDir("\\Nasus\Testing\Database Files\")
-!Numpad7:: 
-	aDown := A_TickCount
-	Keywait Numpad7
-	If ((A_TickCount-aDown)<400)
-	{
-		ShowDir("\\Nasus\Testing")
-		Return
-	}
-	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<1500)
-	{
-		Run, %Editor% "\\Testing-PC\c$\TestComplete\Scripts\TestComplete.ahk"
-		Return
-	}
-Return
+!Numpad7:: 		ShowDir("\\Nasus\Testing")
+!Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
+!Numpad9:: 		ShowDir("\\Nasus\Testing\Logs")
 
-!Numpad8:: ShowDir("\\Nasus\Shared Folders")
-!Numpad9:: ShowDir("\\Nasus\Testing\Logs")
-
-#c::Run, C:\
-#p::ShowDir("C:\Program Files (x86)\")
+#c::			ShowDir("C:\")
+#p::			ShowDir("C:\Program Files (x86)\")
 
 #NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
 #Numpad1::ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
@@ -37,9 +23,6 @@ Return
 #NumPad3::ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
 #Numpad4::ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
 #Numpad5::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
-;#Numpad6::ShowStart("(Spanish).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe panishsql")
-;#NumPad7::ShowStart("(ShipToTesting).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe 10.23.0.99")
-
 
 !#NumpadDot::ShowDir("\\Testing-PC\c$")
 !#Numpad1::ShowDir("\\testing1\c$")
@@ -47,7 +30,6 @@ Return
 !#NumPad3::ShowDir("\\testing3\c$")
 !#Numpad4::ShowDir("\\testing4\c$")
 !#Numpad5::ShowDir("\\sql2005\c$")
-;!#Numpad6::ShowDir("")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
@@ -107,8 +89,9 @@ NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 			}
 		}
 	Return
-#WheelDown::Send {WheelRight 5}
-#WheelUp::Send {WheelLeft 5}
+
+#WheelDown::	Send {WheelRight 5}
+#WheelUp::		Send {WheelLeft 5}
 
 ;;;;; CapsNav ;;;;;;;
 
@@ -148,19 +131,9 @@ Return
 		Send, {Shift Down}{Home}{Shift Up}
 	}
 	WinWaitActive ahk_class EVERYTHING
-	;if MonitorCount = 1
-	;{
-	;	WinMove, ahk_class EVERYTHING,, 0,432,A_ScreenWidth/1.45,MonitorWorkAreaBottom - 432
-	;	WinWaitNotActive
-	;	WinMove, ahk_class EVERYTHING,, 0, 716, A_ScreenWidth/1.45, MonitorWorkAreaBottom - 716
-	;}
-	;Else
-	;{
-		WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
-		WinWaitNotActive
-		WinMove, ahk_class EVERYTHING,, A_ScreenWidth, A_ScreenHeight*0.65, A_ScreenWidth*0.7, A_ScreenHeight*0.35
-	;}
-	
+	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
+	WinWaitNotActive
+	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, A_ScreenHeight*0.65, A_ScreenWidth*0.7, A_ScreenHeight*0.35
 	Return
 
 ^NumPad0::
@@ -172,9 +145,6 @@ Return
 	else
 		WinShow Buddy List
 	WinMove, Buddy List,, 3605,0,234,1080
-
-
-
 	Return
 	
 ^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
@@ -182,12 +152,11 @@ Return
 ^Numpad1::
 	aDown := A_TickCount
 	Keywait Numpad1
-	If ((A_TickCount-aDown)<400)
+	If ((A_TickCount-aDown) < 400)
 	{
-		;msgbox % (A_TickCount-adown)
-		IfWinExist, ahk_class WindowsForms10.Window.8.app.0.13965fa_r11_ad1
+		IfWinExist,  - SalesPad
 		{
-			WinActivate SalesPad
+			WinActivate, - SalesPad
 			Return
 		}
 		else
@@ -219,8 +188,6 @@ Return
 	Run %exe%
 	Return
 
-	
-
 ^Numpad2::ShowStart("SPLLC", "C:\Program Files (x86)\SalesPad.QBC\SalesPad.QBC.exe")
 ^Numpad3::
 	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
@@ -241,7 +208,6 @@ Return
 	
 ^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
 ^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
-^Numpad9::Return
 
 #NumpadEnter::
 	loop
@@ -258,8 +224,7 @@ Return
 	Run, Utilities\ViewScriptProcesses.ahk
 	Return
 	
-ScrollLock::
-#NumpadSub::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
+ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
 
 #NumpadAdd::
 	MsgBox, 36, Reset DB, Reset the database version?
@@ -294,7 +259,7 @@ Return
 !`::
 	aDown := A_TickCount
 	Keywait ``
-	If ((A_TickCount-aDown)<200)
+	If ((A_TickCount-aDown) < 200)
 	{
 		WinGet, last_id, ID, A
 		WinMinimize, A

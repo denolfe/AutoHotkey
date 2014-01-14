@@ -2,7 +2,6 @@
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;; App Specific Shortcuts ;;
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-		
 
 GroupAdd, FileExplorer, ahk_class CabinetWClass
 GroupAdd, FileExplorer, ahk_class ExplorerWClass
@@ -138,12 +137,6 @@ GroupAdd, Game, ahk_exe terraria.ahk
 		WinGetTitle, Title, A
 		If InStr(Title, ".ahk")
 			Run % Substr(Title, RegExMatch(Title, "P).*.ahk", matchlength), matchlength)
-		;Else InStr(Title, ".rb")
-		;{
-		;	FullFile := Substr(Title, RegExMatch(Title, "P).*.*", matchlength), matchlength)
-		;	SplitPath, FullFile, name, dir, ext, name_no_ext, drive
-		;	Run, cmd /K "cd /d %dir%"
-		;}
 		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
 		Return
 
@@ -205,20 +198,14 @@ GroupAdd, Game, ahk_exe terraria.ahk
 		SendInput chrome`:`/`/chrome`/extensions`/{Enter}
 		Return
 
-	;^LButton::Send, ^+{Tab} ;Tab Left
-	;^RButton::Send, ^{Tab}	;Tab Right
-
 ;http://www.autohotkey.com/community/viewtopic.php?t=50364&start=15#p551784
 #IfWinActive .*ahk .*
 F1::
 	ClipClear()
-	;clipboard = 
 	Send ^c
 	ClipWait
 	SetTitleMatchMode, RegEx
-	;Run Utilities\KeyHH.exe -MyHelp -#klink "%ClipBoard%" Utilities\AutoHotkey.chm,,Max
 	Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Autohotkey"
-	;SetTitleMatchMode, 2
 	Return
 
 #IfWinActive Microsoft SQL Server Management Studio
@@ -235,18 +222,13 @@ F1::
 			Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Transact%A_Space%SQL%A_Space%site:http://msdn.microsoft.com/en-us/library"
 		SetTitleMatchMode, 2
 		ClipRestore()
-	Return
+		Return
 
 	^l::Send {End}{Shift Down}{Home}{Shift Up}
 
 	+Enter::Send {F5}
 	
 	^t::Send ^{n}
-
-#IfWinActive, FogBugz		
-	::--::
-		Send --`nElliot`nSalesPad`nsupport@salespad.net
-		Return
 
 #IfWinActive, ahk_group Editor
 	
@@ -268,122 +250,4 @@ F1::
 
 #IfWinActive, ahk_class #32770 Run
 	Tab::Down
-
-#IfWinActive, ahk_class TvnWindowClass
-	CapsLock::
-		(state := !state)
-		if state 
-			MoveTaskbar(1,"right")	
-		Else
-			MoveTaskbar(1,"bottom")
-		WinActivate, ahk_class TvnWindowClass
-		Return
-
-	F11::^!+f
-
-
-#IfWinActive, ahk_class WindowsForms10.Window.8.app.0.13965fa_r11_ad1
-	^!n::
-		WinWaitActive, SalesPad, 2
-		If ErrorLevel
-			Return
-		Items := "128 SDRAM|100XLG|WIRE-MCD-0001|ZZ-NI"
-		Loop,Parse,Items,|
-		{
-			Send !n
-			Send % A_LoopField
-			Send {Tab 2}
-			Send 5
-		}
-	Return
-
-	^n::
-		Send !acu
-		Send Aaron{Enter}
-		Sleep 1000
-		Send {Space}
-		Send !o
-	Return
-#If
-
-#If WinActive("ahk_exe terraria.exe") or WinActive("ahk_exe warsow.exe")
-	+F12:: ; Toggle Windowed-Borderless
-		WinGet, TempWindowID, ID, A
-		If (WindowID != TempWindowID)
-		{
-		  WindowID:=TempWindowID
-		  WindowState:=0
-		}
-		If (WindowState != 1)
-		{
-		  WinGetPos, WinPosX, WinPosY, WindowWidth, WindowHeight, ahk_id %WindowID%
-		  WinSet, Style, ^0xC40000, ahk_id %WindowID%
-		  WinMove, ahk_id %WindowID%, , 0, 0, A_ScreenWidth, A_ScreenHeight
-		}
-		Else
-		{
-		  WinSet, Style, ^0xC40000, ahk_id %WindowID%
-		  WinMove, ahk_id %WindowID%, , WinPosX, WinPosY, WindowWidth, WindowHeight
-		}
-		WindowState:=!WindowState
-	Return
-#If
-
-#If WinActive("ahk_exe terraria.exe")
-
-	;$`::Suspend
-	$XButton1::SendKey("1")		; Boomerang
-	$XButton2::SendKey("6")		; Sword
-	$MButton::Gosub, HoldLClick
-	$WheelUp::SendKey("4")		; Torch
-	$WheelDown::SendKey("3")	; Staff
-	$LButton::Gosub, LClick 	; Continuous attack if held
-	$RButton::Gosub, Hook 		; Hook
-	$f::RButton 				; F is now right click
-	 
-	LClick:
-		SetMouseDelay, 40
-		Send, {Click}
-		Sleep 100
-		While GetKeyState("LButton", "P")
-	    {
-	    	SendClick()
-	    } 
-		Return	
-
-	Hook:
-		SendKey("e", 100)
-		While GetKeyState("RButton", "P")
-	    {
-	    	SendKey("e", 80)
-	    }
-		Return
-
-	HoldLClick:
-	    Toggle := !Toggle
-	    If Toggle
-	    {
-	    	Send {LButton Down}
-	    	SplashImage,,x0 y0 b fs12, Holding Left Click
-	    }
-	    else
-	    {
-	    	Send {LButton Up}
-	    	SplashImage, off
-	    }
-		Return
-
-	SendKey(key, delay = 0) ; Terraria does not recognize simple keypresses, must be held
-	{
-		SendInput % "{" key " down}"
-		Sleep 25
-		SendInput % "{" key " up}"
-		Sleep %delay%
-	}
-
-	SendClick(delay = 0)
-	{
-		Send {Click}
-		Sleep %delay%
-	}
-#If 
+#IfWinActive
