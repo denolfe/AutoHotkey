@@ -5313,3 +5313,5 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::owrking::working
 ::dashbord::dashboard
 ::sems::seems
+::isee::i see
+::kidna::kinda

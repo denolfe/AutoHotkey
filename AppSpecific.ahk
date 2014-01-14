@@ -119,6 +119,7 @@ GroupAdd, Game, ahk_exe terraria.ahk
 	+Enter::
 		sel := Explorer_GetSelected()
 		Run %Editor% "%sel%" 
+		Return
 
 #IfWinActive ahk_class SearchPane
 	Tab::Send {Tab}{Down}{Enter}
@@ -182,6 +183,20 @@ GroupAdd, Game, ahk_exe terraria.ahk
 		Send spdocs{space}
 		Return
 
+	^k::
+		SetTitleMatchMode, 2
+		If WinActive("FogBugz (Case")
+		{
+		  WinGetTitle, Title, A
+		  RegExMatch(Title, "(?<=\(Case\s)\d+", caseNum)
+		  Send ^l
+		  Sleep 100
+		  Send f{Space}
+		  Sleep 100
+		  Send %caseNum%{Enter}
+		}
+		Return
+
 	F1::
 		IfWinActive, New Tab
 			Send ^l
@@ -210,10 +225,7 @@ F1::
 	F1::
 		ClipSave()
 		ClipClear()
-		;clipboardsave := clipboard
-		;clipboard = 
-		Send ^c
-		ClipWait
+		Copy()
 		SetTitleMatchMode, RegEx
 		Sleep 50
 		
@@ -222,7 +234,6 @@ F1::
 		else
 			Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Transact%A_Space%SQL%A_Space%site:http://msdn.microsoft.com/en-us/library"
 		SetTitleMatchMode, 2
-		;clipboard := clipboardsave
 		ClipRestore()
 	Return
 

@@ -4,9 +4,10 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, RegEx
-SetNumlockState, AlwaysOn
+;SetNumlockState, AlwaysOn
 DetectHiddenWindows, On 
-KeyboardLED(2,"off")
+;KeyboardLED(2,"off")
+SetCapsLockState, AlwaysOff
 
 Run AutoCorrect.ahk
 Run VolumeControl.ahk
@@ -17,28 +18,34 @@ Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
-global Editor := "C:\Program Files\Sublime Text 2\sublime_text.exe"
+global Editor := "D:\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
 
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SoundPlay, lib\sounds\load.wav
 
+^!b::Run, D:\Downloads\warsow_1.02_sdk\source\Debug\x86\warsow_x86.exe +set fs_cdpath "C:\Program Files (x86)\Warsow 1.02\" +set fs_basepath "$(TargetDir)" +devmap wdm1
+
 ^!s::
 	IfWinNotExist Everything
 	{
 		Run C:\Program Files (x86)\Everything\Everything.exe
+		WinActivate
 	}
 	Else
 	{
 		WinActivate ahk_class EVERYTHING
 		WinWaitActive ahk_class EVERYTHING
-		ControlFocus, Edit1
-		Send, {Shift Down}{Home}{Shift Up}
 	}
 	WinWaitActive ahk_class EVERYTHING
-	WinMove,ahk_class EVERYTHING,, 0,(A_ScreenHeight/1.5),A_ScreenWidth, A_ScreenHeight - (A_ScreenHeight/1.5)
-	Return
+	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,432,A_ScreenWidth/1.45,A_ScreenHeight - 432
+	WinWaitNotActive
+	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, 716, A_ScreenWidth/1.45, A_ScreenHeight - 716
 
+Return
+
+:*:gsauth;::/authserv auth fathom 1030rJyY
+:*:irc;::Team EAT{Tab}1337-347150-2012
 
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
@@ -49,14 +56,30 @@ SoundPlay, lib\sounds\load.wav
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 
-NumLock::
-	ShowStart("ahk_class SpotifyMainWindow", A_Appdata . "\Spotify\spotify.exe", 1)
-	KeyboardLED(2,"off")
-	Return
+ScrollLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
+	WinGetClass, this_class, A
+	If (RegExMatch(this_class, "Spotify")) ; Toggle
+		WinMinimize, ahk_class SpotifyMainWindow
+	Else
+	{
+		If WinExist("Spotify")
+			WinActivate, % "Spotify"
+		else
+		{
+        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
+            If ErrorLevel
+            {
+                Notify("File not found", title,-3,"Style=Mine")
+                Return
+            }
+            WinActivate
+		}
+	}
+Return
 
 ~RCtrl::
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
-	  Run C:\Program Files (x86)\Steam\steamapps\nitroboard99@epals.com\team fortress 2\tf\
+	  Run C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf
 	return
 
 ;; SOUND DEVICE TOGGLE ;;
@@ -87,6 +110,23 @@ NumLock::
 			RunWait, %comspec% /c "net start uxsms",, Hide
 	Return
 
+~NumLock::
+	Sleep 100
+	if GetKeyState("NumLock", "T")
+	{
+		SoundBeep, 500, 100
+		SoundBeep, 700, 100
+		SoundBeep, 900, 100
+	}
+	else
+	{
+		SoundBeep, 900, 100
+		SoundBeep, 700, 100
+		SoundBeep, 500, 100
+	}
+Return
+
+
 ^NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
 
 ^Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
@@ -106,23 +146,53 @@ NumLock::
 	Notify("Windows Purged","",-2,"GC=555555 TC=White MC=White")
 	Return
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; Folder Shortcuts ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;; Folder Shortcuts ;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 !Numpad1:: Run D:\Dropbox
 !Numpad2:: Run D:\Dropbox\HomeShare
-!Numpad3:: Run D:\
+!Numpad3:: Run D:\ 
+!Numpad7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
 !Numpad0:: Run %A_ScriptDir%
 !NumpadDot:: Run D:\Downloads\
 
+CapsLock::Return
++CapsLock::CapsLock
+;;;;; CapsNav ;;;;;;;
+
+CapsLock & h::CapsNav("Left")
+CapsLock & j::CapsNav("Down")
+CapsLock & k::CapsNav("Up")
+CapsLock & l::CapsNav("Right")
+
+CapsLock & n::CapsNav("Home")
+CapsLock & p::CapsNav("End")
+
+CapsLock & o::
+CapsLock & .::CapsNav("Right", "!")
+CapsLock & m::CapsNav("Left", "!")
+
+CapsLock & u::
+CapsLock & `;::
+CapsLock & ,::
+CapsLock & i::
+Return
+
+
+
+
+
+
+
 ;; Media Keys
-+F5::F5
-+F6::F6
-+F7::F7
-F5::Send {Media_Prev}
-F6::Send {Media_Play_Pause}
-F7::Send {Media_Next}
+;+F5::F5
+;+F6::F6
+;+F7::F7
+;F5::Send {Media_Prev}
+;F6::Send {Media_Play_Pause}
+;F7::Send {Media_Next}
 
 ^!r::Reload	
 ^!e::Run %Editor% %A_ScriptName%
@@ -130,114 +200,19 @@ F7::Send {Media_Next}
 !t::Run %A_ScriptDir%\Test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
-#IfWinActive ahk_class EVERYTHING
-	Tab::Down
-	+Tab::Send, {Up}{Shift Up}
-	Shift::Return
-
-	+Enter::		
-		StatusBarGetText, Title
-		Run %Editor% "%Title%"
-		WinActivate, ahk_class PX_WINDOW_CLASS
-	Return
-
-	^j::
-		StatusBarGetText, FullFileName
-		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
-		Run, %dir%
-		return
-
-	^k::
-		StatusBarGetText, FullFileName
-		clipboard := FullFileName
-		ClipWait
-		Notify("Full Filename Copied",clipboard,-1,"Style=Mine")
-		return
-
-	^l::
-		StatusBarGetText, FullFileName
-		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
-		clipboard := dir
-		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
-		return
-
-	CapsLock::
-		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
-		{
-			Send {F2}^{a}
-			Sleep 50
-			clipboard = ; Empty the clipboard
-			Send ^{c}			
-			Send {Esc}
-			ClipWait
-			Notify("Filename Copied",clipboard,-1,"GC=555555 SI=0 SC=0 ST=500 TC=White MC=White")
-		}
-	Return
-
-#IfWinActive ahk_class CabinetWClass
-	Esc::
-		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
-			WinClose
-		Else
-			Send, {Esc}
-		Return
-		
-	+Backspace::Send !{Up}
-
-	^k::
-		fullfilename := Explorer_GetSelected()
-		clipboard := fullfilename
-		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
-		return
-
-	^l::
-		dir := Explorer_GetPath()
-		clipboard := dir
-		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
-		return
-
-	CapsLock::
-		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
-		{		
-			FullFileName := Explorer_GetSelected()
-			SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
-			clipboard := name
-			ClipWait
-			Notify("Filename Copied",clipboard,-1,"Style=Mine")
-		}
-	Return
-
-#IfWinActive ahk_class PX_WINDOW_CLASS
-	+Enter::
-		Send ^s
-		SetTitleMatchMode, 2
-		sleep, 200
-    	IfWinExist, unregistered
-			WinClose
-		SetTitleMatchMode, RegEx
-		WinGetTitle, Title, A
-		;Title := RegExReplace(Title, "(\s-\s).*", "")
-		;Run %Title%
-		Run % Substr(Title, RegExMatch(Title, "P)\S+.ahk", matchlength), matchlength)
-		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
-		Return
-
-	~^s::
-		SetTitleMatchMode, 2
-		sleep, 200
-    	IfWinExist, unregistered
-			WinClose
-		SetTitleMatchMode, RegEx
-		Return
-
+#IfWinActive, ahk_class Valve001
+	#Up::ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow 
+	#Down::ControlSend, ahk_parent, ^{Down}, ahk_class SpotifyMainWindow
+	#Left::Send {Media_Play_Pause} ;ControlSend, ahk_parent, ^{Space}, ahk_class SpotifyMainWindow 
+	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
 #IfWinActive
 
-#Include MyMethods.ahk
+;#Include Terraria.ahk
 
+#Include Appspecific.ahk
+#Include MyMethods.ahk
+#Include Hotstrings.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
-#Include lib\LedControl.ahk
+;#Include lib\LedControl.ahk
 #Include lib\ini.ahk
