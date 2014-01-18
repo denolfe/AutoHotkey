@@ -7,245 +7,362 @@
 #Singleinstance force
 SendMode Input 
 SetWorkingDir %A_ScriptDir%
+OnExit, ExitSub
 
-Editor := "C:\Users\elliotd\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+#Include lib\Notify.ahk
+#Include lib\TF.ahk
+#Include lib\adosql.ahk
+#Include lib\ini.ahk
 
-RunNum := 1
-DebugFile := "\\draven\Testing\debug.log"
-DebugHistFile := "\\draven\Testing\debughist.log"
-Testsini := "\\draven\Testing\TestComplete\TestComplete.ini"
-TCFile := "\\draven\Testing\TestComplete\TestComplete.ahk"
+global Debug := 0
+
+global Editor := "D:\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+
+global RunNum := 1
+global DebugFile := "\\Nasus\Testing\debug.csv"
+global DebugHistFile := "\\Nasus\Testing\debughist.log"
+;global Testsini := "\\Nasus\Testing\TestComplete\TestComplete.ini"
+global TCFile := "\\TESTING-PC\C$\TestComplete\Scripts\TestComplete.ahk"
+
+global DebugLog := 0
+global Testing := "\\Nasus\Testing\"
+
+global TestingResults_db := "Driver={" . GetSQLDriver() . "};Server=URGOT;Database=TestingResults;Uid=sa;Pwd=sa"
 
 Begin:
 
 Menu, Tray, NoStandard
 
 if ! A_IsCompiled
-    Menu, Tray, Icon, lib\images\testing.ico
-
-Menu, Tray, Tip, Test Config
-Menu, Tray, Add, Load GUI, Load
-Menu, Tray, Add, Always On Top, OnTop
-Menu, Tray, Default, Load gui
-Menu, Tray, Add
-Menu, Tray, Add, Edit Script, EditScript
-Menu, Tray, Add, Reload, ReloadMenu
-Menu, Tray, Add, Exit, ExitMenu
-
-Menu, FileMenu, Add, &Edit, EditScript
-Menu, FileMenu, Add, &Reload , ReloadMenu  ; See remarks below about Ctrl+O.
-Menu, FileMenu, Add
-Menu, FileMenu, Add, E&xit, ExitMenu
-Menu, ScriptMenu, Add, &Reload All, ReloadAll
-Menu, ScriptMenu, Add
-Menu, ScriptMenu, Add, &TestComplete.ahk, TCFileMenu
-Menu, Scriptmenu, Add, &Debug, DebugFileMenu
-Menu, Scriptmenu, Add, &Clear Debug, ClearDebugFileMenu
-Menu, Scriptmenu, Add
-Menu, ScriptMenu, Add, Tests.&ini, TestsiniMenu
-Menu, MyMenuBar, Add, &File, :FileMenu
-Menu, MyMenuBar, Add, &Scripts, :ScriptMenu
-Gui, Menu, MyMenuBar
-
-Notify("Loading Test Config","",-1,"GC=555555 TC=White MC=White Style=Mine")
+	Menu, Tray, Icon, lib\images\testing.ico
 
 
-path := ini_load(ini, "\\draven\Testing\TestComplete\TestComplete.ini")
+{   ;; Menu
+	Menu, Tray, Tip, Test Config
+	Menu, Tray, Add, Load GUI, Load
+	Menu, Tray, Add, Always On Top, OnTop
+	Menu, Tray, Add, Debug, DebugToggle
+	Menu, Tray, Default, Load gui
+	Menu, Tray, Add
+	Menu, Tray, Add, Edit Script, EditScript
+	Menu, Tray, Add, Debug Lines, DebugLines
+	Menu, Tray, Add, Reload, ReloadMenu
+	Menu, Tray, Add, Exit, ExitMenu
 
-;Gui, Add, Tab2, x5 y5 w320 h175 0x2000 , Tests|Builds|Monitor|Console
-;Gui, Tab, 1
-Gui, Add, ListView, x10 y10 w150 h135 r20 hwndHLV Checked NoSort, Branch
-Gui, Add, Checkbox, x180 y25 w70 h20 vGP2010, GP 2010
-Gui, Add, Checkbox, x180 y45 w70 h20 vGP2010_2, GP 2010_2
-Gui, Add, CheckBox, x180 y65 w70 h20 vGP2013, GP 2013
-Gui, Add, Checkbox, x180 y85 w70 h20 vGP10, GP 10
-Gui, Add, Button, x170 y120 w65 h25 Default, Submit
-Gui, Add, Button, x245 y120 w65 h25 gStart, Start Tests
-Gui, Add, GroupBox, x170 y5 w140 h110 , Testing Machines
-Gui, Font, w600
+	Menu, FileMenu, Add, &Edit, EditScript
+	Menu, FileMenu, Add, &Reload , ReloadMenu  ; See remarks below about Ctrl+O.
+	Menu, FileMenu, Add, &Debug Lines, DebugLines
+	Menu, FileMenu, Add
+	Menu, FileMenu, Add, E&xit, ExitMenu
+	Menu, ScriptMenu, Add, &TestComplete.ahk, TCFileMenu
+	Menu, Scriptmenu, Add, Open &Debug, DebugFileMenu
+	Menu, Scriptmenu, Add, &Clear Debug, ClearDebugFileMenu
+	;Menu, ScriptMenu, Add, Tests.&ini, TestsiniMenu
+	Menu, TestMenu, Add, Force Pass, ForcePass
+	menu, TestMenu, Add, Force Fail, ForceFail
+	Menu, TestMenu, Add, Clear Job Queue, ClearJobQueue
+	Menu, TestMenu, Add, Run Sprint, StartSprint
+	Menu, TestMenu, Add, Run Bin Test, StartBinTest
+	Menu, MyMenuBar, Add, &File, :FileMenu
+	Menu, MyMenuBar, Add, &Scripts, :ScriptMenu
+	Menu, MyMenuBar, Add, &Tests, :TestMenu
+	Gui, Menu, MyMenuBar
+}
+Loading_Notification := Notify("Loading Test Config","",-1,"GC=555555 TC=White MC=White Style=Mine")
 
 
-TestingMachines := "SMARTBEAR|DYNAMICS" ;Removed Testing-PC
+{   ;; Construct GUI
+	;Gui, Tab, 1
+	Gui, Add, ListView, x10 y10 w150 h173 r20 hwndHLV vBuildsLV Checked NoSort, Branch
 
-; Check if environments are online
-If IsOnline("TESTING-PC")
-    ;Guicontrol,, GP2010, 1
-Gui, Add, Text, c%statuscolor% x262 y28 w40 h22 , % statusname
-If IsOnline("SMARTBEAR")
-   Guicontrol,, GP2010_2, 1
-Gui, Add, Text, c%statuscolor% x262 y48 w40 h22 , % statusname
-If IsOnline("SQL2005")
-   ; Guicontrol,, GP10, 1
-Gui, Add, Text, c%statuscolor% x262 y88 w40 h22 , % statusname
-If IsOnline("DYNAMICS")
-   ; Guicontrol,, GP2013, 1
-Gui, Add, Text, c%statuscolor% x262 y68 w40 h20 , % statusname
-sections := ini_getAllSectionNames(ini)
+	Gui, Add, Checkbox, x180 y25 w80 h20 vGP2010, TESTING
+	Gui, Add, Checkbox, x180 y45 w70 h20 vGP2010_2, GP 2010
+	Gui, Add, CheckBox, x180 y65 w70 h20 vGP2013, GP 2013
+	Gui, Add, Checkbox, x180 y85 w70 h20 vGP10, GP 10
+	Gui, Add, Checkbox, x180 y105 w80 h20 vGP2010_MB, GP2010 MB
+	Gui, Add, Checkbox, x180 y125 w80 h20 vSpanishSQL, Spanish
+	;Gui, Add, Button, x170 y160 w65 h25 vSubmit Default, Submit
+	;If !(A_UserName = "elliotd")
+	;	GuiControl, Disable, Submit
+	Gui, Add, Button, x170 y160 w65 h25 gStart, Queue Job
+	Gui, Add, GroupBox, x170 y5 w140 h150 , Testing Machines
+	Gui, Add, GroupBox, x10 y295 w300 h50 , Notify Next Build
+	Gui, Add, DDL, x22 y315 w100 vNextBranch gRunNext, HotFix|Custom|ServPack
+	Gui, Add, Checkbox, x140 y315 w70 h20 vAutoRun, AutoRun?
 
-BuildArray := []
-Loop, Parse, sections, `,
-{
-    BuildArray[A_Index] := A_LoopField
-    ;msgbox % BuildArray[A_Index]
-    LV_Add("Check" ini_getValue(ini, A_LoopField, "Run"), A_LoopField)
+	
 }
 
-;LV_ModifyCol()  ; Auto-size each column to fit its contents.
-LV_ModifyCol(2)  ; For sorting purposes.
+{   ;; Get Testing Machine statuses and populate ListView
 
-Gui, Font, w400
+	Gui, Font, w600
 
-;;; Monitor
+	If GetStatus("SMARTBEAR")
+		;Guicontrol,, GP2010, 1
+	Gui, Add, Text, c%statuscolor% x262 y28 w40 h22 gTest, % statusname
+	GuiControl, Disable, GP2010
+	If GetStatus("SMARTBEAR")
+	   Guicontrol,, GP2010_2, 1
+	Gui, Add, Text, c%statuscolor% x262 y48 w40 h22 , % statusname
+	
+	If GetStatus("SQL2005")
+	   ; Guicontrol,, GP10, 1
+	Gui, Add, Text, c%statuscolor% x262 y88 w40 h22 , % statusname
+	
+	If GetStatus("TESTING4")
+	   ; Guicontrol,, GP2013, 1
+	Gui, Add, Text, c%statuscolor% x262 y68 w40 h20 , % statusname
 
-Gui, Add, GroupBox, x10 y155 w300 h50 , Monitor
+	If GetStatus("TESTING3")
+	   ; Guicontrol,, GP2013, 1
+	Gui, Add, Text, c%statuscolor% x262 y108 w40 h20 , % statusname
 
-Gui, Add, DDL, x22 y172 w100 h200 Choose1 vBranch, Release|HotFix|Custom|CustomRelease|ServPack
+	;If GetStatus("SPANISHSQL")
+	;	; Guicontrol,, GP2013, 1
+	;Gui, Add, Text, c%statuscolor% x262 y128 w40 h20 , % statusname
 
+	PopulateBuilds()
 
-;Gui, Add, Radio, x22 y172 w70 h12 vBranch, Release
-;Gui, Add, Radio, x22 y192 w70 h12 , HotFix
-;Gui, Add, Radio, x22 y212 w70 h12 , Custom
-;Gui, Add, Radio, x22 y232 w70 h12 , ServPack
-;Gui, Add, Radio, x122 y172 w100 h12, CustomRelease
-Gui, Add, Checkbox, x140 y172 w70 h20 vAutoRun, AutoRun?
-Gui, Add, Button, x220 y172 w80 h20 gMonitor, Start Monitor
-
-;;; Console ;;;
-GoSub, Console
-Gui, Add, Edit, x320 y9 w400 h410 vVar -Wrap ReadOnly
-SetTimer, Console, 5000
-GuiControl,,Var,%StrTemp%
+	Gui, Font, w400
+}
 
 
-;;; Latest Builds ;;;
 
-Gui, Add, GroupBox, x10 y210 w300 h200 , Builds
+{   ;;; Monitor
+	;Gui, Add, GroupBox, x10 y155 w300 h50 , Monitor
+	;Gui, Add, DDL, x22 y172 w100 h200 Choose1 vBranch, Release|HotFix|Custom|CustomRelease|ServPack
+	;Gui, Add, Checkbox, x140 y172 w70 h20 vAutoRun, AutoRun?
+	;Gui, Add, Button, x220 y172 w80 h20 gMonitor, Start Monitor
+}
 
-Gui, Add, Text, x20 y230, Release: 
-Gui, Add, Text, x20 y250, HotFix: 
-Gui, Add, Text, x20 y270, Custom: 
-Gui, Add, Text, x20 y290, CustomRel: 
-Gui, Add, Text, x20 y310, ServPack: 
+{   ;;; Latest Builds ;;;
+	Gui, Add, GroupBox, x10 y190 w300 h100 , Builds
 
-Gui, Font, w600
-Gui, Add, Text, x90 y230 w100 vLatestRelease, 
-Gui, Add, Text, x90 y250 w100 vLatestHotFix, 
-Gui, Add, Text, x90 y270 w100 vLatestCustom, 
-Gui, Add, Text, x90 y290 w100 vLatestCustomRelease, 
-Gui, Add, Text, x90 y310 w100 vLatestServPack, 
-Gui, Font, w400
-Gui, Add, Text, x180 y230 w100 vLatestReleaseDate
-Gui, Add, Text, x180 y250 w100 vLatestHotFixDate
-Gui, Add, Text, x180 y270 w100 vLatestCustomDate
-Gui, Add, Text, x180 y290 w100 vLatestCustomReleaseDate
-Gui, Add, Text, x180 y310 w100 vLatestServPackDate
+	Gui, Add, Text, x20 y210 gReleaseClick, Release: 
+	Gui, Add, Text, x20 y230 gHotfixClick, HotFix: 
+	Gui, Add, Text, x20 y250 gCustomClick, Custom: 
+	Gui, Add, Text, x20 y270 gServPackClick, ServPack: 
 
-;Gui, Add, Checkbox, x260 y230 w10 h20 vLatestReleaseTestNeeded,
-;Gui, Add, Checkbox, x260 y250 w10 h20 vLatestHotFixTestNeeded,
-;Gui, Add, Checkbox, x260 y270 w10 h20 vLatestCustomTestNeeded,
-;Gui, Add, Checkbox, x260 y290 w10 h20 vLatestCustomReleaseTestNeeded,
-;Gui, Add, Checkbox, x260 y310 w10 h20 vLatestServPackTestNeeded,
+	Gui, Font, w600
+	Gui, Add, Text, x90 y210 w100 vLatestRelease, 
+	Gui, Add, Text, x90 y230 w100 vLatestHotFix, 
+	Gui, Add, Text, x90 y250 w100 vLatestCustom, 
+	Gui, Add, Text, x90 y270 w100 vLatestServPack, 
+	Gui, Font, w400
+	Gui, Add, Text, x180 y210 w100 vLatestReleaseDate
+	Gui, Add, Text, x180 y230 w100 vLatestHotFixDate
+	Gui, Add, Text, x180 y250 w100 vLatestCustomDate
+	Gui, Add, Text, x180 y270 w100 vLatestServPackDate
+}
 
-Gosub, FindLatest
-SetTimer, FindLatest, 30000
+;; findlatest was here
 
+Gui, Add, Tab2, x315 y9 w815 h440 0x2000 , Console|Status
+
+{   ;;; Console ;;;
+	Gui, Tab, 1
+	Gui, Add, ListView, x322 y39 w390 h250 vConsoleLV gConsoleClick Grid, Date|Machine|Build|ID
+	GoSub, Console
+	SetTimer, Console, 2000
+}
+
+{   ;;; Results ;;;
+
+	;Gui, Tab, 2
+	Gui, Add, ListView, x322 y295 w800 h150 vResultsLV Grid, Branch|Result|Test Progress|Current Test|Run Time|Latest Tested|Latest Passed|Finished
+	GoSub, Results
+	SetTimer, Results, 5000
+}
+
+{   ;;; Queue ;;;
+	
+	Gui, Tab, 2
+	Gui, Add, ListView, x322 y39 w800 h200 vQueueLV Grid, Branch|GP|SQL|MB|Date
+	GoSub, Queue
+	SetTimer, Queue, 5000   
+}
+{   ;;; MachineInfo ;;;
+	
+	Gui, Tab, 1
+	Gui, Add, ListView, x722 y39 w400 h250 vMachineInfoLV gOpenMachine Grid, Machine_Name|Locked|CurrentBranch
+	GoSub, MachineInfo
+	SetTimer, MachineInfo, 5000
+}
 
 ;;; Gui Setup ;;;
 Gui, Color, White
-WinSet, Transparent, 0 , Test Configuration
+;WinSet, Transparent, 0 , Test Configuration
 
-Gui, Show, h425 w728, Test Configuration
-FadeIn("Test Configuration", 1200)
-Winset, AlwaysOnTop, on, Test Configuration
-SetTimer, TransCheck, 100
+;; Get window position from last run
+If ! A_IsCompiled
+{
+	path := ini_load(config, "Work.ini")
+	Xpos := ini_getValue(config, ConfigTests, "Xpos")
+	Ypos := ini_getValue(config, ConfigTests, "Ypos")
+	Gui, Show, x%XPos% y%yPos% AutoSize, Test Configuration
+}
+Else
+	Gui, Show, AutoSize, Test Configuration 
 
-countbeforeRelease := countBuilds("Release")
-countbeforeHotFix := countBuilds("HotFix")
-countbeforeServPack := countBuilds("ServPack")
-countbeforeCustom := countBuilds("Custom")
-;SetTimer, CheckBuilds, 60000
+FadeIn("Test Configuration", 500)
+;Winset, AlwaysOnTop, on, Test Configuration
+
+If ! Debug
+{
+	Gosub, FindLatest
+	SetTimer, FindLatest, 300000
+}
+
 Return
 
 ;;;;;; End Main Prog ;;;;;;
 
 Start:
+	Gui, Submit, NoHide
+	Gui, ListView, BuildsLV
+	;path := ini_load(ini2, "\\Nasus\Testing\TestComplete\Scheduled-SMARTBEAR.ini")
+	Loop, % LV_GetCount()
+	{
+		LV_GetText(Branch, A_Index)
+		If LV_IsRowChecked(HLV, A_Index)
+		{                  
+			if GP10 = 1
+				AddJob(Branch, "SQL2005")
+			if GP2013 = 1
+				AddJob(Branch, "TESTING4")
+			if GP2010_MB = 1
+				AddJob(Branch, "TESTING3")
+			if GP2010_2 = 1
+				AddJob(Branch, "SMARTBEAR")
+			if SpanishSQL = 1
+				AddJob(Branch, "SPANISHSQL")
+		}
+	}    
 
-    Gui, Submit, NoHide
-
-    Loop, % LV_GetCount()
-    {
-        LV_GetText(Branch, A_Index)
-        If LV_IsRowChecked(HLV, A_Index)
-            ini_replaceValue(ini, Branch, "Run", 1)
-        Else
-            ini_replaceValue(ini, Branch, "Run", 0)
-    }
-
-    path := ini_save(ini, "\\draven\Testing\TestComplete\TestComplete.ini")
-
-    if GP10 = 1
-        FileAppend, , \\draven\Testing\TestComplete\SQL2005.trigger
-    if GP2010 = 1
-        FileAppend, , \\draven\Testing\TestComplete\TESTING-PC.trigger
-    if GP2010_2 = 1
-        FileAppend, , \\draven\Testing\TestComplete\SMARTBEAR.trigger
-    if GP2013 = 1
-        FileAppend, , \\draven\Testing\TestComplete\DYNAMICS.trigger
-
-    ;RunWait, %comspec% /c "schtasks /run /s "gp2013" /tn LaunchTests",, Hide  
-
+	;PopulateBuilds()
 Return
 
-Buttonsubmit:
-
-    Gui, Submit, NoHide
-
-    Loop, % LV_GetCount()
-    {
-        LV_GetText(Branch, A_Index)
-        If LV_IsRowChecked(HLV, A_Index)
-            ini_replaceValue(ini, Branch, "Run", 1)
-        Else
-            ini_replaceValue(ini, Branch, "Run", 0)
-        ;msgbox % ini_getValue(ini, Branch, "Run")
-    }
-
-    path := ini_save(ini, "\\draven\Testing\TestComplete\TestComplete.ini")
-    ;Run, %path%
+StartSprint:
+	Gui, Submit, NoHide
+	Gui, ListView, BuildsLV
+	Loop, % LV_GetCount()
+	{
+		LV_GetText(Branch, A_Index)
+		If LV_IsRowChecked(HLV, A_Index)
+		{ 
+			if GP10 = 1
+				AddJob(Branch, "SQL2005", "Sprint")
+			if GP2013 = 1
+				AddJob(Branch, "TESTING4", "Sprint")
+			if GP2010_MB = 1
+				AddJob(Branch, "TESTING3", "Sprint")
+			if GP2010_2 = 1
+				AddJob(Branch, "TESTING1", "Sprint")
+			if SpanishSQL = 1
+				AddJob(Branch, "SPANISHSQL", "Sprint")
+		}
+	}
 Return
+
+StartBinTest:
+	AddJob("Bin", "TESTING1", "Bin")
+Return
+
+RunNext:
+	Gui, Submit, NoHide
+	Notify("Monitoring: " NextBranch,"",-10,"Style=Mine")
+    Menu, Tray, Tip, Monitoring: %NextBranch% ; Auto: %AutoRun% 
+    countbefore := countSingleBuild(NextBranch)
+    SetTimer, CheckSingleBuild, 15000
+    ;countbefore := 0 ; testing
+
+    CheckSingleBuild:
+        countafter := countSingleBuild(NextBranch)
+        if (countafter > countbefore)
+        {
+
+            Notify("New " NextBranch " Build Found","AutoRun: " AutoRun,-0,"Style=Mine BW=0 BC=White GC=Red AC=RunTests")
+            if AutoRun = 1
+            	AddJob(NextBranch, "SMARTBEAR")
+            Loop 2
+            {
+                SoundPlay, lib\sounds\meta-online.wav
+                Sleep 1000
+            }           
+            SetTimer, CheckSingleBuild, Off
+            SetTimer, RunNext, Off
+            Menu, Tray, Tip, Testing Config
+            GuiControl,,NextBranch, Hotfix|ServPack|Release
+        }
+        ;else
+            ;Notify("Before- " . countbefore . " After- " . countafter,"",-1,"Style=Mine")
+return
+
+;Buttonsubmit:
+;
+;	Gui, Submit, NoHide
+;	Gui, ListView, BuildsLV
+;
+;	Loop, % LV_GetCount()
+;	{
+;		LV_GetText(Branch, A_Index)
+;		If LV_IsRowChecked(HLV, A_Index)
+;		{
+;			BranchesChecked .= "'" Branch "',"
+;		}
+;		Else
+;		{
+;			BranchesUnchecked .= "'" Branch "',"
+;		}
+;	}
+;
+;	BranchesChecked := RTrim(BranchesChecked, ",")
+;	BranchesUnchecked := RTrim(BranchesUnchecked, ",")
+;
+;	If Strlen(BranchesChecked) > 0
+;	{
+;		test_branch_update := "Update TestBranches Set Run = 1 where Branch in (" BranchesChecked ")"
+;		ADOSQL(TestingResults_db, test_branch_update)
+;	}
+;		
+;	If Strlen(BranchesUnchecked) > 0
+;	{
+;		test_branch_update := "Update TestBranches Set Run = 0 where Branch in (" BranchesUnchecked ")"
+;		ADOSQL(TestingResults_db, test_branch_update)
+;	}
+;	test_branch_update := ""
+;	
+;	BranchesChecked := ""
+;	BranchesUnchecked := ""
+;
+;Return
 
 Load:
-    Gui, Destroy
-    GoSub, Begin
+	Gui, Destroy
+	GoSub, Begin
 Return
 
 OnTop:
 
-    WinGet, appWindow, ID, Test Configuration
-    WinGet, ExStyle, ExStyle, ahk_id %appWindow%
-    if (ExStyle & 0x8)  ; 0x8 is WS_EX_TOPMOST.
-    {
-       Winset, AlwaysOnTop, off, ahk_id %appWindow%
-       Menu, Tray, Uncheck, Always On Top
-       SplashImage,, x0 y0 b fs12, OFF always on top.
-       Sleep, 500
-       SplashImage, Off
-    }
-    else
-    {
-       WinSet, AlwaysOnTop, on, ahk_id %appWindow%
-       Menu, Tray, Check, Always On Top
-       SplashImage,,x0 y0 b fs12, ON always on top.
-       Sleep, 500
-       SplashImage, Off
-    }
+	WinGet, appWindow, ID, Test Configuration
+	WinGet, ExStyle, ExStyle, ahk_id %appWindow%
+	if (ExStyle & 0x8)  ; 0x8 is WS_EX_TOPMOST.
+	{
+	   Winset, AlwaysOnTop, off, ahk_id %appWindow%
+	   Menu, Tray, Uncheck, Always On Top
+	   SplashImage,, x0 y0 b fs12, OFF always on top.
+	   Sleep, 500
+	   SplashImage, Off
+	}
+	else
+	{
+	   WinSet, AlwaysOnTop, on, ahk_id %appWindow%
+	   Menu, Tray, Check, Always On Top
+	   SplashImage,,x0 y0 b fs12, ON always on top.
+	   Sleep, 500
+	   SplashImage, Off
+	}
 Return
-
-
-;ini_replaceValue(ini, "Release", "Run", 1)
-;msgbox % ini_getValue(ini, "Release", "Run")
-
-
 
 LV_IsRowChecked(HLV, Row) {
    ; HLV  HWND of the ListView control
@@ -256,386 +373,617 @@ LV_IsRowChecked(HLV, Row) {
    Return (((ErrorLevel & LVIS_STATEIMAGEMASK) >> 12) = 2) ? True : False
 }
 
-IsOnline(machine)
+AddJob(branch, machine, runtype = "Full")
+{
+	;FormatTime, Now, A_Now, M/d/yyyy hh:mm:ss tt
+	;insert_query := "INSERT INTO JOBQUEUE VALUES ('" branch "'," priority "," GetSQLVersion() ",'" GetGPVersion() "',0,'" Now "')"
+	;insert_query := "INSERT INTO JOBQUEUE VALUES ('" branch "'," priority ",CAST((SELECT SQL FROM Machineinfo WHERE machine_name = '" machine "') AS VARCHAR(2)), (SELECT GP FROM Machineinfo WHERE machine_name = '" machine "'), (SELECT MB FROM Machineinfo WHERE machine_name = '" machine "'), '" Now "')"
+	
+	insert_query := "exec AddJob '" branch "', 5, '" machine "','" runtype "'"
+	;msgbox % insert_query
+	ADOSQL(TestingResults_db, insert_query)
+}
+
+AddMachineConfig()
+{
+	insert_query := "INSERT INTO MACHINEINFO VALUES ('" A_ComputerName "'," GetSQLVersion() ",'" GetGPVersion() "',0,0,'')"
+	msgbox % insert_query
+	;clipboard := insert_query
+	ADOSQL(TestingResults_db, insert_query)
+}
+
+GetStatus(machine)
 {
   global
-  Runwait,%comspec% /c ping -n 1 -w 50 %machine%>ping.log,,hide 
-  FileRead, pingTemp, ping.log
-  FileDelete ping.log
-  if Instr(pingTemp, "Received = 1")
+
+  IfExist, \\%machine%\c$
   {
-    statusname = Online
-    statuscolor = green
-    return 1
+	statusname = Online
+	statuscolor = green
+	return 1
   }
   else
   {
-    statusname = Offline
-    statuscolor = red
-    return 0
+	statusname = Offline
+	statuscolor = red
+	return 0
   }
    
 }
 
-Monitor:
-
-    Gui Submit, NoHide
-    
-    Menu, Tray, Tip, Monitoring: %branch% Auto: %AutoRun% 
-    SetTimer, CheckSingleBuild, 60000
-    countbefore := countSingleBuild()
-    ;countbefore := 0 ; testing
-
-    CheckSingleBuild:
-
-        countafter := countSingleBuild()
-        if (countafter > countbefore)
-        {
-
-            Notify("New " branch " Build Found","",-10,"Style=Mine BW=0 BC=White GC=Red AC=RunTests")
-            Loop 5
-            {
-                SoundPlay, lib\meta-online.wav
-                Sleep 1000
-            }
-            ;RunWait, %comspec% /c "schtasks /run /s testing-pc /tn LaunchTests",, Hide
-            ;FileAppend,, \\draven\Testing\TestComplete\trigger-smartbear.txt
-            SetTimer, CheckSingleBuild, Off
-            Menu, Tray, Tip, Testing Config
-        }
-        ;else
-            ;Notify("Before- " . countbefore . " After- " . countafter,"",-1,"Style=Mine")
-return
-
-GetLatest:
-
-    ;; Define installer and install dir
-    setupfile := "C:\SalesPad.Setup.exe"
-    installpath := "C:\Program Files (x86)\SalesPad.GP\"
-
-    ;; Find newest installer
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%A_GuiControl%\*, 2, 0
-    {
-         FileGetTime, Time, %A_LoopFileFullPath%, C
-         If (Time > Time_Orig)
-         {
-              Time_Orig := Time
-              Folder := A_LoopFileName
-         }
-    }
-
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%A_GuiControl%\%Folder%\*WithCardControl.exe, 0, 1
-    {
-        FileGetTime, thetime, %A_LoopFileFullPath%, C
-        ;msgbox % thetime
-        ;FormatTime, CreateTime,CreateTime, M/d h:mm tt
-        File := A_LoopFileName
-        FullFile := A_LoopFileFullPath
-        FormatTime, CreationDate, %thetime%, ddd, M/dd, h:mm tt
-    }
-        
-    MsgBox, 36,SalesPad Download, %A_GuiControl%: %Folder% `n`nCreated: %CreationDate%`n`nDo you want to install it?
-    IfMsgBox No
-    {
-        Return
-    }       
 
 
-    ;; Remove old install file
-    if FileExist(setupfile)
-        FileDelete,  %setupfile%
+GetSQLVersion()
+{
+	RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
+	If RegExMatch(SQLVersion, "P)\d*", matchlength)
+		Return % SubStr(SQLVersion, 1, matchlength) ;Returns 9, 10, or 11
+	Else
+		Log("Unable to get SQL Version")
+}
 
-    ;; Copy and rename installer
-    FileCopy, %FullFile%, %setupfile%
-    ;; Stop if file was not pulled
-    if ! FileExist(setupfile)
-    {
-        msgbox,,Install Failed, Install file does not exist
-        ExitApp
-    }
-    ;; Run installer
-    Run, %setupfile%
+GetGPVersion()
+{
 
+	RegRead, GPVersion1, HKLM, SOFTWARE\Classes\Installer\Products\6A0A09CD09D2E394D8315DA41D329BDF, ProductName
+	RegRead, GPVersion2, HKLM, SOFTWARE\Classes\Installer\Products\15C013CBD27B75C4EAE95A280A09C32F, ProductName
+	RegRead, GPVersion3, HKLM, SOFTWARE\Classes\Installer\Products\7CCCD69894796DD4ABFE949F9AEC2E59, ProductName
+	;; Spanish
+	RegRead, GPVersionSpan, HKLM, SOFTWARE\Classes\Installer\Products\7C2554F0E4E82C84689AE7086A8B1E8E, ProductName
+	GPVersion := GPVersion1 . GPVersion2 . GPVersion3 . GpVersionSpan
 
-    WinWaitActive, SalesPad.GP
-    Send, {Enter}
-    WinGetTitle, Title, A
-    StringReplace, Title, Title, SalesPad.GP
-    StringReplace, Title, Title, Setup
-    StringReplace, Title, Title, %A_SPACE%,,All
-    path := "C:\Program Files (x86)\SalesPad.GP " . A_GuiControl . "\" . Title
-    Send % path
-    Send {Enter}
-    Sleep 50
-    Send {Enter}
+	If RegExMatch(GPVersion, "P)\d+", matchlength)
+		GPVersion := "GP" . SubStr(GPVersion, RegExMatch(GPVersion, "P)\d+", matchlength), matchlength)
+	Return GPVersion
 
-    Loop 
-    {
-        ControlGet, OutputVar, Enabled,, Button2, SalesPad.GP
-        ;msgbox % OutputVar
-        if OutputVar = 1
-          break
-        Sleep 500   
-    }
-    Send {Enter}
-
-return
+}
 
 Console:
-    If (TF_CountLines("\\draven\Testing\debug.log") >= 30)
-        StrTemp := TF_ReadLines("\\draven\Testing\debug.log",TF_CountLines("\\draven\Testing\debug.log") - 30,,1)
-    else
-        StrTemp := TF_ReadLines("\\draven\Testing\debug.log")
-    
-    ;FileRead, StrTemp, \\draven\Testing\debug.log
-    GuiControl,,Var,%StrTemp%
-return
 
-BuildStatus:
-    If (TF_CountLines("C:\Users\elliotd\Dropbox\HomeShare\buildstatus.log") >= 14)
-        StrTemp2 := TF_ReadLines("C:\Users\elliotd\Dropbox\HomeShare\buildstatus.log",1,14,1)
-    else
-        StrTemp2 := TF_ReadLines("C:\Users\elliotd\Dropbox\HomeShare\buildstatus.log")
-    
-    ;FileRead, StrTemp, \\draven\Testing\debug.log
-    GuiControl,,Var2,%StrTemp2%
+	Gui, Listview, ConsoleLV
+	connection_string := "Driver={" . GetSQLDriver() . "};Server=urgot;Database=TestingResults;Uid=sa;Pwd=sa"
+	;select Top 16 CAST(Date AS Time(7)) as 'Time', Computer_Name, Text from Audit order by date desc
+	resultset := ADOSQL( connection_string ";coldelim=`t", "
+	(
+		
+SELECT TOP 16 CAST(DATEPART(MM, DATE) AS VARCHAR) + '/' + cast(datepart(DD, DATE) AS VARCHAR) + ' ' + CAST(DATEPART(HH, DATE) AS VARCHAR) + ':' + RIGHT('00' + CAST(DATEPART(mi, DATE) AS VARCHAR), 2)
+	,Computer_Name
+	,TEXT
+	,JobId
+FROM Audit
+ORDER BY DATE DESC
+
+
+	)")
+	if StrLen(adosql_lasterror) > 0
+		msgbox % adosql_lasterror
+
+
+
+	if (RegExReplace(resultset, "\s", "") == RegExReplace(oldresultset, "\s", ""))
+	{
+		;clipboard := RegExReplace(resultset, "\s", "") "`n`n" RegExReplace(resultset, "\s", "")
+		Return
+	}
+	else
+		oldresultset := resultset
+
+	;
+	LV_Delete() ;remove columns for update
+	Loop, Parse, resultset, `n ; parse each line
+	{
+		If A_Index = 1
+			continue
+
+		StringSplit, f, A_LoopField, `t
+		LV_Add("",f1,f2,f3,f4)  ; and more if neccesarry
+		Loop % f0               ; clear
+		{
+			f%A_Index% := ""
+		}
+	}
+
+	LV_ModifyCol(1, "75")
+	LV_ModifyCol(2, "100")
+	LV_ModifyCol(3, "175")
 Return
 
-TransCheck:
-    IfWinNotActive, Test Configuration
-        WinSet, Transparent, 220 , Test Configuration
-    else
-        WinSet, Transparent, OFF, Test Configuration
+Results:
+	
+	connection_string := "Driver={" . GetSQLDriver() . "};Server=urgot;Database=TestingResults;Uid=sa;Pwd=sa"
+
+	resultset := ADOSQL( connection_string ";coldelim=`t", "
+	(
+		select res.Branch, res.Result, res.TestProgress, (select top 1 CurrentTest from MachineInfo m where m.CurrentBranch = res.Branch), res.Run_Time, res.Latest_Version, res.Latest_Passed, res.Finished from vResults as res order by res.Branch ASC
+		/*
+		select res.Branch, res.Result, res.TestProgress, m.CurrentTest, res.Run_Time, res.Latest_Version, res.Latest_Passed, res.Finished from vResults as res
+		left join MachineInfo as m on res.Branch = m.CurrentBranch
+		Order by Branch ASC */
+	)")
+	if StrLen(adosql_lasterror) > 0
+		msgbox % adosql_lasterror
+
+	if (resultset = oldresultset)
+		Return
+
+	Gui, Listview, ResultsLV
+	LV_Delete() ;remove columns for update
+	Loop, Parse, resultset, `n ; parse each line
+	{
+		If A_Index = 1
+			continue
+
+		StringSplit, f, A_LoopField, `t
+
+		;clipboard := A_Loopfield
+		LV_Add("",f1,f2,f3,f4,f5,f6,f7,f8)  ; and more if neccesarry
+		;msgbox % f6
+		Loop % f0               ; clear
+		{  
+			f%A_Index% := ""
+		}
+	}
+
+	Loop, 6
+	{
+		LV_ModifyCol(A_Index, "100")
+		;LVX_SetColour(2, "0xff0000")
+	}
+	oldresultset := resultset
+return
+
+ReleaseClick:
+	If A_GuiEvent = DoubleClick
+		Run, \\Nasus\Testing\Logs\Release
 Return
 
-BuildsFolder:
-    ShowDir("\\draven\Builds\SalesPad4")
-return
+HotFixClick:
+	If A_GuiEvent = DoubleClick
+		Run, \\Nasus\Testing\Logs\Hotfix
+Return
 
-TestingFolder:
-    ShowDir("\\draven\Testing\TestComplete")
-return
+ServPackClick:
+	If A_GuiEvent = DoubleClick
+		Run, \\Nasus\Testing\Logs\ServPack
+Return
 
-LogsFolder:
-    ShowDir("\\draven\Testing\Logs")
-return
+CustomClick:
+	If A_GuiEvent = DoubleClick
+		Run, \\Nasus\Testing\Logs\Custom
+Return
+
+Test:
+	If A_GuiEvent = DoubleClick
+		msgbox % A_ThisLabel
+Return
+
+Queue:
+	connection_string := "Driver={" . GetSQLDriver() . "};Server=urgot;Database=TestingResults;Uid=sa;Pwd=sa"
+
+	resultset := ADOSQL( connection_string ";coldelim=`t", "
+	(
+		Select Branch, GP, SQL, MB = LEFT(ABS(MB),1), Date from JobQueue Order by Date asc
+	)")
+	if StrLen(adosql_lasterror) > 0
+		msgbox % adosql_lasterror
+	;msgbox % resultset
+
+	Gui, Listview, QueueLV
+	LV_Delete() ;remove columns for update
+	Loop, Parse, resultset, `n ; parse each line
+	{
+		If A_Index = 1
+			continue
+
+		StringSplit, f, A_LoopField, `t
+		LV_Add("",f1,f2,f3,f4,f5)  ; and more if neccesarry
+		Loop % f0               ; clear
+		{  
+			f%A_Index% := ""
+		}
+	}
+
+	Loop, 6
+	{
+		LV_ModifyCol(A_Index, "125")
+		;LVX_SetColour(2, "0xff0000")
+	}
+Return
+
+MachineInfo:
+
+	Gui, Listview, MachineInfoLV
+
+	connection_string := "Driver={" . GetSQLDriver() . "};Server=urgot;Database=TestingResults;Uid=sa;Pwd=sa"
+
+	resultset := ADOSQL( connection_string ";coldelim=`t", "
+	(
+		select Machine_Name, Locked, CurrentBranch from vMachineInfo order by Locked desc
+
+	)")
+	if StrLen(adosql_lasterror) > 0
+		msgbox % adosql_lasterror
+	;msgbox % resultset
+
+	;
+	LV_Delete() ;remove columns for update
+	Loop, Parse, resultset, `n ; parse each line
+	{
+		If A_Index = 1
+			continue
+
+		StringSplit, f, A_LoopField, `t
+		LV_Add("",f1,f2,f3)  ; and more if neccesarry
+		Loop % f0               ; clear
+		{
+			f%A_Index% := ""
+		}
+	}
+
+	Loop, 8
+	{
+		LV_ModifyCol(A_Index, "110")
+	}
+Return
+
+OpenMachine:
+if A_GuiEvent = DoubleClick
+{
+    LV_GetText(RowText, A_EventInfo)  ; Get the text from the row's first field.
+    ToolTip You double-clicked row number %A_EventInfo%. Text: "%RowText%"
+}
+
+Return
+
+DebugToggle:
+	If (DebugLog := !DebugLog)
+		Notify("Debugging Enabled","",-2,"Style=Alert")
+	else
+		Notify("Debugging Disabled","",-2,"Style=Alert")
+	Menu, Tray, ToggleCheck, Debug
+Return
 
 EditScript:
-    Run %Editor% %A_ScriptFullPath%
+	Run %Editor% %A_ScriptFullPath%
 return
 
+DebugLines:
+	ListLines
+Return
+
 ReloadMenu:
-    Reload
+	Reload
 Return
 
 ExitMenu:
-    ExitApp
-Return
-
-ReloadAll:
-    Loop,Parse,TestingMachines,|
-        FileAppend, , \\draven\Testing\TestComplete\%A_LoopField%.reload
+	ExitApp
 Return
 
 TCFileMenu:
-    Run %Editor% %TCFile% 
-Return
-
-TestsiniMenu:
-    Run %Editor% %Testsini% 
+	Run %Editor% %TCFile% 
 Return
 
 DebugFileMenu:
-    Run %Editor% %DebugFile%
+	Run %Editor% %DebugFile%
 Return
 
 ClearDebugFileMenu:
-    TF(DebugFile)
-    FileAppend, `n%T%, \\draven\Testing\debughist.log
-    FileDelete, %DebugFile%
-    FileAppend, `n,%DebugFile%
+	FileDelete, \\Nasus\Testing\debughist.csv
+	FileCopy, % DebugFile, \\Nasus\Testing\debughist.csv, 1
+	FileDelete, %DebugFile%
+	FileAppend,,%DebugFile%
+	UpdateConsole()
 return
 
+ForcePass:
+	Force("Pass")
+Return
+
+ForceFail:
+	Force("Fail")
+Return
+
+ClearJobQueue:
+	ADOSQL( TestingResults_db, "
+	(
+		Delete from JobQueue
+	)")
+	Gosub, Queue
+Return
+
+ConsoleClick:
+	
+	If A_GuiEvent = DoubleClick
+	{
+		LV_GetText(Machine, A_EventInfo, 1) ; Get the text of the first field.
+		LV_GetText(JobID, A_EventInfo, 1) ; Get the text of the first field.
+	}
+return
 
 CheckBuilds:
 
-    countafterRelease := countBuilds("Release")
-    countafterHotFix := countBuilds("HotFix")
-    countafterServPack := countBuilds("ServPack")
-    countafterCustom := countBuilds("Custom")
+	countafterRelease := countBuilds("Release")
+	countafterHotFix := countBuilds("HotFix")
+	countafterServPack := countBuilds("ServPack")
+	countafterCustom := countBuilds("Custom")
 
-    if (countafterRelease > countbeforeRelease)
-        Found("New Release Build - ", "Release")
-    if (countafterHotFix > countbeforeHotFix)
-        Found("New HotFix Build - ", "HotFix")
-    if (countafterServPack > countbeforeServPack)
-        Found("New ServPack Build - ", "ServPack")
-    if (countafterCustom > countbeforeCustom)
-        Found("New Custom Build - ", "Custom")
+	if (countafterRelease > countbeforeRelease)
+		Found("New Release Build - ", "Release")
+	if (countafterHotFix > countbeforeHotFix)
+		Found("New HotFix Build - ", "HotFix")
+	if (countafterServPack > countbeforeServPack)
+		Found("New ServPack Build - ", "ServPack")
+	if (countafterCustom > countbeforeCustom)
+		Found("New Custom Build - ", "Custom")
 return
 
-FindLatest:
-    FindLatest("Release")
-    FindLatest("HotFix")
-    FindLatest("Custom")
-    FindLatest("CustomRelease")
-    FindLatest("ServPack")
+FindLatestFirst:
+	FindLatest("Release", 0)
+	FindLatest("HotFix", 0)
+	FindLatest("Custom", 0)
+	FindLatest("ServPack", 0)
+	;FindLatest("Main", 0)
 Return
 
-FindLatest(build)
+FindLatest:
+	FindLatest("Release")
+	FindLatest("HotFix")
+	FindLatest("Custom")
+	FindLatest("ServPack")
+	;FindLatest("Main")
+Return
+
+ExitSub:
+	If ! A_IsCompiled
+	{
+		WinGetPos, Xpos, Ypos,,,Test Configuration
+		if (Xpos < 0) or (Ypos < 0)
+			ExitApp
+		path := ini_load(config, "Work.ini")
+		ini_replaceValue(config, "ConfigTests", "Xpos", Xpos)
+		ini_replaceValue(config, "ConfigTests", "Ypos", Ypos)
+		ini_save(config, "Work.ini")
+	}
+	FadeOut("Test Configuration", 500)
+	ExitApp
+Return
+
+FindLatest(build, run = 1)
 {
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\*WithCardControl.exe, 0, 1
-    {
-        FileGetTime, Time, %A_LoopFileFullPath%, C
-        If (Time > Time_Orig)
-        {
-            Time_Orig := Time
-            Version := A_LoopFileName
-        }
-    }
-    FormatTime, CreationDate,%Time_Orig%, M/dd h:mm
-    FormatTime, CreationDay,%Time_Orig%, M/dd
-    FormatTime, Today, A_Now, M/dd
-    ;msgbox % CreationDate "`n" build "`n" version
-    Version := RegExReplace(Version, "(SalesPad.GP.Setup.|.WithCardControl.exe)", "")
 
-    Loop, \\draven\Testing\Logs\%build%\*SMARTBEAR_Pass*, 0, 1
-    {
-        FileGetTime, Time, %A_LoopFileFullPath%, C
-            VersionPassed := A_LoopFileName
-    }
+	Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%build%\*, 1, 0
+	{
+		 FileGetTime, Time, %A_LoopFileFullPath%, C
+		 If (Time > Time_Orig) And (FileExist(A_LoopFileFullPath "\*withCardControl.exe"))
+		 {
+			Time_Orig := Time
+			File := A_LoopFileName
+			Folder := A_LoopFileFullPath
+		 }
+	}
+	Loop, %Folder%\*WithCardControl.exe, 0 , 0
+	{
+		FileGetTime, Time, %A_LoopFileFullPath%, C
+		File := A_LoopFileName
+		FullFile := A_LoopFileFullPath
+	}
 
-    VersionPassed := SubStr(VersionPassed, RegExMatch(VersionPassed, "P)^[\d+|.]+", matchlength), matchlength)
 
-    if (CreationDay = Today)
-    {
-        Gui, Font, cGreen Bold
-        GuiControl, Font, Latest%build%
-        GuiControl, Font, Latest%build%Date
-        GuiControl,,Latest%build%, % Version
-        GuiControl,,Latest%build%Date, % CreationDate
-    }        
-    Else
-    {
-        Gui, Font, cBlack w400
-        GuiControl, Font, Latest%build%
-        GuiControl, Font, Latest%build%Date
-        GuiControl,,Latest%build%, % Version
-        GuiControl,,Latest%build%Date, % CreationDate
-    }
+	FormatTime, CreationDate,%Time%, M/dd h:mm
+	FormatTime, CreationDay,%Time%, M/dd
+	FormatTime, Today, A_Now, M/dd
+	;Version := RegExReplace(File, "(SalesPad.GP.Setup.|.WithCardControl.exe)", "")
+	RegExMatch(File, "\d+\.\d+\.\d*\.\d+", Version)
+	if (CreationDay = Today)
+	{
+		Gui, Font, cGreen Bold
+		GuiControl, Font, Latest%build%
+		GuiControl, Font, Latest%build%Date
+		GuiControl,,Latest%build%, % Version
+		GuiControl,,Latest%build%Date, % CreationDate
+
+		Gui, Font, cBlack w400
+	}        
+	Else
+	{
+		Gui, Font, cBlack w400
+		GuiControl, Font, Latest%build%
+		GuiControl, Font, Latest%build%Date
+		GuiControl,,Latest%build%, % Version
+		GuiControl,,Latest%build%Date, % CreationDate
+	}
 }
 
 countBuilds(branch)   
 {
-    global
-    count := 0
-    ;Loop, C:\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
-    {
-        count := count+1
-        ;msgbox % A_LoopFileName
-    }
-        
-    return count
+	global
+	count := 0
+	;Loop, C:\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
+	Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
+	{
+		count := count+1
+		;msgbox % A_LoopFileName
+	}
+		
+	return count
 }
 
 Found(text, build)
 {
-    global
+	global
 
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\*, 2, 0
-    {
-        FileGetTime, Time, %A_LoopFileFullPath%, C
-        If (Time > Time_Orig)
-        {
-            Time_Orig := Time
-            Version := A_LoopFileName
-        }
-    }
-    Version := RegExReplace(Version, "(SalesPad.GP.Setup.|.WithCardControl.exe)", "")
+	Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%build%\*, 2, 0
+	{
+		FileGetTime, Time, %A_LoopFileFullPath%, C
+		If (Time > Time_Orig)
+		{
+			Time_Orig := Time
+			Version := A_LoopFileName
+		}
+	}
+	; Version := RegExReplace(Version, "(SalesPad.GP.Setup.|.WithCardControl.exe)", "")
+	RegExMatch(Version, "\d+\.\d+\.\d*\.\d+", Version)
 
-
-    FormatTime, Now,, M/dd [h:mm]
-    FileAppend, %Now%`t%text%%Version%`n, \\draven\Testing\debug.log
-    countbefore%build% := countBuilds(build)
-    Notify("New " build " Build",Version,-15,"Style=Mine BW=2 BC=White GC=Red")
+	FormatTime, Now,, M/dd [h:mm]
+	FileAppend, %Now%`t%text%%Version%`n, \\Nasus\Testing\debug.csv
+	countbefore%build% := countBuilds(build)
+	Notify("New " build " Build",Version,-15,"Style=Mine BW=2 BC=White GC=Red")
 }
 
-
-
-
-
-ShowDir(title)
+DebugLog(text)
 {
-    SetTitleMatchMode, 3
-    IfWinExist, %title% ahk_class CabinetWClass
-        WinActivate
-    else
-    {
-        Run, %title%
-        WinActivate
-    }
-    SetTitleMatchMode, 2
+	global
+	If DebugLog
+	{
+		FormatTime, Now,, M/dd [h:mm]
+		FileAppend, %Now%`tDEBUG: %text%`n, %Testing%debug.csv
+	}
 }
 
-GetLatest()
+GetLatest(branch)
 {
-    global
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
-    {
-         FileGetTime, Time, %A_LoopFileFullPath%, C
-         If (Time > Time_Orig)
-         {
-              Time_Orig := Time
-              File := A_LoopFileName
-              FullFile := A_LoopFileFullPath
-         }
-    }
+	global
+	Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%branch%\*, 1, 0
+	{
+		 FileGetTime, Time, %A_LoopFileFullPath%, C
+		 If (Time > Time_Orig)
+		 {
+			  Time_Orig := Time
+			  File := A_LoopFileName
+			  Folder := A_LoopFileFullPath
+		 }
+	}
 
+	Loop, %Folder%\*WithCardControl.exe, 0 , 0
+	{
+		File := A_LoopFileName
+		FullFile := A_LoopFileFullPath
+	}
+	return % FullFile
 }
 
-countSingleBuild()   
+GetSQLDriver()
 {
-    global
-    count := 0
-    Loop, \\draven\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
-    {
-        count := count+1
-        ;msgbox % A_LoopFileName
-    }
-        
-    return count
+	RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
+	If RegExMatch(SQLVersion, "P)\d*", matchlength)
+		SQLVersion := SubStr(SQLVersion, 1, matchlength)
+
+	If (SQLVersion = "9") 
+		return "SQL Native Client"      ;SQL 2005
+	Else If (SQLVersion = "10")
+		return "SQL Server Native Client 10.0"  ;SQL 2008
+	Else If (SQLVersion = "11") 
+		return "SQL Server Native Client 11.0"  ;SQL 2012
+}
+
+UpdateConsole()
+{
+		Gui, Listview, ConsoleLV
+		LV_Delete() ;remove columns for update
+		DebugContents := TF_ReadLines(DebugFile)
+		Loop, Parse, DebugContents, `n ; parse each line
+		{
+			;If A_Index = 1
+			;    continue
+			StringSplit, f, A_LoopField, `,
+			LV_Add("",f1,f2,f3,f4,f5,f6)  ; and more if neccesarry
+			Loop % f0               ; clear
+			{  
+				f%A_Index% := ""
+			}
+		}
+		Loop, 6
+			LV_ModifyCol(A_Index, "100")
+}
+
+countSingleBuild(branch)   
+{
+	count := 0
+	Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%branch%\*WithCardControl.exe, 0, 1
+	{
+		count := count+1
+		;msgbox % A_LoopFileName
+	}
+		
+	return count
 }
 
 FadeIn(window = "A", TotalTime = 500, transfinal = 255)
 {
-    StartTime := A_TickCount
-    Loop
-    {
-       Trans := Round(((A_TickCount-StartTime)/TotalTime)*transfinal)
-       WinSet, Transparent, %Trans%, %window%
-       if (Trans >= transfinal)
-          break
-       Sleep, 10
-    }
+	StartTime := A_TickCount
+	Loop
+	{
+	   Trans := Round(((A_TickCount-StartTime)/TotalTime)*transfinal)
+	   WinSet, Transparent, %Trans%, %window%
+	   if (Trans >= transfinal)
+		  break
+	   Sleep, 10
+	}
 }
 
 FadeOut(window = "A", TotalTime = 500)
 {
-    StartTime := A_TickCount
-    Loop
-    {
-       Trans := ((TimeElapsed := A_TickCount-StartTime) < TotalTime) ? 100*(1-(TimeElapsed/TotalTime)) : 0
-       WinSet, Transparent, %Trans%, %window%
-       if (Trans = 0)
-          break
-       Sleep, 10
-    }
+	StartTime := A_TickCount
+	Loop
+	{
+	   Trans := ((TimeElapsed := A_TickCount-StartTime) < TotalTime) ? 100*(1-(TimeElapsed/TotalTime)) : 0
+	   WinSet, Transparent, %Trans%, %window%
+	   if (Trans = 0)
+		  break
+	   Sleep, 10
+	}
 }
 
+PopulateBuilds()
+{
+	Gui, Listview, BuildsLV
+	LV_Delete()
+	resultset := ADOSQL( TestingResults_db ";coldelim=`t", "
+	(
+		Select Branch, LEFT(ABS(Run),1) from TestBranches WHERE Visible = 1 ORDER BY Priority
+	)")
+	if StrLen(adosql_lasterror) > 0
+		msgbox % adosql_lasterror
 
 
-Return
+	Loop, Parse, resultset, `n ; parse each line
+	{
+		If A_Index = 1
+			continue
+		StringSplit, f, A_LoopField, `t
+		;LV_Add("Check" f2, f1)
+		LV_Add("Check" 0, f1)
+	}
+
+return
+
+}
+
+Force(result)
+{
+	static ForceBranch, force_query, local_result
+	local_result := result
+	;Gui, Add, Radio, x22 y29 w90 h20 Checked , Keyword Test
+	Gui, 2: Add, DDL, x22 y29 w120 h200 vForceBranch, Release|HotFix|Custom|ServPack
+	Gui, 2: Add, GroupBox, x10 y9 w150 h50 , Update Branch
+	Gui, 2: Add, Button, x9 y70 w150 h30 Default g2Submit, Force!
+	Gui, 2: Show, AutoSize, Update Results
+	Return
+
+	2GuiClose:
+		Gui, 2: Destroy
+		Return
+
+
+	2Submit:
+		Gui, 2: Submit
+		force_query := "Update Results Set Result = '" local_result "' "
+				 . "where version = (select top 1 Version from Results where Branch = '" ForceBranch "' and Computer_Name in ('SMARTBEAR','TESTING1','TESTING3') order by date desc)"   
+		ADOSQL(TestingResults_db, force_query)
+		Gui, 2: Destroy
+
+		Return
+}
 
 GuiClose:
 WinMinimize
@@ -643,1665 +991,31 @@ WinMinimize
 Return
 
 
+#If !(A_UserName = "elliotd")
+	#Numpad1::ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
+	#NumPad2::ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
+	#NumPad3::ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
+	#Numpad4::ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
+	#Numpad5::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
+#If
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; BEGIN INI LIBRARY ;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-/*
-Title: Basic ini string functions
-    Operate on variables instead of files. An easy to use ini parser.
-    
-About: License
-    New BSD License
-
-Copyright (c) 2010, Tuncay
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the Tuncay nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL Tuncay BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-About: Introduction
-
-    Ini files are used mostly as configuration files. In general, they have the
-    ".ini"-extension. It is a simple standardized organization of text data. 
-    Many other simple programs use them for storing text.    
-    
-    AutoHotkey provides three commands IniDelete, IniRead and IniWrite. These
-    commands are stable, but they have some disadvantages. First disadvantage
-    is, that they access the file directly. The file on the disk is opened, 
-    load into memory and then read or manipulated and then saved with every 
-    single command.    
-
-    With the custom functions I wrote here, the user accessess on variables 
-    instead of files. This is super fast, in comparison to disk access. Ini 
-    files can be created by Ahk just like any other variable. But Ahk itself 
-    does not have any function to operate on ini strings (variables). If you 
-    read often from ini file, then this might for you. 
-    
-    No other framework or library is required, no special object files are 
-    created; just work on ordinary ini file contents or variables. The load
-    and save functions are added for comfort reason and are not really needed.
-    
-    * *First do this:*
-    
-    > FileRead, ini, config.ini
-    
-    * *or load default file with:*
-    
-    > ini_load(ini)
-    
-    * *or create the content yourself:*
-    
-    (Start Code)
-    ini =
-    (
-    [Tip]
-    TimeStamp = 20090716194758
-    [Recent File List]
-    File1=F:\testfile.ahk
-    File2=Z:\tempfile.tmp
-    )
-    (End Code)
-    
-    In this example "Tip" and "Recent File List" are name of the sections. The
-    file consist in this example of 2 sections. Every section contains variables,
-    so called "keys". Every key is a part of a section. In this example, the 
-    section "Tip" have one key "TimeStamp". And every key has a content, 
-    called value. The "TimeStamp" key have the value "20090716194758".
-    
-    After that, you can access and modify the content of the ini variable with 
-    the following functions. But the modifications are only temporary and must 
-    me saved to disk. This should be done by overwriting the source (not 
-    appending).
-    
-    *Notes*: A keys content (the value) goes until end of line. Any space 
-    surroounding the value is at default lost. For best compatibility, the
-    names of section and key should consist of alpha (a-z), num (0-9) and the
-    underscore only. In general, the names are case insensitiv.
-
-Links:
-    * Lib Home: [http://autohotkey.net/~Tuncay/lib/index.html]
-    * Download: [http://autohotkey.net/~Tuncay/lib/ini.zip]
-    * Discussion: [http://www.autohotkey.com/forum/viewtopic.php?t=46226]
-    * License: [http://autohotkey.net/~Tuncay/licenses/newBSD_tuncay.txt]
-
-Date:
-    2010-09-26
-
-Revision:
-    1.0
-
-Developers:
-    * Tuncay (Author)
-    * Mystiq (Tester and Co-Author of an important regex)
-    * Fry (Tester)
-
-Category:
-    String Manipulation, FileSystem
-
-Type:
-    Library
-
-Standalone (such as no need for extern file or library):
-    Yes
-
-StdLibConform (such as use of prefix and no globals use):
-    Yes
-
-Related:
-    *Format Specifications (not strictly implemented)*
-    * Wikipedia - INI file [http://en.wikipedia.org/wiki/INI_file]
-    * Cloanto Implementation of INI File Format [http://www.cloanto.com/specs/ini.html]
-    
-    *AutoHotkey Commands*
-    * IniRead: [http://www.autohotkey.com/docs/commands/IniRead.htm]
-    * IniWrite: [http://www.autohotkey.com/docs/commands/IniWrite.htm]
-    * IniDelete: [http://www.autohotkey.com/docs/commands/IniDelete.htm]
-    
-    *Other Community Solutions*
-    * INI Library by Titan: [http://www.autohotkey.com/forum/viewtopic.php?t=26141]
-    * [Class] IniFile by bmcclure: [http://www.autohotkey.com/forum/viewtopic.php?t=41506]
-    * [module] Ini by majkinetor: [http://www.autohotkey.com/forum/viewtopic.php?t=22495]
-    * Auto read,load and save by Superfraggle: [http://www.autohotkey.com/forum/viewtopic.php?t=21346]
-    * globalsFromIni by Tuncay: [http://www.autohotkey.com/forum/viewtopic.php?t=27928]
-    * Read .INI file in one go by Smurth: [http://www.autohotkey.com/forum/viewtopic.php?t=36601]
-
-About: Examples
-    
-Usage:
-    
-    (Code)
-    value := ini_getValue(ini, "Section", "Key")                    ; <- Get value of a key.
-    value := ini_getValue(ini, "", "Key")                           ; <- Get value of first found key.
-    key := ini_getKey(ini, "Section", "Key")                        ; <- Get key/value pair.
-    section := ini_getSection(ini, "Section")                       ; <- Get full section with all keys.
-    
-    ini_replaceValue(ini, "Section", "Key", A_Now)                  ; -> Update value of a key.
-    ini_replaceKey(ini, "Section", "Key")                           ; -> Delete a key.
-    ini_replaceSection(ini, "Section", "[Section1]Key1=0`nKey2=1")  ; -> Replace a section with all its keys.
-    
-    ini_insertValue(ini, "Section", "Key" ",ListItem")              ; -> Add a value to existing value.
-    ini_insertKey(ini, "Section", "Key=" . A_Now)                   ; -> Add a key/value pair.
-    ini_insertSection(ini, "Section", "Key1=ini`nKey2=Tuncay")      ; -> Add a section.
-    
-    keys := ini_getAllKeyNames(ini, "Section")                      ; <- Get a list of all key names.
-    sections := ini_getAllSectionNames(ini)                         ; <- Get a list of all section names.
-    (End Code)
-
-About: Functions
-
-Parameters:
-    Content         - Content of an ini file (also this can be one section
-                        only).
-    Section         - Unique name of the section. Some functions support the
-                        default empty string "". This leads to look up at 
-                        first found section. 
-    Key             - Name of the variable under the section.
-    Replacement     - New content to use.
-    PreserveSpace   - Should be set to 1 if spaces around the value of a key
-                        should be saved, otherwise they are lost. The
-                        surrounding single or double quotes are also lost.
-
-    The 'get' functions returns the desired contents without touching the 
-    variable.
-    
-    The 'replace' and 'insert' functions changes the desired content directly
-    and returns 1 for success and 0 otherwise.
-    
-    There are some more type of functions and parameters. But these are not listed
-    here.
-
-Remarks:
-    On success, ErrorLevel is set to '0'. Otherwise ErrorLevel is set to '1' if
-    key under desired section is not found.
-    
-    The functions are not designed to be used in all situations. On rare 
-    conditions, the result could be corrupt or not usable. In example, there 
-    is no handling of commas inside the key or section names.
-    Any "\E" would end the literal sequence and switch back to regex. The
-    "\E" sequence is not escaped, because its very uncommon to use backslashes
-    inside key and section names. To workaround this, replace at every key or
-    section name the "\E" part with "\E\\E\Q":
-    
-    > Name := "Folder\Edit\Test1"
-    > IfInString, Name, \
-    > {
-    >     StringReplace, Name, Name, \E, \E\\E\Q, All
-    > }
-    > MsgBox % ini_getValue(ini, "paths", Name)
-
-    This allows us to work with regex, but then at the end it should be closed 
-    with "\Q" again.
-    > ; Used regex at keyname: "Time.*"
-    > value := ini_getValue(ini, "Tip", "\ETime.*\Q")
-*/
-
-
-/*
-_______________________________________________________________________________
-_______________________________________________________________________________
-
-Section: Parse
-
-About: About
-
-Brief:
-    Main functions for getting, setting and updating section or key.
-_______________________________________________________________________________
-_______________________________________________________________________________
-*/
-
-
-; .............................................................................
-; Group: Get
-;   Functions for reading data.
-; .............................................................................
-
-
-/*
-Func: ini_getValue
-    Read and return a value from a key
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Key             - Name of the variable under the section.
-    PreserveSpace   - *Optional* Should be set to 1 if spaces around the value 
-                        of a key should be saved, otherwise they are lost. The
-                        surrounding single or double quotes are also lost.
-                        Default is deleting surrounding spaces and quotes.
-
-Returns:
-    On success the content of desired key is returned, otherwise an empty string.
-
-Examples:
-    > value := ini_getValue(ini, "Tip", "TimeStamp")
-    > MsgBox %value%
-    *Output:*
-    > 20090716194758
-*/
-ini_getValue(ByRef _Content, _Section, _Key, _PreserveSpace = False)
+ShowStart(title, exe, toggle = 0)
 {
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-    {
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    }
-    ; Note: The regex of this function was rewritten by Mystiq.
-    RegEx = `aiU)(?:\R|^)\s*%_Section%\s*(?:\R\s*|\R\s*.+\s*=\s*.*?\s*(?=\R)|\R\s*[;#].*?(?=\R))*\R\s*\Q%_Key%\E\s*=(.*)(?=\R|$)
-/*
-    RegEx := "`aiU)"
-      . "(?:\R|^)\s*" . _Section . "\s*"         ;-- section
-      . "(?:"
-      . "\R\s*"                           ;-- empty lines
-      . "|\R\s*[\w\s]+\s*=\s*.*?\s*(?=\R)"      ;-- OR other key=value pairs
-      . "|\R\s*[;#].*?(?=\R)"                  ;-- OR commented lines
-      . ")*"
-      . "\R\s*\Q" . _Key . "\E\s*=(.*)(?=\R|$)"   ;-- match
-*/
-   
-    If RegExMatch(_Content, RegEx, Value)
-    {
-        If Not _PreserveSpace
-        {
-            Value1 = %Value1% ; Trim spaces.
-            FirstChar := SubStr(Value1, 1, 1)
-            If (FirstChar = """" AND SubStr(Value1, 0, 1)= """"
-                OR FirstChar = "'" AND SubStr(Value1, 0, 1)= "'")
+	If WinActive(title) and toggle
+		WinMinimize %title%
+	Else
+	{
+		IfWinExist, %title%
+			WinActivate
+		else
+		{
+        	Run, %exe%,, UseErrorLevel
+            If ErrorLevel
             {
-                StringTrimLeft, Value1, Value1, 1
-                StringTrimRight, Value1, Value1, 1
+                msgbox, Executable not found!
+                Return
             }
-        }
-        ErrorLevel = 0
-    }
-    Else
-    {
-        ErrorLevel = 1
-        Value1 =
-    }
-    Return Value1
+            WinActivate
+		}
+	}
 }
-
-
-/*
-Func: ini_getKey
-    Read and return a complete key with key name and content.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Key             - Name of the variable under the section.
-
-Returns:
-    On success the key and value pair in one string is returned, otherwise an empty string.
-
-Examples:
-    > key := ini_getKey(ini, "Tip", "TimeStamp")
-    > MsgBox %key%
-    *Output:*
-    > TimeStamp = 20090716194758
-*/
-ini_getKey(ByRef _Content, _Section, _Key)
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-   
-    ; Note: The regex of this function was rewritten by Mystiq.
-    RegEx = `aiU)(?:\R|^)\s*%_Section%\s*(?:\R\s*|\R\s*.+\s*=\s*.*?\s*(?=\R)|\R\s*[;#].*?(?=\R))*\R(\s*\Q%_Key%\E\s*=.*)(?=\R|$)
-    If RegExMatch(_Content, RegEx, Value)
-        ErrorLevel = 0
-    Else
-    {
-        ErrorLevel = 1
-        Value1 =
-    }
-    Return Value1
-}
-
-
-/*
-Func: ini_getSection
-    Read and return a complete section with section name.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. (An enmpty string "" is not
-                        working.)
-
-Returns:
-    On success the entire section in one string is returned, otherwise an empty string.
-    
-Examples:
-    > section := ini_getSection(ini, "Tip")
-    > MsgBox %section% 
-    *Output:*
-    > [Tip]
-    > TimeStamp = 20090716194758
-*/
-ini_getSection(ByRef _Content, _Section)
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    RegEx = `aisUS)^.*(%_Section%\s*\R?.*)(?:\R*\s*(?:\[.*?|\R))?$
-    If RegExMatch(_Content, RegEx, Value)
-        ErrorLevel = 0
-    Else
-    {
-        ErrorLevel = 1
-        Value1 =
-    }
-    Return Value1
-}
-
-/*
-Func: ini_getAllValues
-    Read and get a new line separated list of all values in one go.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - *Optional* Unique name of the section.
-    Count           - *Variable Optional* The number of found values/keys.
-
-Returns:
-    On success a newline "`n" separated list with all name of keys is returned, 
-    otherwise an empty string. If section is specified, only those from that
-    section is returned, otherwise from all sections.
-
-Remarks:
-    Other than the other getAll-functions list separator, this function uses
-    the new line "`n" character instead the comma "," for separating values.
-    Also other than the other getValue functions, this does not provide any
-    preserveSpaces option, as it allways preserves surrounding spaces and
-    quotes.
-
-Examples:
-    > values := ini_getAllValues(ini, "Recent File List")
-    > MsgBox %values%
-    *Output:*
-    > F:\testfile.ahk
-    > Z:\tempfile.tmp
-*/
-ini_getAllValues(ByRef _Content, _Section = "", ByRef _count = "")
-{
-    RegEx = `aisUmS)^(?=.*)(?:\s*\[\s*?.*\s*?]\s*|\s*?.+\s*?=(.*))(?=.*)$
-    If (_Section != "")
-        Values := RegExReplace(ini_getSection(_Content, _Section), RegEx, "$1`n", Match)
-    Else
-        Values := RegExReplace(_Content, RegEx, "$1`n", Match)
-    If Match
-    {
-        Values := RegExReplace(Values, "`aS)\R+", "`n")
-        ; Workaround, sometimes it catches sections. Whitespaces only should be eliminated also.
-        Values := RegExReplace(Values, "`aS)\[.*?]\R+|\R+$|\R+ +$", "") 
-        StringReplace, Values, Values, `n, `n, UseErrorLevel
-        _count := ErrorLevel ? ErrorLevel : 0
-        StringTrimLeft, Values, Values, 1
-        ErrorLevel = 0
-    }
-    Else
-    {
-        ErrorLevel = 1
-        _count = 0
-        Values =
-    }
-    Return Values
-}
-
-
-/*
-Func: ini_getAllKeyNames
-    Read and get a comma separated list of all key names in one go.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - *Optional* Unique name of the section.
-    Count           - *Variable Optional* The number of found keys.
-
-Returns:
-    On success a comma separated list with all name of keys is returned, 
-    otherwise an empty string. If section is specified, only those from that
-    section is returned, otherwise from all sections.
-    
-Examples:
-    > keys := ini_getAllKeyNames(ini, "Recent File List")
-    > MsgBox %keys%
-    *Output:*
-    > File1,File2
-*/
-ini_getAllKeyNames(ByRef _Content, _Section = "", ByRef _count = "")
-{
-    RegEx = `aisUmS)^.*(?:\s*\[\s*?.*\s*?]\s*|\s*?(.+)\s*?=.*).*$
-    If (_Section != "")
-        KeyNames := RegExReplace(ini_getSection(_Content, _Section), RegEx, "$1", Match)
-    Else
-        KeyNames := RegExReplace(_Content, RegEx, "$1", Match)
-    If Match
-    {
-        KeyNames := RegExReplace(KeyNames, "S)\R+", ",")
-        ; Workaround, sometimes it catches sections. Whitespaces only should be eliminated also.
-        KeyNames := RegExReplace(KeyNames, "S)\[.*?],+|,+$|,+ +", "") 
-        StringReplace, KeyNames, KeyNames, `,, `,, UseErrorLevel
-        _count := ErrorLevel ? ErrorLevel : 0
-        StringTrimLeft, KeyNames, KeyNames, 1
-        ErrorLevel = 0
-    }
-    Else
-    {
-        ErrorLevel = 1
-        _count = 0
-        KeyNames =
-    }
-    Return KeyNames
-}
-
-
-/*
-Func: ini_getAllSectionNames
-    Read and get a comma separated list of all section names in one go.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Count           - *Variable Optional* The number of found sections.
-
-Returns:
-    On success a comma separated list with all name of sections is returned, 
-    otherwise an empty string.
-    
-Examples:
-    > sections := ini_getAllSectionNames(ini)
-    > MsgBox %sections%
-    *Output:*
-    > Tip,Recent File List
-*/
-ini_getAllSectionNames(ByRef _Content, ByRef _count = "")
-{
-    RegEx = `aisUmS)^.*(?:\s*\[\s*?(.*)\s*?]\s*|.+=.*).*$
-    SectionNames := RegExReplace(_Content, RegEx, "$1", MatchNum)
-    If MatchNum
-    {
-        SectionNames := RegExReplace(SectionNames, "S)\R+", ",", _count)
-        ; Workaround, whitespaces only should be eliminated.
-        SectionNames := RegExReplace(SectionNames, "S),+ +", "") 
-        StringReplace, SectionNames, SectionNames, `,, `,, UseErrorLevel
-        _count := ErrorLevel ? ErrorLevel : 0
-        _count := _count ? _count : 0
-        StringTrimRight, SectionNames, SectionNames, 1
-        ErrorLevel = 0
-    }
-    Else
-    {
-        ErrorLevel = 1
-        _count = 0
-        SectionNames =
-    }
-    Return SectionNames
-}
-
-
-; .............................................................................
-; Group: Replace
-;   Functions for replacing existing data.
-; .............................................................................
-
-
-/*
-Func: ini_replaceValue
-    Updates the value of a key.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Key             - Name of the variable under the section. 
-    Replacement     - *Optional* New content to use. If not specified, the 
-                        content will be replaced with no content. That means
-                        it is deleted/set to empty string.
-    PreserveSpace   - *Optional* Should be set to 1 if spaces around the value 
-                        of a key should be saved, otherwise they are lost. The
-                        surrounding single or double quotes are also lost.
-                        Default is deleting surrounding spaces.
-
-Returns:
-    Returns 1 if key is updated to new value, and 0 otherwise (opposite of 
-    ErrorLevel). 
-    
-Examples:
-    > ini_replaceValue(ini, "Tip", "TimeStamp", 2009)
-    > value := ini_getValue(ini, "Tip", "TimeStamp")
-    > MsgBox %value%
-    *Output:*
-    > 2009
-*/
-ini_replaceValue(ByRef _Content, _Section, _Key, _Replacement = "", _PreserveSpace = False)
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    If Not _PreserveSpace
-    {
-        _Replacement = %_Replacement% ; Trim spaces.
-        FirstChar := SubStr(_Replacement, 1, 1)
-        If (FirstChar = """" AND SubStr(_Replacement, 0, 1)= """"
-            OR FirstChar = "'" AND SubStr(_Replacement, 0, 1)= "'")
-        {
-            StringTrimLeft, _Replacement, _Replacement, 1
-            StringTrimRight, _Replacement, _Replacement, 1
-        }
-    }
-    ; Note: The regex of this function was written by Mystiq.
-    RegEx = `aiU)((?:\R|^)\s*%_Section%\s*(?:\R\s*|\R\s*.+\s*=\s*.*?\s*(?=\R)|\R\s*[;#].*?(?=\R))*\R\s*\Q%_Key%\E\s*=).*((?=\R|$))
-    _Content := RegExReplace(_Content, RegEx, "$1" . _Replacement . "$2", isReplaced, 1)
-    If isReplaced
-        ErrorLevel = 0
-    Else
-        ErrorLevel = 1
-    Return isReplaced
-}
-
-
-/*
-Func: ini_replaceKey
-    Changes complete key with its name and value.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Key             - Name of the variable under the section.
-    Replacement     - *Optional* New content to use. If not specified, the 
-                        content will be replaced with no content. That means
-                        it is deleted/set to empty string.
-                      The replacement should contain an equality sign.
-                      (Expected form: "keyName=value")
-
-Returns:
-    Returns 1 if key is updated to new value, and 0 otherwise (opposite of 
-    ErrorLevel). 
-    
-Examples:
-    > ini_replaceKey(ini, "Tip", "TimeStamp", "TimeStamp=1980")
-    > value := ini_getValue(ini, "Tip", "TimeStamp")
-    > MsgBox %value%
-    *Output:*
-    > 1980
-*/
-ini_replaceKey(ByRef _Content, _Section, _Key, _Replacement = "")
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    If _Replacement !=
-    {
-        _Replacement = %_Replacement%
-        _Replacement = `n%_Replacement%
-    }
-    ; Note: The regex of this function was written by Mystiq.
-    RegEx = `aiU)((?:\R|^)\s*%_Section%\s*(?:\R\s*|\R\s*.+\s*=\s*.*?\s*(?=\R)|\R\s*[;#].*?(?=\R))*)\R\s*\Q%_Key%\E\s*=.*((?=\R|$))
-    _Content := RegExReplace(_Content, RegEx, "$1" . _Replacement . "$2", isReplaced, 1)
-    If isReplaced
-        ErrorLevel = 0
-    Else
-        ErrorLevel = 1
-    Return isReplaced
-}
-
-/*
-Func: ini_replaceSection
-    Changes complete section with all its keys and contents.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Replacement     - *Optional* New content to use. If not specified, the 
-                        content will be replaced with no content. That means
-                        it is deleted/set to empty string.
-                      The replacement should contain everything what a section
-                      contains, like the "[" and "]" before and after section
-                      name and all keys with its equality sign and value.
-                      (Expected form: "[sectionName]`nkeyName=value")
-
-Returns:
-    Returns 1 if key is updated to new value, and 0 otherwise (opposite of 
-    ErrorLevel). 
-    
-Examples:
-    > ini_replaceSection(ini, "Tip", "TimeStamp", "[Section1]`nKey1=Hello`nKey2=You!")
-    > value := ini_getValue(ini, "Section1", "Key1")
-    > MsgBox %value%
-    *Output:*
-    > Hello
-*/
-ini_replaceSection(ByRef _Content, _Section, _Replacement = "")
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    RegEx = `aisU)^(\s*?.*)%_Section%\s*\R?.*(\R*\s*(?:\[.*|\R))?$ 
-    _Content := RegExReplace(_Content, RegEx, "$1" . _Replacement . "$2", isReplaced, 1)
-    If isReplaced
-        ErrorLevel = 0
-    Else
-        ErrorLevel = 1
-    Return isReplaced
-}
-
-
-; .............................................................................
-; Group: Insert
-;   Functions for adding new data.
-; .............................................................................
-
-
-/*
-Func: ini_insertValue
-    Adds value to the end of existing value of specified key.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. If it is specified to "", 
-                        then section is ignored and first found key is get.
-    Key             - Name of the variable under the section.
-    Value           - Value to be inserted at end of currently existing value.
-    PreserveSpace   - *Optional* Should be set to 1 if spaces around the value 
-                        of a key should be saved, otherwise they are lost. The
-                        surrounding single or double quotes are also lost.
-                        Default is deleting surrounding spaces.
-
-Returns:
-    Returns 1 if value is inserted, and 0 otherwise (opposite of ErrorLevel).
-    
-Examples:
-    > ini_insertValue(ini, "Recent File List", "File1", ", " . A_ScriptName)
-    > value := ini_getValue(ini, "Recent File List", "File1")
-    > MsgBox %value%
-    *Output:*
-    > F:\testfile.ahk, ini.ahk
-*/
-ini_insertValue(ByRef _Content, _Section, _Key, _Value, _PreserveSpace = False)
-{
-    If (_Section = "")
-        _Section = (?:\[.*])?
-    Else
-         _Section = \[\s*?\Q%_Section%\E\s*?]
-    If Not _PreserveSpace
-    {
-        _Value = %_Value% ; Trim spaces.
-        FirstChar := SubStr(_Value, 1, 1)
-        If (FirstChar = """" AND SubStr(_Value, 0, 1)= """"
-            OR FirstChar = "'" AND SubStr(_Value, 0, 1)= "'")
-        {
-            StringTrimLeft, _Value, _Value, 1
-            StringTrimRight, _Value, _Value, 1
-        }
-    }
-    ; Note: The regex of this function was written by Mystiq.
-    RegEx = S`aiU)((?:\R|^)\s*%_Section%\s*(?:\R\s*|\R\s*.+\s*=\s*.*?\s*(?=\R)|\R\s*[;#].*?(?=\R))*\R\s*\Q%_Key%\E\s*=.*?)((?=\R|$))
-    _Content := RegExReplace(_Content, RegEx, "$1" . _Value . "$2", isInserted, 1)
-    If isInserted
-        ErrorLevel = 0
-    Else
-        ErrorLevel = 1
-    Return isInserted
-}
-
-
-/*
-Func: ini_insertKey
-    Adds a key pair with its name and value, if key does not already exists.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section. (An enmpty string "" is not
-                        working.)
-    Key             - Key and value pair splitted by an equality sign.
-
-Returns:
-    Returns 1 if key is inserted, and 0 otherwise (opposite of ErrorLevel).
-
-Remarks:
-    Currently, it works as a workaround with different function calls instead 
-    of one regex call. This makes it slower against the other functions.
-    
-Examples:
-    > ini_insertKey(ini, "Tip", "TimeNow=" . 20090925195317)
-    > value := ini_getValue(ini, "Tip", "TimeNow")
-    > MsgBox %value%
-    *Output:*
-    > 20090925195317
-*/
-ini_insertKey(ByRef _Content, _Section, _Key)
-{
-    StringLeft, K, _Key, % InStr(_Key, "=") - 1
-    sectionCopy := ini_getSection(_Content, _Section)
-    keyList := ini_getAllKeyNames(sectionCopy)
-    isInserted = 0
-    If K Not In %keyList%
-    {
-        sectionCopy .= "`n" . _Key
-        isInserted = 1
-    }
-    If isInserted
-    {
-        ini_replaceSection(_Content, _Section, sectionCopy)
-        ErrorLevel = 0 
-    }
-    Else
-    {
-        ErrorLevel = 1
-    } 
-    Return isInserted
-}
-
-/*
-Func: ini_insertSection
-    Adds a section and its keys, if section does not exist already.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section to be added and checked if
-                        it is already existing.
-    Keys            - *Optional* Set of key value pairs. Every key and value 
-                        pair should be at its own line divided by a new line 
-                        character.
-
-Returns:
-    Returns 1 if section and the keys are inserted, and 0 otherwise (opposite 
-    of ErrorLevel).
-    
-Examples:
-    > ini_insertSection(ini, "Tip", "Files", "Name1=Programs`nPath1=C:\Program Files")
-    > value := ini_getValue(ini, "Files", "Name1")
-    > MsgBox %value%
-    *Output:*
-    > Programs
-*/
-ini_insertSection(ByRef _Content, _Section, _Keys = "")
-{
-    RegEx = `aisU)^.*\R*\[\s*?\Q%_Section%\E\s*?]\s*\R+.*$
-    If Not RegExMatch(_Content, RegEx)
-    {
-        _Content = %_Content%`n[%_Section%]`n%_Keys%
-        isInserted = 1
-        ErrorLevel = 0
-    }
-    Else
-    {
-        isInserted = 0
-        ErrorLevel = 1
-    }
-    Return isInserted
-}
-
-
-/*
-_______________________________________________________________________________
-_______________________________________________________________________________
-
-Section: Additional
-
-About: About
-
-Brief:
-    Other functions besides the core ones.
-_______________________________________________________________________________
-_______________________________________________________________________________
-
-*/
-
-; .............................................................................
-; Group: File
-;   Related routines about file handling with some comfort.
-; .............................................................................
-
-/*
-Func: ini_load
-    Reads an ini file into a variable and resolves any part of the path.
-
-Parameters:
-    Content         - *Variable* On success, the file is loaded into this 
-                        variable.
-    Path            - *Optional* Source filename or -path to look for. It
-                        can contain wildcards. If this is an existing directory 
-                        (or contains backslash at the end), then default 
-                        filename is appended. Default filename is ScriptName 
-                        with ".ini" extension (in example "script.ini").
-                        Relative Pathes are solved to current WorkingDir. 
-                        Every part of the path (like filename and -extension) 
-                        are optional. Default extension is logically ".ini". 
-                        Binary files are not loaded. Empty string is resolved 
-                        to "ScriptPathNoExt + .ini".
-    convertNewLine  - *Optional* If this is true, all "`r`n" (CRLF) new line
-                        sequence of files content will be replaced with "`n" 
-                        (LF) only. Normally this is not necessary.
-
-Returns:
-    The resolved full path which was searched for. If file exists, the full 
-    path with correct case from the disk is get.
-
-Remarks:
-    This function is not necessary to work with the ini-library. In fact, in 
-    the heart, it does nothing else than FileRead. The filled variable is an
-    ordinary string. You can work with custom functions other from this library
-    on these variables, as if you would do allways.
-    
-    If file is not found or content is binary, or at any other reason ErrorLevel
-    is set to 1 and Content is set to "" (empty).
-
-Examples:
-    > ; Load content of default file into variable "ini".
-    > path := ini_load(ini)
-    > MsgBox %path%
-    *Output:*
-    > E:\Tuncay\AutoHotkey\scriptname.ini
-*/
-ini_load(ByRef _Content, _Path = "", _convertNewLine = false)
-{
-    ini_buildPath(_Path)
-    error := true ; If file is found next, then its set to false.
-    Loop, %_Path%, 0, 0
-    {
-        _Path := A_LoopFileLongPath
-        error := false
-        Break
-    }    
-    If (error = false)
-    {
-        FileRead, _Content, %_Path%
-        If (ErrorLevel)
-        {
-            error := true
-        }
-        Else
-        {
-            FileGetSize, fileSize, %_Path%
-            If (fileSize != StrLen(_Content))
-            {
-                error := true
-            }
-        }
-    }
-    If (error)
-    {
-        _Content := ""
-    }
-    Else If (_convertNewLine)
-    {
-        StringReplace, _Content, _Content, `r`n, `n, All
-    }
-    ErrorLevel := error
-    Return _Path
-}
-
-
-/*
-Func: ini_save
-    Writes an ini file from variable to disk.
-
-Parameters:
-    Content         - *Variable* Ini content to save at given path on disk.
-    Path            - *Optional* Source filename or -path to look for. It
-                        can contain wildcards. If this is an existing directory 
-                        (or contains backslash at the end), then default 
-                        filename is appended. Default filename is ScriptName 
-                        with ".ini" extension (in example "script.ini").
-                        Relative Pathes are solved to current WorkingDir. 
-                        Every part of the path (like filename and -extension) 
-                        are optional. Default extension is logically ".ini". 
-                        Binary files are not loaded. Empty string is resolved 
-                        to "ScriptPathNoExt + .ini".
-    convertNewLine  - *Optional* If this is true, all "`n" (LF) new line
-                        sequence of files content will be replaced with "`r`n"
-                        (CRLF). Normally, Windows default new line sequence is
-                        "`r`n". (Source is not changed with this option.)
-    overwrite       - *Optional* If this mode is enabled (true at default), 
-                        the source file will be updated. Otherwise, the
-                        file is saved to disk only if source does not exist
-                        already.
-
-Returns:
-    The resolved full path which was searched for.
-
-Remarks:
-    If overwrite mode is enabled and file could not be deleted, then ErrorLevel 
-    is set to 1. Otherwise, if overwriting an existing file is not allowed 
-    (overwrite = false) and file is existing, then ErrorLevel will be set to 1 
-    also.
-
-Examples:
-    > ; Write and update content of ini variable to default file.
-    > path := ini_save(ini)
-    > MsgBox %path%
-    *Output:*
-    > E:\Tuncay\AutoHotkey\scriptname.ini
-*/
-ini_save(ByRef _Content, _Path = "", _convertNewLine = true, _overwrite = true)
-{
-    ini_buildPath(_Path)
-    error := false
-    If (_overwrite)
-    {
-        Loop, %_Path%, 0, 0
-        {
-            _Path := A_LoopFileLongPath
-            Break
-        }    
-        If FileExist(_Path)
-        {
-            FileDelete, %_Path%
-            If (ErrorLevel)
-            {
-                error := true
-            }
-        }
-    }
-    Else If FileExist(_Path)
-    {
-        error := true
-    }
-    If (error = false)
-    {
-        If (_convertNewLine)
-        {
-            StringReplace, _Content, _Content, `r`n, `n, All
-            StringReplace, _Content, _Content, `n, `r`n, All
-            FileAppend, %_Content%, %_Path%
-        }
-        Else
-        {
-            FileAppend, %_Content%, *%_Path%
-        }
-        If (ErrorLevel)
-        {
-            error := true
-        }
-    }
-    ErrorLevel := error
-    Return _Path
-}
-
-; An internally used function, made not for public.
-ini_buildPath(ByRef _path)
-{
-    ; Set to default wildcard if filename or exension are not set.
-    If (_Path = "")
-    {
-        _Path := RegExReplace(A_ScriptFullPath, "S)\..*?$") . ".ini"
-    }
-    Else If (SubStr(_Path, 0, 1) = "\")
-    {
-        _Path .= RegExReplace(A_ScriptName, "S)\..*?$") . ".ini"
-    }
-    Else
-    {
-        If (InStr(FileExist(_Path), "D"))
-        {
-            ; If the current path is a directory, then add default file pattern to the directory.
-            _Path .= "\" . RegExReplace(A_ScriptName, "S)\..*?$") . ".ini"
-        }
-        Else
-        {
-            ; Check all parts of path and use defaults, if any part is not specified.
-            SplitPath, _Path,, fileDir, fileExtension, fileNameNoExt
-            If (fileDir = "")
-            {
-                fileDir := A_WorkingDir
-            }
-            If (fileExtension = "")
-            {
-                fileExtension := "ini"
-            }
-            If (fileNameNoExt = "")
-            {
-                fileNameNoExt := RegExReplace(A_ScriptName, "S)\..*?$")
-            }
-            _Path := fileDir . "\" . fileNameNoExt . "." . fileExtension
-        }
-    }
-    Return 0
-}
-
-; .............................................................................
-; Group: Edit
-;   These manipulates the whole ini structure (or an extracted section only).
-; .............................................................................
-
-/*
-Func: ini_repair
-    Repair and build an ini from scratch. Leave out comments and trim unneeded 
-    whitespaces.
-
-Parameters:
-    Content         - Content of an ini file (also this can be one 
-                        section only).
-    PreserveSpace   - *Optional* Should be set to 1 if spaces around the value 
-                        of a key should be saved, otherwise they are lost. 
-                        Default is deleting surrounding spaces.
-    CommentSymbols  - *Optional* List of characters which are should be treated 
-                        as comment symbols. Every single character in list is 
-                        a symbol. Default are ";" and "#", in example defined 
-                        as ";#". 
-    LineDelim       - *Optional* A sequence of characters which should be the
-                        delimiter as the line end symbol. Default is "`n", a
-                        new line.
-
-Returns:
-    The new formatted ini string with trimmed whitespaces and without comments.
-
-Remarks:
-    Other than the most other functions here, the ini Content variable is not
-    a byref and will not manipulated directly. The return value is the new ini.
-    The LineDelim option can be leaved as is. Internally all commands of 
-    AutoHotkey like MsgBox or FileAppend are working correctly with this.
-    
-    What it does is, building a new ini content string from an existing one.
-    The reason to use this function is, if anyone have problems with the 
-    source ini because of whitespaces or comments and formatting. The new
-    resulting ini is consistently reduced to standard ini format (at least,
-    it should).
-    Dublicate key entries in same section are merged into one key. The last
-    instance overwrites just the one before.
-
-Examples:
-    (code)
-    ini =
-    (
-    
-        [ malformed section  ]
-city   =  Berlin'
-whatever='this ; is nasty'
-
-     [bad]
-cat    =     'miao'
-
-    )
-    ini := ini_repair(ini, true)
-    MsgBox %ini%
-    (end)
-
-    *Output:*
-    (code)
-[malformed section]
-city=  Berlin'
-whatever='this 
-[bad]
-cat=     'miao'
-    (end)
-*/
-ini_repair(_Content, _PreserveSpace = False, _CommentSymbols = ";#", _LineDelim = "`n")
-{
-    If (_CommentSymbols != "")
-    {
-        regex = `aiUSm)(?:\R\s*|(s*|\t*))[%_CommentSymbols%].*?(?=\R)
-        _Content := RegExReplace(_Content, regex, "$1")
-    }
-    Loop, Parse, _Content, `n, `r
-    {
-        If (RegExMatch(A_LoopField, "`aiSm)\[\s*(.+?)\s*]", Match))
-        {
-            newIni .= _LineDelim . "[" . Match1 . "]"
-            section := Match1
-            KeyList := ""
-        }
-        Else If (RegExMatch(A_LoopField, "`aiSm)\s*(\b(?:.+?|\s?)\b)\s*=(.*)", Match))
-        {
-            If (_PreserveSpace = false)
-            {
-                Match2 = %Match2%
-            }
-            If Match1 Not in %KeyList% ; Disallowes dublicate.
-            {
-                KeyList .= "," . Match1
-            }
-            Else
-            {
-                ; As a workaround it should be just deleted, because if set 
-                ; here the surrounding whitespaces are lost.
-                ini_replaceKey(newIni, section, Match1, "")
-            }
-            newIni .= _LineDelim . Match1 . "=" . Match2
-        }
-    }
-    StringReplace, newIni, newIni, %_LineDelim%
-    If (newIni != "")
-    {
-        ErrorLevel := 0
-    }
-    Else
-    {
-        ErrorLevel := 1
-    }
-    Return newIni
-}
-
-
-/*
-Func: ini_mergeKeys
-    Merge two ini sources into first one. Adds new sections and keys and 
-    processess existing keys.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only). This is the destination where new 
-                        sections and keys are added into.
-    source          - *Variable* This is also an ini content from which to 
-                        retrieve the new data. These will be added into Content 
-                        variable.
-    updateMode      - *Optional* Defines how existing keys should be processed.
-                        Default is ('1') overwriting last instance with newest 
-                        one. 
-
-        updateMode: '1' - ("Default") Replace existng key with newest/last one
-                    from source.
-        
-        updateMode: '2' - Append everything to existing key in Content.
-        
-        updateMode: '3' - Replace only if source is higher than destination key
-                    in Content.
-        
-        updateMode: '4' - Exclude keys in Content, which exists in both sources.
-        
-        updateMode: '0' - ("Or any other value") Does not manipulate existing keys
-                    in Content, leaving them in their orginal state. Just add 
-                    new unknown keys to Content.
-                        
-Returns:
-    Returns the steps taken to manipulate the destination Content. Every added or 
-    manipulated key and section are rising by 1 the return value. 0 if nothing is
-    changed.
-
-Remarks:    
-    ErrorLevel is set to '1' if something is changed in Content, '0' otherwise.
-    
-    The Content variable is updated with the content from source. This means, new
-    sections and keys are added allways. In a conflict where same key was found 
-    in source again, in case it is existing in Content already, then the variable
-    updateMode defines how they should be processed. Default is, to use last found
-    key.
-
-Examples:
-    (code)
-    ini1=
-    (LTrim
-        [vasara]
-        tuni=1232
-        edg=94545
-        k=1
-    )
-    ini2=
-    (LTrim
-        [vasara]
-        tuni=9999
-        c=
-        edg=5
-        [taitos]
-        isa=17
-    )
-    ini_mergeKeys(ini1, ini2)
-    MsgBox %ini1%
-    (end)
-    *Output:*
-    (code)
-        [vasara]
-        tuni=9999
-        edg=5
-        k1
-        c=
-        [taitos]
-        isa=17
-    (end)
-*/
-ini_mergeKeys(ByRef _Content, ByRef _source, _updateMode = 1)
-{
-    steps := 0
-    laststep := 0
-    destSectionNames := ini_getAllSectionNames(_Content), sourceSectionNames := ini_getAllSectionNames(_source)
-    Loop, Parse, sourceSectionNames, `,
-    {
-        sectionName := A_LoopField
-        sourceSection := ini_getSection(_source, sectionName)
-        If sectionName Not In %destSectionNames%
-        {
-            _Content .= "`n" . sourceSection
-            steps++
-            Continue
-        }
-        Else
-        {
-            destSection := ini_getSection(_Content, sectionName), destKeyNames := ini_getAllKeyNames(destSection), sourceKeyNames := ini_getAllKeyNames(sourceSection)
-            Loop, Parse, sourceKeyNames, `,
-            {
-                keyName := A_LoopField
-                If keyName Not In %destKeyNames%
-                {
-                    destSection .= "`n" . ini_getKey(sourceSection, sectionName, keyName)
-                    steps++
-                    Continue
-                }
-                Else If (_updateMode = 1)
-                {
-                    ini_replaceValue(destSection, sectionName, keyName, ini_getValue(sourceSection, sectionName, keyName))
-                    steps++
-                }
-                Else If (_updateMode = 2)
-                {
-                    ini_replaceValue(destSection, sectionName, keyName, ini_getValue(destSection, sectionName, keyName) . ini_getValue(sourceSection, sectionName, keyName))
-                    steps++
-                }
-                Else If (_updateMode = 3)
-                {
-                    If ((sourceValue := ini_getValue(sourceSection, sectionName, keyName)) > ini_getValue(destSection, sectionName, keyName))
-                    {
-                        ini_replaceValue(destSection, sectionName, keyName, sourceValue)
-                        steps++
-                    }
-                }
-                Else If (_updateMode = 4)
-                {
-                    ini_replaceKey(destSection, sectionName, keyName, "")
-                    steps++
-                }
-            }
-            If (laststep != steps)
-            {
-                laststep := steps
-                ini_replaceSection(_Content, sectionName, destSection)
-            }
-        }
-    }
-    If (steps > 0)
-    {
-        ErrorLevel := 0
-    }
-    Else
-    {
-        ErrorLevel := 1
-    }
-    Return steps
-}
-
-
-; .............................................................................
-; Group: Convert
-;   Export and import functions to convert ini structure.
-; .............................................................................
-
-
-/*
-Func: ini_exportToGlobals
-    Creates global variables from the ini structure.
-
-Parameters:
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    CreateIndexVars - *Optional* If this is set to 'true', some additional 
-                        variables are created. These are variables for indexed
-                        access of sections and keys. The scheme how the variables
-                        named are described below under Remarks.
-    Prefix          - *Optional* This is the leading part of all created variable
-                        names. (Default: "ini")
-    Seperator       - *Optional* This is part of all created variable names. It
-                        is added between every section and key part and the 
-                        leading part to separate them. (Default: "_")
-    SectionSpaces   - *Optional* Every space inside section name will be replaced
-                        by this character or string. This is needed for creating
-                        AutoHotkey variables, which cannot hold spaces at name.
-                        Default is to delete any space with empty value: "".
-    PreserveSpace   - *Optional* Should be set to 1 if spaces around the value 
-                        of a key should be saved, otherwise they are lost.
-                        Surrounding quotes (" or ') are also lost, if not set
-                        to 1. Default is deleting surrounding spaces and quotes.
-
-Returns:
-    Gets count of all created keys (attention, keys in sense of ini keys, not variables). 
-
-Remarks:
-    Creates global variables from ini source. The scheme for building the variables is
-    following: 
-    
-    > Prefix  +  Seperator  +  SectionName  + Seperator  +  KeyName
-    >   ini   +      _      +      Tip      +     _      + TimeStamp
-    > --------------------------------------------------------------
-    > ini_Tip_TimeStamp := "20090716194758"
-    
-    Standard prefix to every variable is "ini" and all parts are delimited by the 
-    separator "_". The SectionSpaces parameter deletes at default every space from 
-    name of section, because spaces inside ahk variable names are not allowed.
-
-CreateIndexVars:    
-    These variables are created additionally to the other variables, if option 
-    CreateIndexVars is set to true (or 1 or any other value evaluating to true).
-    
-    Scheme for sections
-    > Prefix  +  Seperator  +  Index
-    >   ini   +      _      +    1
-    > ------------------------------
-    > ini_1 := "Tip"
-    
-    Scheme for keys
-    > Prefix  +  Seperator  +  SectionName  + Index
-    >   ini   +      _      +      Tip      +   1
-    > ---------------------------------------------
-    > ini_Tip1 := "20090716194758"
-    
-    The index "0" contains number of all elements.
-
-Examples:
-    > ini_exportToGlobals(ini, 0)
-    > ListVars
-    > Msgbox % ini_RecentFileList_File2
-    *Output:*
-    > Z:\tempfile.tmp
-    
-    The example would create all these variables with following 
-    values:
-    > ini_RecentFileList_File1 := "F:\testfile.ahk"
-    > ini_RecentFileList_File2 := "Z:\tempfile.tmp"
-    > ini_Tip_TimeStamp := "20090716194758"
-    
-    These variables would be created in addition to the above ones, if 
-    CreateIndexVars option was set to true:
-    > ini_0 := "2"
-    > ini_1 := "Tip"
-    > ini_2 := "RecentFileList"
-    > ini_RecentFileList0 := "2"
-    > ini_RecentFileList1 := "File1"
-    > ini_RecentFileList2 := "File2"
-    > ini_Tip0 := "1"
-    > ini_Tip1 := "TimeStamp"
-*/
-ini_exportToGlobals(ByRef _Content, _CreateIndexVars = false, _Prefix = "ini", _Seperator = "_", _SectionSpaces = "", _PreserveSpace = False)
-{
-    Global
-    Local secCount := 0, keyCount := 0, i := 0, Section, Section1, currSection, Pair, Pair1, Pair2, FirstChar
-    If (_Prefix != "")
-    {
-        _Prefix .= _Seperator
-    }
-    Loop, Parse, _Content, `n, `r
-    {
-        If (Not RegExMatch(A_LoopField, "`aiSm)\[\s*(.+?)\s*]", Section))
-        {
-            If (RegExMatch(A_LoopField, "`aiSm)\s*(\b(?:.+?|\s?)\b)\s*=(.*)", Pair))
-            {
-                If (!_PreserveSpace)
-                {
-                    StringReplace, Pair1, Pair1, %A_Space%, , All
-                    Pair2 = %Pair2% ; Trim spaces.
-                    FirstChar := SubStr(Pair2, 1, 1)
-                    If (FirstChar = """" AND SubStr(Pair2, 0, 1)= """"
-                        OR FirstChar = "'" AND SubStr(Pair2, 0, 1)= "'")
-                    {
-                        StringTrimLeft, Pair2, Pair2, 1
-                        StringTrimRight, Pair2, Pair2, 1
-                    }
-                }
-                StringReplace, currSection, currSection, %A_Space%, %_SectionSpaces%, All
-                %_Prefix%%currSection%%_Seperator%%Pair1% := Pair2 ; ini_section_key := value
-                keyCount++
-                If (_CreateIndexVars)
-                {
-                    %_Prefix%%currSection%0++
-                    i := %_Prefix%%currSection%0
-                    %_Prefix%%currSection%%i% := Pair1
-                }
-            }
-        }
-        Else
-        {
-            currSection := Section1
-            If (_CreateIndexVars)
-            {
-                StringReplace, currSection, currSection, %A_Space%, %_SectionSpaces%, All
-                secCount++
-                %_Prefix%%secCount% := currSection
-            }
-        }
-    }
-    If (_CreateIndexVars)
-    {
-        %_Prefix%0 := secCount
-    }
-    If (secCount = 0 AND keyCount = 0)
-    {
-        ErrorLevel = 1
-    }
-    Else
-    {
-        ErrorLevel = 0
-    }
-    Return keyCount
-}
-
-
-/*
-_______________________________________________________________________________
-_______________________________________________________________________________
-
-Section: Aliases
-
-About: About
-
-Brief:
-    Function wrappers to work with existing commands or functions via "Basic 
-    ini string functions". They try to mimic the interface for look and feel of
-    original. This can help to migrate others to this library with lesser
-    possible work.
-_______________________________________________________________________________
-_______________________________________________________________________________
-*/
-
-; .............................................................................
-; Group: AutoHotkey
-;   Built-in Commands of AutoHotkey.
-; .............................................................................
-
-/*
-Func: Ini_Read
-    Reads a value. Alias of IniRead.
-
-Parameters:
-    OutputVar       - *Variable* The name of the variable in which to store the retrieved 
-                        value. If the value cannot be retrieved, the variable 
-                        is set to the value indicated by the Default parameter 
-                        (described below). 
-    Content         - *Variable* Content of an ini file (also this can be one 
-                        section only).
-    Section         - Unique name of the section.
-    Key             - Name of the variable under the section.
-    Default         - *Optional* The value to store in OutputVar if the 
-                        requested key is not found. If omitted, it defaults to 
-                        the word ERROR.
-
-Returns:
-    Does not return anything.
-    
-Remarks:
-    ErrorLevel is not set by this function (backed up and restored).
-
-    In Ahk you had to specify the filename of the ini file. Here you need to 
-    give the content, instead of.
-    Compared to "Basic ini string functions" the parameter section is not 
-    allowed to be set to an empty string anymore.
-
-Related:
-    * IniRead: [http://www.autohotkey.com/docs/commands/IniRead.htm]
-    
-Examples:
-    > FileRead, ini, C:\Temp\myfile.ini
-    > Ini_Read(OutputVar, ini, "section2", "key")
-    > MsgBox %OutputVar%
-*/
-Ini_Read(ByRef _OutputVar, ByRef _Content, _Section, _Key, _Default = "ERROR")
-{
-    If (_Section != "")
-    {
-        BackupErrorLevel := ErrorLevel
-        _OutputVar := ini_getValue(_Content, _Section, _Key)
-        If ErrorLevel
-        {
-            _OutputVar := _Default
-        }
-        ErrorLevel := BackupErrorLevel
-    }
-    Else
-    {
-        _OutputVar := _Default
-    }
-    Return 
-}
-
-
-/*
-Func: Ini_Write
-    Writes a value. Alias of IniWrite.
-
-Parameters:
-    Value           - The string or number that will be written to the right 
-                        of Key's equal sign (=).
-    Content         - *Variable* Content of an ini file .
-    Section         - Unique name of the section.
-    Key             - Name of the variable under the section.
-
-Returns:
-    Does not return anything.
-    
-Remarks:
-    ErrorLevel is set to 1 if there was a problem or 0 otherwise.
-
-    In Ahk you had to specify the filename of the ini file. Here you need to 
-    give the content, instead of.
-    Compared to "Basic ini string functions" the parameter section is not 
-    allowed to be set to an empty string anymore.
-
-Related:
-    * IniWrite: [http://www.autohotkey.com/docs/commands/IniWrite.htm]
-    
-Examples:
-    > FileRead, ini, C:\Temp\myfile.ini
-    > Ini_Write("this is a new value", ini, "section2", "key")
-    > FileDelete, C:\Temp\myfile.ini
-    > FileAppend, %ini%, C:\Temp\myfile.ini
-*/
-Ini_Write(_Value, ByRef _Content, _Section, _Key)
-{
-    If (_Section = "")
-    {
-        ErrorLevel = 1
-    }
-    Else
-    {
-        ini_replaceValue(_Content, _Section, _Key, _Value)
-    }
-    Return 
-}
-
-
-/*
-Func: Ini_Delete
-    Deletes a value or section. Alias of IniDelete.
-
-Parameters:
-    Content         - *Variable* Content of an ini file.
-    Section         - Unique name of the section.
-    Key             - *Optional* Name of the variable under the section.
-
-Returns:
-    Does not return anything.
-    
-Remarks:
-    ErrorLevel is set to 1 if there was a problem or 0 otherwise.
-
-    In Ahk you had to specify the filename of the ini file. Here you need to 
-    give the content, instead of.
-    Compared to "Basic ini string functions" the parameter section is not 
-    allowed to be set to an empty string anymore.
-
-Related:
-    * IniDelete: [http://www.autohotkey.com/docs/commands/IniDelete.htm]
-    
-Examples:
-    > FileRead, ini, C:\Temp\myfile.ini
-    > Ini_Delete(ini, "section2", "key")
-    > FileDelete, C:\Temp\myfile.ini
-    > FileAppend, %ini%, C:\Temp\myfile.ini
-*/
-Ini_Delete(ByRef _Content, _Section, _Key = "")
-{
-    If (_Section = "")
-    {
-        ErrorLevel = 1
-    }
-    Else
-    {
-        If (_Key != "")
-        {
-            ini_replaceKey(_Content, _Section, _Key, "")
-        }
-        Else
-        {
-            ini_replaceSection(_Content, _Section, "")
-        }
-    }
-    Return 
-}
-
-
-#NumpadSub::WinActivate, Test Configuration

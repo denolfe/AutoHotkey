@@ -5,6 +5,7 @@ SetTitleMatchMode, 2
 #Include lib\ini.ahk
 #Include lib\ShellFileOperation.ahk
 
+Choosing := 1
 
 message = 
 	(ltrim 
@@ -13,11 +14,14 @@ message =
 		3 = ServPack
 		4 = Custom
 		5 = CustomRelease
-		6 = Ret To Vend
+		6 = GLC
 		7 = Main
+		8 = Tapco
+		9 = CardControl
 	)
 
-Notify("Choose Build", message,-15,"Style=Mine")
+
+Choose_Build := Notify("Choose Build", message,-15,"Style=Mine")
 
 Loop 
 	{
@@ -57,7 +61,8 @@ Loop
 		KeyWait, numpad6, D T0.02
 		If not ErrorLevel 
 		{
-			build := "F9_RetToVend"
+			build := "Custom"
+			special := "CRM"
 			break
 		}
 
@@ -68,42 +73,65 @@ Loop
 			break
 		}
 
+		KeyWait, numpad8, D T0.02
+		If not ErrorLevel 
+		{
+			build := "Custom" ;Tapco dlls
+			special := "Tapco"
+			break
+		}
+
+		KeyWait, numpad9, D T0.02
+		If not ErrorLevel 
+		{
+			build := "CC"
+			break
+		}
+
+		KeyWait, numpad0, D T0.02
+		If not ErrorLevel 
+		{
+			build := "Custom"
+			break
+		}
+
 		Sleep 10
 
 	}
 
-
+Notify("","",-0,"Wait=" Choose_Build)
+Choosing := 0
 Notify("Getting Latest " build,"",-5,"Style=Mine")
 
 ;; Define installer and install dir
 setupfile := "C:\SalesPad.Setup.exe"
-installpath := "C:\Program Files (x86)\SalesPad.GP\"
+;installpath := "C:\Program Files (x86)\SalesPad.GP\"
 
-;; Find newest installer
-Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\*, 2, 0
+    Loop, \\Nasus\Builds\SalesPad4\SalesPad_4_%build%\*, 1, 0
+    {
+         FileGetTime, FileTime, %A_LoopFileFullPath%, C
+         If (FileTime > Time_Orig) And (FileExist(A_LoopFileFullPath "\*withCardControl.exe"))
+         {
+			Time_Orig := FileTime
+			File := A_LoopFileName
+			Folder := A_LoopFileFullPath
+         }
+    }
+    Loop, %Folder%\*WithCardControl.exe, 0 , 0
+    {
+    	File := A_LoopFileName
+    	FullFile := A_LoopFileFullPath
+    	FormatTime, CreationDate, %Time_Orig%, ddd, M/dd, h:mm tt
+    }
 
-{
-     FileGetTime, Time, %A_LoopFileFullPath%, C
-     If (Time > Time_Orig)
-     {
-          Time_Orig := Time
-          Folder := A_LoopFileName
-     }
-}
+SplitPath, FullFile, name, dir, ext, name_no_ext, drive
+Folder := Substr(dir, RegExMatch(dir, "P)(?<=\\)[\d\.]+$", matchlength), matchlength)
 
-Loop, \\draven\Builds\SalesPad4\SalesPad_4_%build%\%Folder%\*WithCardControl.exe, 0, 1
-{
-	FileGetTime, thetime, %A_LoopFileFullPath%, C
-	;msgbox % thetime
-	;FormatTime, CreateTime,CreateTime, M/d h:mm tt
-	File := A_LoopFileName
-	FullFile := A_LoopFileFullPath
-	FormatTime, CreationDate, %thetime%, ddd, M/dd, h:mm tt
-}
+;build := RegExReplace(build, "F9_", "")
 
-build := RegExReplace(build, "F9_", "")
+installpath := "C:\Program Files (x86)\SalesPad.GP " build "\" Folder
 
-If FileExist("C:\Program Files (x86)\SalesPad.GP " build "\" Folder)
+If FileExist(installpath) ; and (NeedsModule = 0)
 {
 	Run % "C:\Program Files (x86)\SalesPad.GP " build "\" Folder "\SalesPad.exe"
 	If A_ComputerName = elliot-pc
@@ -134,7 +162,12 @@ if FileExist(setupfile)
 ;; Copy and rename installer
 ;FileCopy, %FullFile%, %setupfile%
 ShellFileOperation("FO_COPY", FullFile, setupfile)
-WinWaitClose, ahk_class OperationStatusWindow
+WinWaitClose, ahk_class OperationStatusWindow, 10
+If ErrorLevel
+{
+	msgbox, File copy is taking too long. Press Ok to Exit
+	ExitApp
+}
 ;; Stop if file was not pulled
 if ! FileExist(setupfile)
 {
@@ -144,15 +177,28 @@ if ! FileExist(setupfile)
 ;; Run installer
 path := "C:\Program Files (x86)\SalesPad.GP " build "\" Folder
 RunWait, %setupfile% /S /D=%path%
-Run, %path%\SalesPad.exe
 
-SetTimer, KeepActive, 50
+if (special = "Tapco") && (build = "Custom")
+{
+	GetDll("BusinessRules", dir, installpath)
+	GetDll("Tapco", dir, installpath)		
+}
+if (special = "CRM") && (build = "Custom")
+{
+	GetDll("CRM", dir, installpath)
+}
+
+
+Run, %path%\SalesPad.exe
 
 RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SalesPad, Last Connection, TWI
 RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SalesPad, Last User, elliotd
 RegWrite, REG_SZ, HKEY_CURRENT_USER, Software\SalesPad, Last Auth Method, True
 
-WinWaitActive, SalesPad ahk_class WindowsForms10.Window.8.app.0.13965fa_r11_ad1, Welcome
+WinWaitActive, SalesPad ahk_class WindowsForms10.Window.8.app.0.30495d1_r11_ad1, Welcome to SalesPad, 4
+Sleep 1000
+Send {Enter}
+Sleep 1000
 Send {Enter}
 Loop 50
 {
@@ -169,10 +215,7 @@ IfWinNotExist, SalesPad, Update is Available
 	ExitApp
 Sleep 50
 
-if (build = "Main") or (build = "HotFix") or (build = "Custom")
-	Send {Space}{Tab 4}{Space}{Tab 2}{Enter}
-Else
-	Send {Space}{Tab 3}{Space}{Tab 2}{Enter}
+Send {Space}{Tab}{Space}{Tab 3}{Space}{Tab 2}{Enter}
 
 Loop {
 
@@ -195,23 +238,47 @@ KeepActive:
 	Return
 
 logini:
-If A_ComputerName = elliot-pc
-{
-	path := ini_load(ini, "Work.ini") 
-	ini_replaceValue(ini, "LastInstall", "Branch", build)
-	ini_replaceValue(ini, "LastInstall", "Build", Folder)
-	ini_save(ini, "Work.ini")
-}
+	If A_ComputerName = elliot-pc
+	{
+		path := ini_load(ini, "Work.ini") 
+		ini_replaceValue(ini, "LastInstall", "Branch", build)
+		ini_replaceValue(ini, "LastInstall", "Build", Folder)
+		ini_save(ini, "Work.ini")
+	}
 Return
+
+GetDLL(dllname, buildpath, installpath)
+{
+	Notify(dllname " module added.", message,-15,"Style=Mine")
+	Loop, %buildpath%\CustomModules\WithCardControl\*%dllname%*zip, 0, 1
+		ModulePath := A_LoopFileFullPath
+	Unz(ModulePath, installpath)
+}
+
+;; http://www.autohotkey.com/board/topic/60706-native-zip-and-unzip-xpvista7-ahk-l/
+Unz(sZip, sUnz)
+{
+    fso := ComObjCreate("Scripting.FileSystemObject")
+    If Not fso.FolderExists(sUnz)  ;http://www.autohotkey.com/forum/viewtopic.php?p=402574
+       fso.CreateFolder(sUnz)
+    psh  := ComObjCreate("Shell.Application")
+    zippedItems := psh.Namespace( sZip ).items().count
+    psh.Namespace( sUnz ).CopyHere( psh.Namespace( sZip ).items, 4|16 )
+}
 
 ExitApp
 
-Numpad1::Return
-Numpad2::Return
-Numpad3::Return
-Numpad4::Return
-Numpad5::Return
-Numpad6::Return
-Numpad7::Return
-Numpad8::Return
 ~Esc::ExitApp
+
+#If Choosing
+	Numpad1::Return
+	Numpad2::Return
+	Numpad3::Return
+	Numpad4::Return
+	Numpad5::Return
+	Numpad6::Return
+	Numpad7::Return
+	Numpad8::Return
+	Numpad9::Return
+	Numpad0::Return
+#If
