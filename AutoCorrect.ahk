@@ -5315,3 +5315,5 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::sems::seems
 ::isee::i see
 ::kidna::kinda
+::clera::clear
+::wek::week
