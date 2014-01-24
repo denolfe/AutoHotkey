@@ -124,15 +124,10 @@ RunWait, %comspec% /c "",, Hide
 ^!s::
 	; Enable setting to focus search field in Everything
 	If WinExist("ahk_class EVERYTHING")
-	{
 		WinActivate, ahk_class EVERYTHING
-		WinWaitActive, ahk_class EVERYTHING
-	}
 	Else
-	{
 		Run, C:\Program Files\Everything\Everything.exe
-		WinActivate, ahk_class EVERYTHING
-	}
+		
 	WinWaitActive ahk_class EVERYTHING
 	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
 	WinWaitNotActive
