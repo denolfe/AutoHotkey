@@ -180,14 +180,16 @@ GroupAdd, Game, ahk_exe terraria.ahk
 		SetTitleMatchMode, 2
 		If WinActive("FogBugz (Case")
 		{
-		  WinGetTitle, Title, A
-		  RegExMatch(Title, "(?<=\(Case\s)\d+", caseNum)
-		  Send ^l
-		  Sleep 100
-		  Send f{Space}
-		  Sleep 100
-		  Send %caseNum%{Enter}
+			WinGetTitle, Title, A
+			RegExMatch(Title, "(?<=\(Case\s)\d+", caseNum)
+			Send ^l
+			Sleep 100
+			Send f{Space}
+			Sleep 100
+			Send %caseNum%{Enter}
 		}
+		else
+			Send ^k
 		Return
 
 	F1::
