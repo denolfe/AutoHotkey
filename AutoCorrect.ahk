@@ -5318,3 +5318,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::clera::clear
 ::wek::week
 ::budnler::bundler
+::celar::clear
+::budnle::bundle
+::csae::case
+::oens::ones
