@@ -59,7 +59,7 @@
 :*:+la::(?=){Left}
 :*:-la::(?`!){Left}
 :*:+lb::(?<=){Left}
-:*:-lb::(?<`!){Left}
+:*:-lb::(?<{!}){Left}
 
 :*:header;::
 	linelen := strlen(clipboard) + 20
