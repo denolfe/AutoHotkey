@@ -128,7 +128,7 @@ Return
 
 
 ^NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
-
+#s::
 ^Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 ^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe?")	
 ^Numpad5::Run, C:\Dev\adt-bundle-windows-x86_64\eclipse\eclipse.exe
