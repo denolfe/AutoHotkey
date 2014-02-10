@@ -117,21 +117,20 @@ Return
 	;;;;;;;; Launcher ;;;;;;;;;;
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-`:: ShowStart("Git Bash", "%comspec% /c ""C:\RailsInstaller\Git\bin\sh.exe")
-
-RunWait, %comspec% /c "",, Hide
-
 ^!s::
+	;DetectHiddenWindows, Off
 	; Enable setting to focus search field in Everything
+	DetectHiddenWindows, Off
 	If WinExist("ahk_class EVERYTHING")
 		WinActivate, ahk_class EVERYTHING
 	Else
-		Run, C:\Program Files\Everything\Everything.exe
-		
-	WinWaitActive ahk_class EVERYTHING
+		Run, C:\Program Files\Everything\Everything.exe -admin
+	
+	WinWaitActive, ahk_class EVERYTHING,, 2
 	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
 	WinWaitNotActive
 	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, A_ScreenHeight*0.65, A_ScreenWidth*0.7, A_ScreenHeight*0.35
+	DetectHiddenWindows, On
 	Return
 
 ^NumPad0::
@@ -187,6 +186,7 @@ RunWait, %comspec% /c "",, Hide
 	Return
 
 ^Numpad2::ShowStart("SPLLC", "C:\Program Files (x86)\SalesPad.QBC\SalesPad.QBC.exe")
+#s::
 ^Numpad3::
 	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
