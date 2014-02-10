@@ -75,8 +75,9 @@ NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 			WinMinimize, ahk_class SpotifyMainWindow
 		Else
 		{
-			If WinExist("Spotify")
-				WinActivate, % "Spotify"
+			SetTitleMatchMode, RegEx
+			If WinExist("^Spotify")
+				WinActivate
 			else
 			{
 	        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
@@ -87,6 +88,7 @@ NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 	            }
 	            WinActivate
 			}
+			SetTitleMatchMode, 2
 		}
 	Return
 
