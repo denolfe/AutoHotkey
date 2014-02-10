@@ -6,6 +6,7 @@
 
 :*:ahkskel::{#}NoEnv`n{#}WinActivateForce`n{#}SingleInstance force`nSendMode Input`nSetWorkingDir %A_ScriptDir%`nSetTitleMatchMode, 2`n
 :*:ahk;::AutoHotkey
+:*:st;::Sublime Text
 :*:date;::
 :*:now;::
 	SendInput % A_MM "/" A_DD "/" A_YYYY
