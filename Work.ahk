@@ -27,7 +27,7 @@ Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
 global Editor := "..\Sublime-Portable\sublime_text.exe"
 
-SetTimer, AutoUpdate, 1000
+;SetTimer, AutoUpdate, 1000
 
 If ! A_IsAdmin
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
@@ -78,14 +78,16 @@ Return
 #Include *i %A_ScriptDir%\SalesPad.ahk
 #Include %A_ScriptDir%\Utilities\FormatAHK.ahk
 
-^!r::Reload
-^!e::SublimeOpen(A_ScriptName)
-^!t::SublimeOpen("test.ahk")
+^!r::	Reload
+^!e::	SublimeOpen(A_ScriptName)
+^!t::	SublimeOpen("test.ahk")
+^!h::	SublimeOpen("Hotstrings.ahk")
+^!a::	SublimeOpen("AppSpecific.ahk")
+^!m::	SublimeOpen("MyMethods.ahk")
+!t::	Run, Test.ahk
+
 ^NumpadEnter::SublimeOpen("Shortcuts.ahk")
-^!h::SublimeOpen("Hotstrings.ahk")
-^!a::SublimeOpen("AppSpecific.ahk")
-^!m::SublimeOpen("MyMethods.ahk")
-!t::Run Test.ahk
+
 +Pause::Suspend
 
 ^!x::AHKPanic(1,0,0,1)
