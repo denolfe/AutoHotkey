@@ -14,9 +14,10 @@ GroupAdd, Editor, ahk_class PX_WINDOW_CLASS
 GroupAdd, Game, ahk_class Valve001
 GroupAdd, Game, Battlefield
 GroupAdd, Game, ahk_class WarsowWndClass
-GroupAdd, Game, ahk_exe terraria.ahk
+GroupAdd, Game, ahk_exe terraria.exe
 
-#IfWinActive ahk_class EVERYTHING
+#If WinActive("ahk_class EVERYTHING") and !GetKeyState("Alt")
+	
 	Tab::Down
 	+Tab::Send, {Up}{Shift Up}
 	Shift::Return
@@ -61,7 +62,7 @@ GroupAdd, Game, ahk_exe terraria.ahk
 			Notify("Filename Copied",clipboard,-1,"Style=Mine")
 		}
 	Return
-
+#If
 #IfWinActive ahk_class CabinetWClass
 	F6::
 		;RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState, FullPath, 1
