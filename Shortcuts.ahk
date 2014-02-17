@@ -18,18 +18,18 @@
 #p::			ShowDir("C:\Program Files (x86)\")
 
 #NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
-#Numpad1::ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
-#NumPad2::ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
-#NumPad3::ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
-#Numpad4::ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
-#Numpad5::ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
+#Numpad1::	ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
+#NumPad2::	ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
+#NumPad3::	ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
+#Numpad4::	ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
+#Numpad5::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
 
-!#NumpadDot::ShowDir("\\Testing-PC\c$")
-!#Numpad1::ShowDir("\\testing1\c$")
-!#NumPad2::ShowDir("\\smartbear\c$")
-!#NumPad3::ShowDir("\\testing3\c$")
-!#Numpad4::ShowDir("\\testing4\c$")
-!#Numpad5::ShowDir("\\sql2005\c$")
+!#NumpadDot::	ShowDir("\\Testing-PC\c$")
+!#Numpad1::		ShowDir("\\testing1\c$")
+!#NumPad2::		ShowDir("\\smartbear\c$")
+!#NumPad3::		ShowDir("\\testing3\c$")
+!#Numpad4::		ShowDir("\\testing4\c$")
+!#Numpad5::		ShowDir("\\sql2005\c$")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
@@ -70,27 +70,27 @@ AppsKey::Run, MyMenu.ahk
 	Return
 	
 NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
-		WinGetClass, this_class, A
-		If (RegExMatch(this_class, "Spotify")) ; Toggle
-			WinMinimize, ahk_class SpotifyMainWindow
-		Else
+	WinGetClass, this_class, A
+	If (RegExMatch(this_class, "Spotify")) ; Toggle
+		WinMinimize, ahk_class SpotifyMainWindow
+	Else
+	{
+		SetTitleMatchMode, RegEx
+		If WinExist("^Spotify")
+			WinActivate
+		else
 		{
-			SetTitleMatchMode, RegEx
-			If WinExist("^Spotify")
-				WinActivate
-			else
-			{
-	        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
-	            If ErrorLevel
-	            {
-	                Notify("File not found", title,-3,"Style=Mine")
-	                Return
-	            }
-	            WinActivate
-			}
-			SetTitleMatchMode, 2
+        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
+            If ErrorLevel
+            {
+                Notify("File not found", title,-3,"Style=Mine")
+                Return
+            }
+            WinActivate
 		}
-	Return
+		SetTitleMatchMode, 2
+	}
+Return
 
 #WheelDown::	Send {WheelRight 5}
 #WheelUp::		Send {WheelLeft 5}
