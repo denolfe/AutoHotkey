@@ -25,7 +25,7 @@ Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
-global Editor := "..\Sublime-Portable\sublime_text.exe"
+global Editor := "..\SublimePortable\sublime_text.exe"
 
 ;SetTimer, AutoUpdate, 1000
 
