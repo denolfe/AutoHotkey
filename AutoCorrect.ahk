@@ -5323,3 +5323,5 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::csae::case
 ::oens::ones
 ::csea::case
+::ncie::nice
+::apear::appear
