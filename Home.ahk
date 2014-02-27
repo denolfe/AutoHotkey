@@ -18,7 +18,7 @@ Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
 
-global Editor := "D:\Dropbox\HomeShare\Sublime-Portable\sublime_text.exe"
+global Editor := "D:\Dropbox\HomeShare\SublimePortable\sublime_text.exe"
 
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
@@ -43,9 +43,6 @@ SoundPlay, lib\sounds\load.wav
 	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, 716, A_ScreenWidth/1.45, A_ScreenHeight - 716
 
 Return
-
-:*:gsauth;::/authserv auth fathom 1030rJyY
-:*:irc;::Team EAT{Tab}1337-347150-2012
 
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
@@ -206,6 +203,10 @@ Return
 	#Left::Send {Media_Play_Pause} ;ControlSend, ahk_parent, ^{Space}, ahk_class SpotifyMainWindow 
 	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
 #IfWinActive
+
+;; Quickfire TK
+LWin::SetNumLockState, On
+LWin Up::SetNumLockState, Off
 
 ;#Include Terraria.ahk
 
