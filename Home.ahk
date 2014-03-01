@@ -24,8 +24,6 @@ Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SoundPlay, lib\sounds\load.wav
 
-^!b::Run, D:\Downloads\warsow_1.02_sdk\source\Debug\x86\warsow_x86.exe +set fs_cdpath "C:\Program Files (x86)\Warsow 1.02\" +set fs_basepath "$(TargetDir)" +devmap wdm1
-
 ^!s::
 	IfWinNotExist Everything
 	{
@@ -74,63 +72,51 @@ ScrollLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 	}
 Return
 
-~RCtrl::
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
-	  Run C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf
-	return
+;; CapsLock Shortcuts
 
-;; SOUND DEVICE TOGGLE ;;
-+ScrollLock::
-	path := ini_load(ini, "Home.ini") 
-	device := ini_getValue(ini, SoundDevices, "Playback")
-
-	if device = Headphones
-	{
-		ini_replaceValue(ini, SoundDevices, "Playback", "Speakers")
-		Run, Utilities\nircmd.exe setdefaultsounddevice Speakers
-	}
-	else
-	{
-		ini_replaceValue(ini, SoundDevices, "Playback", "Headphones")
-		Run, Utilities\nircmd.exe setdefaultsounddevice Headphones
-	}
-	Notify(ini_getValue(ini, SoundDevices, "Playback"),"Sound Device Changed",-1,"Style=Mine")
-	path := ini_save(ini, "Home.ini")
-	SoundPlay, lib\sounds\meta-online.wav
+CapsLock:: 
+	Caps := 1
+	SetNumLockState, On
 	Return
-	
-	+Pause::
-		aero:=!aero
-		if aero
-			RunWait, %comspec% /c "net stop uxsms",, Hide
-		else
-			RunWait, %comspec% /c "net start uxsms",, Hide
+CapsLock Up:: 
+	Caps := 0
+	SetNumLockState, Off
 	Return
++CapsLock::CapsLock
 
-~NumLock::
-	Sleep 100
-	if GetKeyState("NumLock", "T")
-	{
-		SoundBeep, 500, 100
-		SoundBeep, 700, 100
-		SoundBeep, 900, 100
-	}
-	else
-	{
-		SoundBeep, 900, 100
-		SoundBeep, 700, 100
-		SoundBeep, 500, 100
-	}
-Return
+#If Caps
+	NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
+	Numpad0::Return
+	Numpad1::Return
+	Numpad2::Return
+	Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
+	Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe?")	
+	Numpad5::Return
+	Numpad6::Return
+	Numpad7::ShowStart("Inbox", "chrome.exe www.gmail.com")
+	Numpad8::ShowStart("Google Calendar", "chrome.exe calendar.google.com")
+	Numpad9::Return
 
+	;;;;; CapsNav ;;;;;;;
 
-^NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
-#s::
-^Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
-^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe?")	
-^Numpad5::Run, C:\Dev\adt-bundle-windows-x86_64\eclipse\eclipse.exe
-^Numpad7::ShowStart("Inbox", "chrome.exe www.gmail.com")
-^Numpad8::ShowStart("Google Calendar", "chrome.exe calendar.google.com")
+	h::CapsNav("Left")
+	j::CapsNav("Down")
+	k::CapsNav("Up")
+	l::CapsNav("Right")
+
+	n::CapsNav("Home")
+	p::CapsNav("End")
+
+	o::
+	.::CapsNav("Right", "!")
+	m::CapsNav("Left", "!")
+
+	u::
+	`;::
+	,::
+	i::
+	Return
+#If
 
 #NumpadEnter::
 	loop
@@ -148,48 +134,12 @@ Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-!Numpad1:: Run D:\Dropbox
-!Numpad2:: Run D:\Dropbox\HomeShare
-!Numpad3:: Run D:\ 
+!Numpad1:: ShowDir("D:\Dropbox")
+!Numpad2:: ShowDir("D:\Dropbox\HomeShare")
+!Numpad3:: ShowDir("D:\")
 !Numpad7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
-!Numpad0:: Run %A_ScriptDir%
-!NumpadDot:: Run D:\Downloads\
-
-CapsLock::Return
-+CapsLock::CapsLock
-;;;;; CapsNav ;;;;;;;
-
-CapsLock & h::CapsNav("Left")
-CapsLock & j::CapsNav("Down")
-CapsLock & k::CapsNav("Up")
-CapsLock & l::CapsNav("Right")
-
-CapsLock & n::CapsNav("Home")
-CapsLock & p::CapsNav("End")
-
-CapsLock & o::
-CapsLock & .::CapsNav("Right", "!")
-CapsLock & m::CapsNav("Left", "!")
-
-CapsLock & u::
-CapsLock & `;::
-CapsLock & ,::
-CapsLock & i::
-Return
-
-
-
-
-
-
-
-;; Media Keys
-;+F5::F5
-;+F6::F6
-;+F7::F7
-;F5::Send {Media_Prev}
-;F6::Send {Media_Play_Pause}
-;F7::Send {Media_Next}
+!Numpad0:: ShowDir(A_ScriptDir)
+!NumpadDot:: ShowDir("D:\Downloads\")
 
 ^!r::Reload	
 ^!e::Run %Editor% %A_ScriptName%
@@ -204,11 +154,9 @@ Return
 	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
 #IfWinActive
 
-;; Quickfire TK
-LWin::SetNumLockState, On
-LWin Up::SetNumLockState, Off
-
-;#Include Terraria.ahk
+;; Quickfire TK - Enable NumLock
+*RCtrl::SetNumLockState, On
+*RCtrl Up::SetNumLockState, Off
 
 #Include Appspecific.ahk
 #Include MyMethods.ahk
