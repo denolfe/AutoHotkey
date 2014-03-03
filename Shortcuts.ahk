@@ -239,7 +239,7 @@ ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
 	Run, buildprompt.ahk
 	Return
 
-^g::
+#g::
 	if RegExMatch(clipboard, ".+(.com|.net|.co.uk)")
 		Run, chrome.exe %clipboard%
 	Return
