@@ -193,6 +193,15 @@ GroupAdd, Game, ahk_exe terraria.exe
 			Send ^k
 		Return
 
+	^i::
+		SetTitleMatchMode, 2
+		WinGetTitle, Title, A
+		RegExMatch(Title, "(\d+)((?=:))", caseNum)
+		clipboard := "Case " caseNum
+		Notify("Clipboard Content",clipboard,-2,"Style=Mine")
+		WinActivate, ahk_class Win32UserWindow
+		Return
+
 	F1::
 		IfWinActive, New Tab
 			Send ^l
