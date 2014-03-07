@@ -75,6 +75,7 @@ Return
 #Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
+#Include %A_ScriptDir%\CapsNav.ahk
 #Include *i %A_ScriptDir%\SalesPad.ahk
 #Include %A_ScriptDir%\Utilities\FormatAHK.ahk
 

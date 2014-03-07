@@ -49,19 +49,19 @@ GroupAdd, Game, ahk_exe terraria.exe
 		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
 		return
 
-	CapsLock::
-		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
-		{
-			Send {F2}^{a}
-			Sleep 50
-			;clipboard = ; Empty the clipboard
-			ClipClear()
-			Send ^{c}			
-			Send {Esc}
-			ClipWait
-			Notify("Filename Copied",clipboard,-1,"Style=Mine")
-		}
-	Return
+	; CapsLock::
+	; 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
+	; 	{
+	; 		Send {F2}^{a}
+	; 		Sleep 50
+	; 		;clipboard = ; Empty the clipboard
+	; 		ClipClear()
+	; 		Send ^{c}			
+	; 		Send {Esc}
+	; 		ClipWait
+	; 		Notify("Filename Copied",clipboard,-1,"Style=Mine")
+	; 	}
+	; Return
 #If
 #IfWinActive ahk_class CabinetWClass
 	F6::
