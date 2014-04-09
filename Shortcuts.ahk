@@ -61,8 +61,6 @@ Return
 AppsKey::Run, MyMenu.ahk
 +AppsKey::AppsKey
 
-+CapsLock::CapsLock
-
 #l::
 	Run, %A_WinDir%\System32\rundll32.exe user32.dll`, LockWorkStation
 	Sleep 1000
@@ -94,32 +92,32 @@ Return
 
 #WheelDown::	Send {WheelRight 5}
 #WheelUp::		Send {WheelLeft 5}
-
-;;;;; CapsNav ;;;;;;;
-
-CapsLock & h::CapsNav("Left")
-CapsLock & j::CapsNav("Down")
-CapsLock & k::CapsNav("Up")
-CapsLock & l::CapsNav("Right")
-
-CapsLock & n::CapsNav("Home")
-CapsLock & p::CapsNav("End")
-
-CapsLock & o::
-CapsLock & .::CapsNav("Right", "!")
-CapsLock & m::CapsNav("Left", "!")
-
-CapsLock & u::
-CapsLock & `;::
-CapsLock & ,::
-CapsLock & i::
-Return
 	
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	;;;;;;;; Launcher ;;;;;;;;;;
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-^!s::
+^!s::Gosub, Everything
+^NumPad0::Gosub, RearrangeWindows
+^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
+^Numpad1::Gosub, SalesPad
+^Numpad2::ShowStart("Cmder", "../cmder/cmder.exe")
+#s::
+^Numpad3::GoSub, SublimeText
+^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
+^Numpad5::ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
+^Numpad6::Gosub, SSMS
+^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
+^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
+
+#NumpadEnter::Gosub, PurgeWindows
+^!NumpadEnter::Run, Utilities\ViewScriptProcesses.ahk
+#NumpadAdd::Gosub, ResetDB
+^!NumpadAdd::Run, buildprompt.ahk
+
+ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
+
+Everything:
 	;DetectHiddenWindows, Off
 	; Enable setting to focus search field in Everything
 	DetectHiddenWindows, Off
@@ -135,7 +133,7 @@ Return
 	DetectHiddenWindows, On
 	Return
 
-^NumPad0::
+RearrangeWindows:
 	WinMove, ahk_class Win32UserWindow,, 1920,0,334,1080
 	WinActivate, ahk_class Win32UserWindow
 
@@ -146,9 +144,7 @@ Return
 	WinMove, Buddy List,, 3605,0,234,1080
 	Return
 	
-^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-	
-^Numpad1::
+SalesPad:
 	aDown := A_TickCount
 	Keywait Numpad1
 	If ((A_TickCount-aDown) < 400)
@@ -187,29 +183,22 @@ Return
 	Run %exe%
 	Return
 
-^Numpad2::ShowStart("SPLLC", "C:\Program Files (x86)\SalesPad.QBC\SalesPad.QBC.exe")
-#s::
-^Numpad3::
+SublimeText:
 	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
 	WinMove, ahk_class PX_WINDOW_CLASS,, 1920, 0, 1317, A_ScreenHeight
 	Return
-^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
-^Numpad5::ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
 
-^Numpad6::
+SSMS:
 	aDown:=A_TickCount
 	Keywait Numpad6
 	If ((A_TickCount-aDown)<400)
 		ShowStart("Microsoft SQL Server Management Studio", "C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\Ssms.exe")
-	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<800)
+	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<3000)
 		Run, "D:\Dropbox\Scripts\SQL\sandbox.sql"
 	Return
 	
-^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
-^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
-
-#NumpadEnter::
+PurgeWindows:
 	loop
 	{
 		WinClose, ahk_class CabinetWClass
@@ -220,13 +209,7 @@ Return
 	Notify("Windows Purged","",-1,"GC=555555 TC=White MC=White")
 	Return
 	
-^!NumpadEnter::
-	Run, Utilities\ViewScriptProcesses.ahk
-	Return
-	
-ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
-
-#NumpadAdd::
+ResetDB:
 	MsgBox, 36, Reset DB, Reset the database version?
 	IfMsgBox Yes
 	{
@@ -235,9 +218,11 @@ ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
 	}
 	Return
 
-^!NumpadAdd::
-	Run, buildprompt.ahk
-	Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;; Misc ;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 #g::
 	if RegExMatch(clipboard, ".+(.com|.net|.co.uk)")
