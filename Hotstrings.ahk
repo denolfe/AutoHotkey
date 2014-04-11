@@ -36,9 +36,9 @@
 :*:ddf::delete from{Space}
 :*:scf::select COUNT(*) from{Space}
 :*:sph::sp_help{Space}''{Left}
-:*:ii;::SET IDENTITY_INSERT  ON {Ctrl Down}{Left}{Ctrl Up}{Left}
-:*:singleuser::ALTER DATABASE  SET SINGLE_USER WITH ROLLBACK IMMEDIATE{Ctrl Down}{Left 5}{Ctrl Up}{Left}
-:*:multiuser::ALTER DATABASE  SET MULTI_USER{Ctrl Down}{Left 2}{Ctrl Up}{Left}
+:*:ii;::SET IDENTITY_INSERT TABLENAME ON {Ctrl Down}{Left 2}{Shift Down}{Right}{Shift Up}{Ctrl Up}
+:*:singleuser::ALTER DATABASE DBNAME SET SINGLE_USER WITH ROLLBACK IMMEDIATE{Ctrl Down}{Left 6}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+:*:multiuser::ALTER DATABASE DBNAME SET MULTI_USER{Ctrl Down}{Left 3}{Shift Down}{Right}{Ctrl Up}{Shift Up}
 :*:killconn::USE master`n`nGO`n`nDECLARE @dbname sysname`nSET @dbname = 'yourdbname'`nDECLARE @spid int`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname)`nWHILE @spid IS NOT NULL`nBEGIN`nEXECUTE ('KILL ' {+} @spid)`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname) AND spid > @spid`n`nEND
 :*:obd::order by date desc
 
