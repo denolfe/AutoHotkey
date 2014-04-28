@@ -26,8 +26,11 @@ Loop, Parse, IncludedFiles, |
 Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
 global Editor := "..\SublimePortable\sublime_text.exe"
+global kbdIndex = 0
 
 ;SetTimer, AutoUpdate, 1000
+SetTimer, IntroSound, -1
+SetTimer, IntroLights, -1
 
 If ! A_IsAdmin
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
@@ -55,6 +58,25 @@ If A_UserName = elliotd
 }
 Return ;End Auto-Execute
 
+IntroSound:
+	SoundPlay, lib\sounds\signon.wav
+	Return
+
+IntroLights:
+	Loop, 2 ; Knight Rider KITT cycling all LEDs ;-)
+	{
+		KeyboardLED(2,"switch", kbdIndex)
+		Sleep, 75
+		KeyboardLED(4,"switch", kbdIndex)
+		Sleep, 75
+		KeyboardLED(1,"switch", kbdIndex)
+		Sleep, 75
+		KeyboardLED(4,"switch", kbdIndex)
+		Sleep, 75
+	}
+	KeyboardLED(0,"off", kbdIndex)
+	Return
+
 AutoUpdate:
 	Loop, Parse, IncludedFiles, |
 	{	
@@ -75,7 +97,7 @@ Return
 #Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
-#Include %A_ScriptDir%\CapsNav.ahk
+;#Include %A_ScriptDir%\CapsNav.ahk
 #Include *i %A_ScriptDir%\SalesPad.ahk
 #Include %A_ScriptDir%\Utilities\FormatAHK.ahk
 
