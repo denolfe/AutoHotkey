@@ -159,7 +159,7 @@ GroupAdd, Game, ahk_exe terraria.exe
 		}
 #If
 
-#IfWinActive, ahk_class Chrome_WidgetWin_1
+#IfWinActive, ahk_class Chrome_WidgetWin
 
 	^;::
 		IfWinActive, New Tab
