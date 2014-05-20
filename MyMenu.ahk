@@ -32,40 +32,40 @@ Menu,Main,show
 Return
 ;----------labels-----------
 LightningRenamer:
-Run, Utilities\LightningRenamer.ahk
-Return
+	Run, Utilities\LightningRenamer.ahk
+	Return
 SmartGUI:
-Run, Utilities\smartgui\SmartGUI.exe
-Return
+	Run, Utilities\smartgui\SmartGUI.exe
+	Return
 DirectoryCompare:
-Run, Utilities\DirectoryCompare.ahk
-Return
+	Run, Utilities\DirectoryCompare.ahk
+	Return
 KDiff3:
-Run, %A_ProgramFiles86%\KDiff3\kdiff3.exe
-Return
+	Run, %A_ProgramFiles86%\KDiff3\kdiff3.exe
+	Return
 AHKDocumentation:
-Run, chrome.exe http://l.autohotkey.net/docs/
-Return
+	Run, chrome.exe http://l.autohotkey.net/docs/
+	Return
 
 Ahk2Exe:
-Run, Utilities\Ahk2Exe\Ahk2Exe.exe
-Return
+	Run, Utilities\Ahk2Exe\Ahk2Exe.exe
+	Return
 
 DynamicFunctionTester:
-Run, Utilities\DynamicFunctionTester.ahk
-Return
+	Run, Utilities\DynamicFunctionTester.ahk
+	Return
 
 Colorette:
-Run, Utilities\Colorette.ahk
-Return
+	Run, Utilities\Colorette.ahk
+	Return
 
 PathEditor:
-Run, Utilities\PathEditor.exe
-Return
+	Run, Utilities\PathEditor.exe
+	Return
 
 ClipboardReplace:
-	Run, Utilities\Replace.ahk
-Return
+		Run, Utilities\Replace.ahk
+	Return
 
 SQLFormatter:
 	ClipSave()
@@ -81,7 +81,7 @@ SQLFormatter:
 	;FileDelete, Utilities\clipboard.sql
 	;FileDelete, Utilities\clipboard.sql.bak
 	ClipRestore()
-Return
+	Return
 
 FormatURL:
 	If Instr(clipboard, "\\katrina\public\")
@@ -99,7 +99,7 @@ FormatURL:
 	{
 		MsgBox, Clipboard does not contain UNC path!`n`n%clipboard%
 	}
-Return
+	Return
 
 GPLookup:
 	clipboardsave := clipboard
@@ -112,4 +112,4 @@ GPLookup:
 	else
 		Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Transact%A_Space%SQL%A_Space%site:http://msdn.microsoft.com/en-us/library"
 	clipboard := clipboardsave
-Return
+	Return
