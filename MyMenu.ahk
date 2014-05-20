@@ -23,6 +23,8 @@ Menu,Main,Add,KDiff3
 Menu,Main,Add,Colorette, Colorette
 Menu,Main,Add,
 Menu,Main,Add, AutoHotkey, :AutoHotkey
+Menu,Main,Add,
+Menu,Main,Add, Path Editor, PathEditor
 
 
 Menu,Main,show
@@ -55,6 +57,10 @@ Return
 
 Colorette:
 Run, Utilities\Colorette.ahk
+Return
+
+PathEditor:
+Run, Utilities\PathEditor.exe
 Return
 
 ClipboardReplace:
