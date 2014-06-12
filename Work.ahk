@@ -39,7 +39,7 @@ If ! A_IsAdmin
 
 If A_UserName = elliotd
 {
-	Run %A_ScriptDir%\VolumeControl.ahk
+	Run %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
 	Run %A_ScriptDir%\AutoCorrect.ahk
 
 	SplitPath, A_ScriptName, , , , OutNameNoExt 
@@ -97,7 +97,7 @@ Return
 #Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
-;#Include %A_ScriptDir%\CapsNav.ahk
+#Include %A_ScriptDir%\CapsNav.ahk
 #Include *i %A_ScriptDir%\SalesPad.ahk
 #Include %A_ScriptDir%\Utilities\FormatAHK.ahk
 

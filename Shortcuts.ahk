@@ -8,11 +8,11 @@
 !Numpad2:: 		ShowDir("D:\Dropbox\HomeShare")
 !Numpad3:: 		ShowDir("D:\Dropbox\ScreenShots")
 !Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
-!Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad4")
-!Numpad6:: 		ShowDir("\\Nasus\Testing\Database Files\")
-!Numpad7:: 		ShowDir("\\Nasus\Testing")
+!Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad.GP")
+!Numpad6:: 		ShowDir("\\Karma\Team QA\Database Files\")
+!Numpad7:: 		ShowDir("\\Karma\Team QA")
 !Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
-!Numpad9:: 		ShowDir("\\Nasus\Testing\Logs")
+!Numpad9:: 		ShowDir("\\Karma\Team QA\Logs")
 
 #c::			ShowDir("C:\")
 #p::			ShowDir("C:\Program Files (x86)\")
@@ -36,26 +36,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ~Media_Next::
-	KeyboardLED(7,"off")
+	KeyboardLED(7,"off", kbdIndex)
 	Sleep, 50
-	KeyboardLED(4,"switch")
-	Sleep, 50
-	KeyboardLED(2,"switch")
-	Sleep, 50
-	KeyboardLED(1,"switch")
-	Sleep, 50
-	KeyboardLED(0,"off")
+	KeyboardLED(2,"switch", kbdIndex)
+	Sleep, 75
+	KeyboardLED(4,"switch", kbdIndex)
+	Sleep, 75
+	KeyboardLED(1,"switch", kbdIndex)
+	Sleep, 75
+	KeyboardLED(0,"off", kbdIndex)
 Return
 
 ~Media_Play_Pause::
 	Loop, 2 ; flash all LEDs
 	{
-		KeyboardLED(7,"on")
+		KeyboardLED(7,"on", kbdIndex)
 		Sleep, 100
-		KeyboardLED(7,"off")
+		KeyboardLED(7,"off", kbdIndex)
 		Sleep, 100
 	}
-	KeyboardLED(0,"off")
+	KeyboardLED(0,"off", kbdIndex)
 Return
 
 AppsKey::Run, MyMenu.ahk
@@ -113,9 +113,9 @@ Return
 #NumpadEnter::Gosub, PurgeWindows
 ^!NumpadEnter::Run, Utilities\ViewScriptProcesses.ahk
 #NumpadAdd::Gosub, ResetDB
-^!NumpadAdd::Run, buildprompt.ahk
+^!NumpadAdd::Run, WorkScripts\BuildPrompt.ahk
 
-ScrollLock::ShowStart("Test Configuration", "ConfigTests.ahk", 1)
+ScrollLock::ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
 
 Everything:
 	;DetectHiddenWindows, Off
@@ -173,7 +173,7 @@ SalesPad:
 		Loop, C:\Program Files (x86)\SalesPad.GP Release\Sales*.exe, 0, 1
 			{
 				 FileGetTime, Time, %A_LoopFileFullPath%, C
-				 If (Time > Time_Orig)
+				 If (Time > Time_Orig) and !(Instr(A_LoopFileName, "uninst"))
 				 {
 					  Time_Orig := Time
 					  exe := A_LoopFileFullPath

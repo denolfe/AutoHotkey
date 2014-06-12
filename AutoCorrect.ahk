@@ -5326,3 +5326,9 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::ncie::nice
 ::apear::appear
 ::ugess::guess
+::pritn::print
+::keybaord::keyboard
+::whiel::while
+::purcahse::purchase
+::instaed::instead
+::pust::puts

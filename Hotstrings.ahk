@@ -9,7 +9,8 @@
 :*:st;::Sublime Text
 :*:date;::
 :*:now;::
-	SendInput % A_MM "/" A_DD "/" A_YYYY
+	FormatTime, now, A_Now, M/d/yyyy
+	SendInput % now
 	Return
 :*:comspec;::RunWait, `%comspec`% /c "",, Hide{Ctrl Down}{Left 2}{Ctrl Up}{Right}
 
@@ -29,13 +30,13 @@
 :*:findc::select TABLE_NAME, COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME like '`%`%' order by TABLE_NAME{left 22}
 :*:findp::select SPECIFIC_NAME from INFORMATION_SCHEMA.ROUTINES where ROUTINE_NAME like '%%' order by SPECIFIC_NAME{left 25}
 :*:like;::like '`%`%'{left 2}
-:*:in;::in ('
+:*:in;::in ('){left}
 :*:temp;::If object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
 :*:ssf::select * from{Space}
 :*:ssi::select * into{Space}
 :*:ddf::delete from{Space}
 :*:scf::select COUNT(*) from{Space}
-:*:sph::sp_help{Space}''{Left}
+:*:sph;::sp_help{Space}''{Left}
 :*:ii;::SET IDENTITY_INSERT TABLENAME ON {Ctrl Down}{Left 2}{Shift Down}{Right}{Shift Up}{Ctrl Up}
 :*:singleuser::ALTER DATABASE DBNAME SET SINGLE_USER WITH ROLLBACK IMMEDIATE{Ctrl Down}{Left 6}{Shift Down}{Right}{Ctrl Up}{Shift Up}
 :*:multiuser::ALTER DATABASE DBNAME SET MULTI_USER{Ctrl Down}{Left 3}{Shift Down}{Right}{Ctrl Up}{Shift Up}
