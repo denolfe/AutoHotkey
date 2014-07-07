@@ -7,12 +7,12 @@ Contents
 --------------------
 * App Shortcuts
 * Text Expansion Hotstrings
-* App Launch Hotkeys.
+* App Launch Hotkeys
 * Misc AutoHotkey Utilities
 * Misc AutoHotkey methods
+* Universal vim-like movement keys in conjunction with CapsLock
 
-* Volume Scroll (top of screen and on taskbar).
 * AutoCorrect with personal additions.
-
+* ~~Volume Scroll~~ [Moved into own repo](https://github.com/denolfe/VolumeScroll)
 
 Download AutoHotkey_L [here](http://l.autohotkey.net/).
