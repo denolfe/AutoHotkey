@@ -10,7 +10,7 @@
 !Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
 !Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad.GP")
 !Numpad6:: 		ShowDir("\\Karma\Team QA\Database Files\")
-!Numpad7:: 		ShowDir("\\Karma\Team QA")
+!Numpad7:: 		ShowDir("\\Karma\Team QA\")
 !Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
 !Numpad9:: 		ShowDir("\\Karma\Team QA\Logs")
 
@@ -22,14 +22,17 @@
 #NumPad2::	ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
 #NumPad3::	ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
 #Numpad4::	ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
-#Numpad5::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
+#Numpad5::	ShowStart("(testing5).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing5")
+#Numpad6::	ShowStart("(testing6).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing6")
+#Numpad7::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
 
 !#NumpadDot::	ShowDir("\\Testing-PC\c$")
 !#Numpad1::		ShowDir("\\testing1\c$")
 !#NumPad2::		ShowDir("\\smartbear\c$")
 !#NumPad3::		ShowDir("\\testing3\c$")
 !#Numpad4::		ShowDir("\\testing4\c$")
-!#Numpad5::		ShowDir("\\sql2005\c$")
+!#Numpad5::		ShowDir("\\testing5\c$")
+!#Numpad6::		ShowDir("\\sql2005\c$")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
