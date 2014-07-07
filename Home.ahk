@@ -9,8 +9,8 @@ DetectHiddenWindows, On
 ;KeyboardLED(2,"off")
 SetCapsLockState, AlwaysOff
 
-Run AutoCorrect.ahk
-Run VolumeControl.ahk
+Run, AutoCorrect.ahk
+Run, %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
 
 total := 0
 IncludedFiles := "Home.ahk|MyMethods.ahk|AppSpecific.ahk|VolumeControl.ahk"
@@ -22,7 +22,11 @@ global Editor := "D:\Dropbox\HomeShare\SublimePortable\sublime_text.exe"
 
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
-SoundPlay, lib\sounds\load.wav
+SetTimer, IntroSound, -1
+
+IntroSound:
+	SoundPlay, lib\sounds\load.wav
+	Return
 
 ^!s::
 	IfWinNotExist Everything
@@ -76,25 +80,25 @@ Return
 
 CapsLock:: 
 	Caps := 1
-	SetNumLockState, On
+	SetNumLockState, On		; Quickfire TK workaround
 	Return
 CapsLock Up:: 
 	Caps := 0
-	SetNumLockState, Off
+	SetNumLockState, Off	; Quickfire TK workaround
 	Return
 +CapsLock::CapsLock
 
 #If Caps
 	NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
-	Numpad0::Return
+	Numpad0::ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
 	Numpad1::Return
-	Numpad2::Return
+	Numpad2::ShowStart("Cmder", "../cmder/cmder.exe")
 	Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
-	Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office 15\root\office15\onenote.exe?")	
-	Numpad5::Return
-	Numpad6::Return
-	Numpad7::ShowStart("Inbox", "chrome.exe www.gmail.com")
-	Numpad8::ShowStart("Google Calendar", "chrome.exe calendar.google.com")
+	Numpad4::ShowDir("D:\Dropbox\")
+	Numpad5::ShowDir("D:\Dropbox\HomeShare")
+	Numpad6::ShowDir("D:\Downloads")
+	Numpad7::ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+	Numpad8::Return
 	Numpad9::Return
 
 	;;;;; CapsNav ;;;;;;;
@@ -155,8 +159,8 @@ CapsLock Up::
 #IfWinActive
 
 ;; Quickfire TK - Enable NumLock
-*RCtrl::SetNumLockState, On
-*RCtrl Up::SetNumLockState, Off
+; *RCtrl::SetNumLockState, On
+; *RCtrl Up::SetNumLockState, Off
 
 #Include Appspecific.ahk
 #Include MyMethods.ahk
