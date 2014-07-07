@@ -84,13 +84,16 @@ ClipClear()
     clipboard = ;nothing
 }
 
-WinWaitText(text)
+WinWaitText(search, window, windowtext, timeout=10000, interval=50)
 {
-    Loop
+    loops := timeout / interval
+
+    Loop %loops%
     {
-        WinGetText, thetext, A
-        if RegExMatch(thetext, text)
+        WinGetText, thetext, %window%, %windowtext%
+        if RegExMatch(thetext, search)
             break  
+        Sleep, %interval%
     }
     
 }
@@ -478,12 +481,12 @@ MoveTaskbar(dspNumber, edge)
     SendInput {Enter}
 }
 
-DebugMsgBox(message = "")
-{   
-    global DebugMsgBox_ShowMessages
-    if (%DebugMsgBox_ShowMessages% != false)
-        MsgBox, %message%
-}
+; DebugMsgBox(message = "")
+; {   
+;     global DebugMsgBox_ShowMessages
+;     if (%DebugMsgBox_ShowMessages% != false)
+;         MsgBox, %message%
+; }
 
 RxMatch(string, pattern)
 {
