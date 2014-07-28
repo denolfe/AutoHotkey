@@ -100,25 +100,25 @@ Return
 	;;;;;;;; Launcher ;;;;;;;;;;
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-^!s::Gosub, Everything
-^NumPad0::Gosub, RearrangeWindows
+^!s::		Gosub, Everything
+^NumPad0::	Gosub, RearrangeWindows
 ^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-^Numpad1::Gosub, SalesPad
-^Numpad2::ShowStart("Cmder", "../cmder/cmder.exe")
+^Numpad1::	Gosub, SalesPad
+^Numpad2::	ShowStart("Cmder", "../cmder/cmder.exe")
 #s::
-^Numpad3::GoSub, SublimeText
-^Numpad4::ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
-^Numpad5::ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
-^Numpad6::Gosub, SSMS
-^Numpad7::ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
-^Numpad8::ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
+^Numpad3::	GoSub, SublimeText
+^Numpad4::	ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
+^Numpad5::	ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
+^Numpad6::	Gosub, SSMS
+^Numpad7::	ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
+^Numpad8::	ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
 
-#NumpadEnter::Gosub, PurgeWindows
-^!NumpadEnter::Run, Utilities\ViewScriptProcesses.ahk
-#NumpadAdd::Gosub, ResetDB
-^!NumpadAdd::Run, WorkScripts\BuildPrompt.ahk
+#NumpadEnter::	Gosub, PurgeWindows
+^!NumpadEnter::	Run, Utilities\ViewScriptProcesses.ahk
+#NumpadAdd::	Gosub, ResetDB
+^!NumpadAdd::	Run, WorkScripts\BuildPrompt.ahk
 
-ScrollLock::ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
+ScrollLock::	ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
 
 Everything:
 	;DetectHiddenWindows, Off
@@ -233,7 +233,6 @@ ResetDB:
 	Return
 	
 ^!g::ShowStart("grepWin", "C:\Program Files\grepWin\grepWin.exe /searchpath:D:\Dropbox\")
-^!i::ShowStart("MINGW32", """C:\Program Files (x86)\Git\bin\sh.exe"" --login -i")
 
 ; Append to clipboard
 ^+c::
