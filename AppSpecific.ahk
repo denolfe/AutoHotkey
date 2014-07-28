@@ -22,24 +22,32 @@ GroupAdd, Game, ahk_exe terraria.exe
 	+Tab::Send, {Up}{Shift Up}
 	Shift::Return
 
+	; Open file/folder
 	+Enter::		
 		StatusBarGetText, Title
 		Run %Editor% "%Title%"
 		WinActivate, ahk_class PX_WINDOW_CLASS
-	Return
+		Return
+
+	; Add folder to existing instance
+	^+Enter::
+		StatusBarGetText, Title
+		Run, %Editor% %Title% -a
+		WinActivate, ahk_class PX_WINDOW_CLASS
+		Return
 
 	^j::
 		StatusBarGetText, FullFileName
 		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
 		Run, %dir%
-		return
+		Return
 
 	^k::
 		StatusBarGetText, FullFileName
 		clipboard := FullFileName
 		ClipWait
 		Notify("Full Filename Copied",clipboard,-1,"Style=Mine")
-		return
+		Return
 
 	^l::
 		StatusBarGetText, FullFileName
@@ -47,7 +55,7 @@ GroupAdd, Game, ahk_exe terraria.exe
 		clipboard := dir
 		ClipWait
 		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
-		return
+		Return
 
 	; CapsLock::
 	; 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
