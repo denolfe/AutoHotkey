@@ -137,8 +137,8 @@ Everything:
 	Return
 
 RearrangeWindows:
-	WinMove, ahk_class Win32UserWindow,, 1920,0,334,1080
-	WinActivate, ahk_class Win32UserWindow
+	WinMove, Toggl Desktop,, 1920,0,367,1080
+	WinActivate, Toggl Desktop
 
 	IfWinExist Buddy List
 		WinActivate Buddy List
