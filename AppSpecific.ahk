@@ -7,7 +7,6 @@ GroupAdd, FileExplorer, ahk_class CabinetWClass
 GroupAdd, FileExplorer, ahk_class ExplorerWClass
 GroupAdd, FileExplorer, ahk_class Progman
 GroupAdd, FileExplorer, ahk_class #32770
-GroupAdd, Editor, Notepad++
 GroupAdd, Editor, Microsoft SQL Server Management Studio
 GroupAdd, Editor, Report Designer
 GroupAdd, Editor, ahk_class PX_WINDOW_CLASS
@@ -56,20 +55,6 @@ GroupAdd, Game, ahk_exe terraria.exe
 		ClipWait
 		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
 		Return
-
-	; CapsLock::
-	; 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
-	; 	{
-	; 		Send {F2}^{a}
-	; 		Sleep 50
-	; 		;clipboard = ; Empty the clipboard
-	; 		ClipClear()
-	; 		Send ^{c}			
-	; 		Send {Esc}
-	; 		ClipWait
-	; 		Notify("Filename Copied",clipboard,-1,"Style=Mine")
-	; 	}
-	; Return
 #If
 #IfWinActive ahk_class CabinetWClass
 	F6::
@@ -139,19 +124,21 @@ GroupAdd, Game, ahk_exe terraria.exe
 	+Enter::
 		Send ^s
 		SetTitleMatchMode, 2
-		sleep, 200
+		Sleep, 200
     	IfWinExist, unregistered
 			WinClose
 		SetTitleMatchMode, RegEx
 		WinGetTitle, Title, A
 		If InStr(Title, ".ahk")
+		{
 			Run % Substr(Title, RegExMatch(Title, "P).*.ahk", matchlength), matchlength)
-		Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
+			Notify("File Executed",Title,-2,"GC=555555 TC=White MC=White")
+		}
 		Return
 
 	~^s::
 		SetTitleMatchMode, 2
-		sleep, 200
+		Sleep, 200
     	IfWinExist, unregistered
 			WinClose
 		SetTitleMatchMode, RegEx
@@ -174,42 +161,9 @@ GroupAdd, Game, ahk_exe terraria.exe
 			Send ^l
 		else
 			Send ^t
-		Send f{space}		
+		Send vs{space}		
 		Return
 	
-	^/::
-		IfWinActive, New Tab
-			Send ^l
-		else
-			Send ^t
-		Send spdocs{space}
-		Return
-
-	^k::
-		SetTitleMatchMode, 2
-		If WinActive("FogBugz (Case")
-		{
-			WinGetTitle, Title, A
-			RegExMatch(Title, "(?<=\(Case\s)\d+", caseNum)
-			Send ^l
-			Sleep 100
-			Send f{Space}
-			Sleep 100
-			Send %caseNum%{Enter}
-		}
-		else
-			Send ^k
-		Return
-
-	^i::
-		SetTitleMatchMode, 2
-		WinGetTitle, Title, A
-		RegExMatch(Title, "(\d+)((?=:))", caseNum)
-		clipboard := "Case " caseNum
-		Notify("Clipboard Content",clipboard,-2,"Style=Mine")
-		WinActivate, ahk_class Win32UserWindow
-		Return
-
 	F1::
 		IfWinActive, New Tab
 			Send ^l
@@ -228,27 +182,30 @@ F1::
 	Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Autohotkey"
 	Return
 
+#IfWinActive, Microsoft Visual Studio
+	^XButton1::Send, {F10}
+	^+XButton1::Send, +{F10}
+	^XButton2::Send, {F11}
+	^+XButton2::Send, +{F11}
+
 #IfWinActive Microsoft SQL Server Management Studio
-	F1::
-		ClipSave()
-		ClipClear()
-		Copy()
-		SetTitleMatchMode, RegEx
-		Sleep 50
-		
-		if RegInstr(clipboard, "i)^sop|^pop|^rm|^iv")
-			Run chrome.exe "http://www.tealbridge.com/free-resources/dynamics-gp-table-reference/2010/%clipboard%"
+
+	^l::	
+		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
+		{
+			Send, {Shift Down}{Down}{End}{Shift Up}
+		}
 		else
-			Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Transact%A_Space%SQL%A_Space%site:http://msdn.microsoft.com/en-us/library"
-		SetTitleMatchMode, 2
-		ClipRestore()
+		{
+			Send, {Home}
+			Send, {Shift Down}{End}{Shift Up}
+		}
 		Return
 
-	^l::Send {End}{Shift Down}{Home}{Shift Up}
-
 	+Enter::Send {F5}
-	
-	^t::Send ^{n}
+	^t::	Send ^{n}
+	^/::	Send {Ctrl Down}kc{Ctrl Up}
+	^+/::	Send {Ctrl Down}ku{Ctrl Up}
 
 #IfWinActive, ahk_group Editor
 	

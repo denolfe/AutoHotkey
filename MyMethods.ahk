@@ -1,7 +1,10 @@
 ShowStart(title, exe, toggle = 0)
 {
 	If WinActive(title) and toggle
+    {
+        Send, !{Tab}
 		WinMinimize %title%
+    }
 	Else
 	{
 		IfWinExist, %title%
@@ -33,9 +36,9 @@ ShowDir(title)
 	SetTitleMatchMode, 2
 }
 
-SublimeOpen(file) ; Refocuses Sublime if file is opened while focused
+SublimeOpen(file, sublime_path) ; Refocuses Sublime if file is opened while focused
 {
-    Run %Editor% %file%
+    Run %sublime_path% %file%
     Sleep 50
     WinActivate, ahk_class PX_WINDOW_CLASS
 }
@@ -229,45 +232,6 @@ Log(text, file = "debug.log")
     FileAppend, %Now%`t%text%, %file%
 }
 
-GetSQLDriver()
-{
-    RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
-    If RegExMatch(SQLVersion, "P)\d*", matchlength)
-        SQLVersion := SubStr(SQLVersion, 1, matchlength)
-
-    If (SQLVersion = "9") 
-        return "SQL Native Client"      ;SQL 2005
-    Else If (SQLVersion = "10")
-        return "SQL Server Native Client 10.0"  ;SQL 2008
-    Else If (SQLVersion = "11") 
-        return "SQL Server Native Client 11.0"  ;SQL 2012
-}
-
-GetSQLVersion()
-{
-    RegRead, SQLVersion, HKLM, Software\Microsoft\MSSQLServer\MSSQLServer\CurrentVersion, CurrentVersion
-    If RegExMatch(SQLVersion, "P)\d*", matchlength)
-        Return % SubStr(SQLVersion, 1, matchlength) ;Returns 9, 10, or 11
-    Else
-        Log("Unable to get SQL Version")
-}
-
-GetGPVersion()
-{
-
-    RegRead, GPVersion1, HKLM, SOFTWARE\Classes\Installer\Products\6A0A09CD09D2E394D8315DA41D329BDF, ProductName
-    RegRead, GPVersion2, HKLM, SOFTWARE\Classes\Installer\Products\15C013CBD27B75C4EAE95A280A09C32F, ProductName
-    RegRead, GPVersion3, HKLM, SOFTWARE\Classes\Installer\Products\7CCCD69894796DD4ABFE949F9AEC2E59, ProductName
-    ;; Spanish
-    RegRead, GPVersionSpan, HKLM, SOFTWARE\Classes\Installer\Products\7C2554F0E4E82C84689AE7086A8B1E8E, ProductName
-    GPVersion := GPVersion1 . GPVersion2 . GPVersion3 . GpVersionSpan
-
-    If RegExMatch(GPVersion, "P)\d+", matchlength)
-        GPVersion := "GP" . SubStr(GPVersion, RegExMatch(GPVersion, "P)\d+", matchlength), matchlength)
-    Return GPVersion
-
-}
-
 CreateXCut(path, shortcut, name)
 {
     If FileExist(path)
@@ -308,12 +272,6 @@ AHKPanic(Kill=0, Pause=0, Suspend=0, SelfToo=0)
     }
 }
 
-
-
-
-
-
-
 DynaRun(TempScript, pipename="")
 {
    static _:="uint",@:="Ptr"
@@ -337,17 +295,6 @@ DynaRun(TempScript, pipename="")
    DllCall("CloseHandle",@,__PIPE_)
    Return PID
 }
-
-
-
-
-
-
-
-
-
-
-
 
 ; Move the taskbar
 ; dspNumber:    number.  device number (primary display is 1, secondary display is 2...)
@@ -480,13 +427,6 @@ MoveTaskbar(dspNumber, edge)
     OutputDebug MoveTaskbar - taskbar successfully moved
     SendInput {Enter}
 }
-
-; DebugMsgBox(message = "")
-; {   
-;     global DebugMsgBox_ShowMessages
-;     if (%DebugMsgBox_ShowMessages% != false)
-;         MsgBox, %message%
-; }
 
 RxMatch(string, pattern)
 {

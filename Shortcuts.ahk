@@ -2,37 +2,37 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad0::		ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
-!NumpadDot:: 	ShowDir("D:\Downloads")
-!Numpad1:: 		ShowDir("D:\Dropbox")
-!Numpad2:: 		ShowDir("D:\Dropbox\HomeShare")
-!Numpad3:: 		ShowDir("D:\Dropbox\ScreenShots")
-!Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
-!Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad.GP")
-!Numpad6:: 		ShowDir("\\Karma\Team QA\Database Files\")
-!Numpad7:: 		ShowDir("\\Karma\Team QA\")
-!Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
-!Numpad9:: 		ShowDir("\\Karma\Team QA\Logs")
+; !Numpad0::		ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
+; !NumpadDot:: 	ShowDir("D:\Downloads")
+; !Numpad1:: 		ShowDir("D:\Dropbox")
+; !Numpad2:: 		ShowDir("D:\Dropbox\HomeShare")
+; !Numpad3:: 		ShowDir("D:\Dropbox\ScreenShots")
+; !Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
+; !Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad.GP")
+; !Numpad6:: 		ShowDir("\\Karma\Team QA\Database Files\")
+; !Numpad7:: 		ShowDir("\\Karma\Team QA\")
+; !Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
+; !Numpad9:: 		ShowDir("\\Karma\Team QA\Logs")
 
 #c::			ShowDir("C:\")
 #p::			ShowDir("C:\Program Files (x86)\")
 
-#NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
-#Numpad1::	ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
-#NumPad2::	ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
-#NumPad3::	ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
-#Numpad4::	ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
-#Numpad5::	ShowStart("(testing5).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing5")
-#Numpad6::	ShowStart("(testing6).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing6")
-#Numpad7::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
+; #NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
+; #Numpad1::	ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
+; #NumPad2::	ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
+; #NumPad3::	ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
+; #Numpad4::	ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
+; #Numpad5::	ShowStart("(testing5).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing5")
+; #Numpad6::	ShowStart("(testing6).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing6")
+; #Numpad7::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
 
-!#NumpadDot::	ShowDir("\\Testing-PC\c$")
-!#Numpad1::		ShowDir("\\testing1\c$")
-!#NumPad2::		ShowDir("\\smartbear\c$")
-!#NumPad3::		ShowDir("\\testing3\c$")
-!#Numpad4::		ShowDir("\\testing4\c$")
-!#Numpad5::		ShowDir("\\testing5\c$")
-!#Numpad6::		ShowDir("\\sql2005\c$")
+; !#NumpadDot::	ShowDir("\\Testing-PC\c$")
+; !#Numpad1::		ShowDir("\\testing1\c$")
+; !#NumPad2::		ShowDir("\\smartbear\c$")
+; !#NumPad3::		ShowDir("\\testing3\c$")
+; !#Numpad4::		ShowDir("\\testing4\c$")
+; !#Numpad5::		ShowDir("\\testing5\c$")
+; !#Numpad6::		ShowDir("\\sql2005\c$")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
@@ -61,8 +61,16 @@ Return
 	KeyboardLED(0,"off", kbdIndex)
 Return
 
-AppsKey::Run, MyMenu.ahk
-+AppsKey::AppsKey
++AppsKey::Run, MyMenu.ahk
+^AppsKey::Send, {AppsKey}
+AppsKey::Return
+
+#If GetKeyState("AppsKey", "p")
+	w::Up
+	a::Left
+	s::Down
+	d::Right
+#If
 
 #l::
 	Run, %A_WinDir%\System32\rundll32.exe user32.dll`, LockWorkStation
@@ -70,16 +78,66 @@ AppsKey::Run, MyMenu.ahk
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 	
-NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
+RCtrl & Enter:: Gosub, Spotify ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
+
+#WheelDown::	Send {WheelRight 5}
+#WheelUp::		Send {WheelLeft 5}
+
+^+F5::^!CtrlBreak
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;; Window Manipulation ;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#XButton1::Send #{Left}
+#XButton2::Send #{Right}
+#MButton::
+	WinGet, isMaxed, MinMax, A
+	If (isMaxed)
+		Send #{Down}
+	Else
+		Send #{Up}
+	Return
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;; Launcher ;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+^!s::		Gosub, Everything
+^!q::		Gosub, AgentRansack
+; ^NumPad0::	Gosub, RearrangeWindows
+^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
+; ^Numpad1::	Gosub, SalesPad
+^Numpad2::	ShowStart("Cmder", "../cmder/cmder.exe")
+#s::
+^Numpad3::	GoSub, SublimeText
+; ^Numpad4::	ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
+^Numpad5::	ShowStart("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
+^Numpad6::	ShowStart("Microsoft SQL Server Management Studio", "C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\ManagementStudio\Ssms.exe")
+; ^Numpad7::	ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
+; ^Numpad8::	ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
+
+^!NumpadEnter::	Gosub, PurgeWindows
+; ^!NumpadEnter::	Run, Utilities\ViewScriptProcesses.ahk
+; #NumpadAdd::	Gosub, ResetDB
+; ^!NumpadAdd::	Run, WorkScripts\BuildPrompt.ahk
+
+ScrollLock::	ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
+
+Spotify:
 	WinGetClass, this_class, A
 	If (RegExMatch(this_class, "Spotify")) ; Toggle
+	{
+		Send, !{Tab}
 		WinMinimize, ahk_class SpotifyMainWindow
+	}
 	Else
 	{
 		SetTitleMatchMode, RegEx
 		If WinExist("^Spotify")
 			WinActivate
-		else
+		else  
 		{
         	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
             If ErrorLevel
@@ -93,33 +151,6 @@ NumLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
 	}
 Return
 
-#WheelDown::	Send {WheelRight 5}
-#WheelUp::		Send {WheelLeft 5}
-	
-	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	;;;;;;;; Launcher ;;;;;;;;;;
-	;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-^!s::		Gosub, Everything
-^NumPad0::	Gosub, RearrangeWindows
-^NumpadDot::ShowStart("Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-^Numpad1::	Gosub, SalesPad
-^Numpad2::	ShowStart("Cmder", "../cmder/cmder.exe")
-#s::
-^Numpad3::	GoSub, SublimeText
-^Numpad4::	ShowStart("ahk_class Framework::CFrame", "C:\Program Files\Microsoft Office\Office15\ONENOTE.EXE")	
-^Numpad5::	ShowStart("Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe")
-^Numpad6::	Gosub, SSMS
-^Numpad7::	ShowStart("Inbox", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe www.gmail.com")
-^Numpad8::	ShowStart("Calendar", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  --app=https://www.google.com/calendar/render?pli=1")
-
-#NumpadEnter::	Gosub, PurgeWindows
-^!NumpadEnter::	Run, Utilities\ViewScriptProcesses.ahk
-#NumpadAdd::	Gosub, ResetDB
-^!NumpadAdd::	Run, WorkScripts\BuildPrompt.ahk
-
-ScrollLock::	ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
-
 Everything:
 	;DetectHiddenWindows, Off
 	; Enable setting to focus search field in Everything
@@ -127,80 +158,31 @@ Everything:
 	If WinExist("ahk_class EVERYTHING")
 		WinActivate, ahk_class EVERYTHING
 	Else
-		Run, C:\Program Files\Everything\Everything.exe -admin
-	
-	WinWaitActive, ahk_class EVERYTHING,, 2
-	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,A_ScreenHeight*0.4,A_ScreenWidth*0.7,A_ScreenHeight*0.6
-	WinWaitNotActive
-	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, A_ScreenHeight*0.65, A_ScreenWidth*0.7, A_ScreenHeight*0.35
-	DetectHiddenWindows, On
+		Run, C:\Program Files (x86)\Everything\Everything.exe -admin
+	WinWait, ahk_class EVERYTHING,, 2
+	WinMove, ahk_class EVERYTHING,, 0,A_ScreenHeight*0.66,A_ScreenWidth-62,A_ScreenHeight - (A_ScreenHeight*0.66)
 	Return
 
-RearrangeWindows:
-	WinMove, Toggl Desktop,, 1920,0,367,1080
-	WinActivate, Toggl Desktop
-
-	IfWinExist Buddy List
-		WinActivate Buddy List
-	else
-		WinShow Buddy List
-	WinMove, Buddy List,, 3605,0,234,1080
-	Return
-	
-SalesPad:
-	aDown := A_TickCount
-	Keywait Numpad1
-	If ((A_TickCount-aDown) < 400)
+AgentRansack:
+	DetectHiddenWindows, Off
+	If WinExist("Search:")
+		WinActivate
+	Else
 	{
-		IfWinExist,  - SalesPad
-		{
-			WinActivate, - SalesPad
-			Return
-		}
-		else
-		{
-			Loop, C:\Program Files (x86)\SalesPad.GP HotFix\Sales*.exe, 0, 1
-			{
-				 FileGetTime, Time, %A_LoopFileFullPath%, C
-				 If (Time > Time_Orig)
-				 {
-					  Time_Orig := Time
-					  exe := A_LoopFileFullPath
-				 }
-			}
-		}
-		
+		Run, C:\Program Files\Mythicsoft\Agent Ransack\AgentRansack.exe
+		WinActivate, Search:
 	}
-	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<1500)
-	{
-		Loop, C:\Program Files (x86)\SalesPad.GP Release\Sales*.exe, 0, 1
-			{
-				 FileGetTime, Time, %A_LoopFileFullPath%, C
-				 If (Time > Time_Orig) and !(Instr(A_LoopFileName, "uninst"))
-				 {
-					  Time_Orig := Time
-					  exe := A_LoopFileFullPath
-				 }
-			}
-	}
-	Run %exe%
+	WinWait, Search:,, 2
+	WinMove, Search:,, 0, 0, A_ScreenWidth-62, (A_ScreenHeight*0.66)
+	ControlFocus, Edit2, Search:
 	Return
 
 SublimeText:
 	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
-	WinMove, ahk_class PX_WINDOW_CLASS,, 1920, 0, 1317, A_ScreenHeight
+	; WinMove, ahk_class PX_WINDOW_CLASS,, 1920, 0, 1317, A_ScreenHeight
 	Return
-
-SSMS:
-	aDown:=A_TickCount
-	Keywait Numpad6
-	If ((A_TickCount-aDown)<400)
-		ShowStart("Microsoft SQL Server Management Studio", "C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\ManagementStudio\Ssms.exe")
-	If ((A_TickCount-aDown)>400) and ((A_TickCount-aDown)<3000)
-		Run, "D:\Dropbox\Scripts\SQL\sandbox.sql"
-	Return
-	
+		
 PurgeWindows:
 	loop
 	{
@@ -212,14 +194,14 @@ PurgeWindows:
 	Notify("Windows Purged","",-1,"GC=555555 TC=White MC=White")
 	Return
 	
-ResetDB:
-	MsgBox, 36, Reset DB, Reset the database version?
-	IfMsgBox Yes
-	{
-		RunWait, %comspec% /c "sqlcmd -E -d TWI -Q "UPDATE spDatabaseVersion SET [Database_Version] = -1"",, Hide
-		RunWait, %comspec% /c "sqlcmd -E -d TWI -Q "UPDATE dwDatabaseVersion SET [Database_Version] = -1"",, Hide
-	}
-	Return
+; ResetDB:
+; 	MsgBox, 36, Reset DB, Reset the database version?
+; 	IfMsgBox Yes
+; 	{
+; 		RunWait, %comspec% /c "sqlcmd -E -d TWI -Q "UPDATE spDatabaseVersion SET [Database_Version] = -1"",, Hide
+; 		RunWait, %comspec% /c "sqlcmd -E -d TWI -Q "UPDATE dwDatabaseVersion SET [Database_Version] = -1"",, Hide
+; 	}
+; 	Return
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;

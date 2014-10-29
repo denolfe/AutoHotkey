@@ -13,9 +13,7 @@ Menu,AutoHotkey,Add,Dynamic Function Tester, DynamicFunctionTester
 Menu,AutoHotkey,Add,AHK Documentation, AHKDocumentation
 
 Menu,Main,Add,Clipboard Replace, ClipboardReplace
-Menu,Main,Add, UNC to URL, FormatURL
 Menu,Main,Add,SQL Formatter, SQLFormatter
-Menu,Main,Add,GP Lookup, GPLookup
 Menu,Main,Add,
 Menu,Main,Add,Lightning Renamer, LightningRenamer
 Menu,Main,Add,Directory Compare, DirectoryCompare
@@ -64,7 +62,7 @@ PathEditor:
 	Return
 
 ClipboardReplace:
-		Run, Utilities\Replace.ahk
+	Run, Utilities\Replace.ahk
 	Return
 
 SQLFormatter:
@@ -82,34 +80,4 @@ SQLFormatter:
 	;FileDelete, Utilities\clipboard.sql.bak
 	ClipRestore()
 	Return
-
-FormatURL:
-	If Instr(clipboard, "\\katrina\public\")
-	{
-		clipboard := RegExReplace(clipboard, "(\\\\katrina\\public\\)", "http://www.salespad.net/public/")
-		clipboard := RegExReplace(clipboard, "(\\)", "/")
-
-		res := HttpQueryInfo(clipboard)
-		if InStr(res, "200 OK")
-  			Notify("URL Converted",clipboard,-3,"Style=Mine")
-		else
-  			msgbox, URL is not valid.`n`n%clipboard%
-  	}
-	Else
-	{
-		MsgBox, Clipboard does not contain UNC path!`n`n%clipboard%
-	}
-	Return
-
-GPLookup:
-	clipboardsave := clipboard
-	clipboard = 
-	Send ^c
-	ClipWait
-	Sleep 50
-	If Instr(RegExReplace(clipboard, "i)^AA|^AF|^AHR|^ASI|^BM|^CM|^DD|^DTA|^ERB|^EXT|^EXT|^FA|^GL|^HR|^IV|^IVC|^LK|^MC|^ME|^PA|^PM|^POP|^RM|^SLB|^SOP|^SVC|^SY|^UPR|^WDC", "foundit!"), "foundit!")
-		Run chrome.exe "http://www.tealbridge.com/free-resources/dynamics-gp-table-reference/2010/%clipboard%"
-	else
-		Run chrome.exe "http://google.com/search?btnI=1&q=%clipboard%%A_Space%Transact%A_Space%SQL%A_Space%site:http://msdn.microsoft.com/en-us/library"
-	clipboard := clipboardsave
-	Return
+	

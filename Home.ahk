@@ -23,9 +23,22 @@ global Editor := "D:\Dropbox\HomeShare\SublimePortable\sublime_text.exe"
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SetTimer, IntroSound, -1
+SetTimer, IntroLights, -1
 
 IntroSound:
 	SoundPlay, lib\sounds\load.wav
+	Return
+
+IntroLights:
+	kbdIndex := 1
+	Loop, 4 ; flash all LEDs
+	 {
+	 KeyboardLED(4,"on", kbdIndex)
+	 Sleep, 75
+	 KeyboardLED(4,"off", kbdIndex)
+	 Sleep, 75
+	 }
+	KeyboardLED(0,"off", kbdIndex)
 	Return
 
 ^!s::
@@ -35,16 +48,9 @@ IntroSound:
 		WinActivate
 	}
 	Else
-	{
-		WinActivate ahk_class EVERYTHING
-		WinWaitActive ahk_class EVERYTHING
-	}
-	WinWaitActive ahk_class EVERYTHING
-	WinMove, ahk_class EVERYTHING,, A_ScreenWidth,432,A_ScreenWidth/1.45,A_ScreenHeight - 432
-	WinWaitNotActive
-	WinMove, ahk_class EVERYTHING,, A_ScreenWidth, 716, A_ScreenWidth/1.45, A_ScreenHeight - 716
-
-Return
+		WinActivate, ahk_class EVERYTHING
+	WinMove, ahk_class EVERYTHING,, 0,A_ScreenHeight*0.66,A_ScreenWidth,A_ScreenHeight - (A_ScreenHeight*0.66)
+	Return
 
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
@@ -55,7 +61,7 @@ Return
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 
-ScrollLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
+Spotify:
 	WinGetClass, this_class, A
 	If (RegExMatch(this_class, "Spotify")) ; Toggle
 		WinMinimize, ahk_class SpotifyMainWindow
@@ -74,35 +80,30 @@ ScrollLock:: ;ShowStart("Spotify", A_Appdata . "\Spotify\spotify.exe", 1)
             WinActivate
 		}
 	}
-Return
-
-;; CapsLock Shortcuts
-
-CapsLock:: 
-	Caps := 1
-	SetNumLockState, On		; Quickfire TK workaround
 	Return
-CapsLock Up:: 
-	Caps := 0
-	SetNumLockState, Off	; Quickfire TK workaround
-	Return
+
 +CapsLock::CapsLock
 
+RCtrl & 1::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
+RCtrl & 2::ShowStart("Cmder", "../cmder/cmder.exe")
+RCtrl & 3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
+RCtrl & 4::ShowDir("D:\Dropbox\")
+RCtrl & 5::ShowDir("D:\Dropbox\HomeShare")
+RCtrl & 6::ShowDir("D:\Downloads")
+RCtrl & 7::ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+RCtrl & 8::Return
+RCtrl & 9::Return
+
+RCtrl & Enter::Gosub, Spotify
+
+;; CapsLock Shortcuts
+CapsLock:: 		Caps := 1
+CapsLock Up::	Caps := 0
+
+
 #If Caps
-	NumpadDot::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
-	Numpad0::ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
-	Numpad1::Return
-	Numpad2::ShowStart("Cmder", "../cmder/cmder.exe")
-	Numpad3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
-	Numpad4::ShowDir("D:\Dropbox\")
-	Numpad5::ShowDir("D:\Dropbox\HomeShare")
-	Numpad6::ShowDir("D:\Downloads")
-	Numpad7::ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
-	Numpad8::Return
-	Numpad9::Return
 
 	;;;;; CapsNav ;;;;;;;
-
 	h::CapsNav("Left")
 	j::CapsNav("Down")
 	k::CapsNav("Up")
@@ -120,6 +121,10 @@ CapsLock Up::
 	,::
 	i::
 	Return
+
+	;;;;; Media Keys ;;;;;
+	\::Send, {Media_Next}
+	]::Send, {Media_Play_Pause}
 #If
 
 #NumpadEnter::
@@ -138,17 +143,17 @@ CapsLock Up::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-!Numpad1:: ShowDir("D:\Dropbox")
-!Numpad2:: ShowDir("D:\Dropbox\HomeShare")
-!Numpad3:: ShowDir("D:\")
-!Numpad7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
-!Numpad0:: ShowDir(A_ScriptDir)
-!NumpadDot:: ShowDir("D:\Downloads\")
+!1:: ShowDir("D:\Dropbox")
+!2:: ShowDir("D:\Dropbox\HomeShare")
+!3:: ShowDir("D:\Downloads\")
+!4:: ShowDir("D:\")
+!7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+!0:: ShowDir(A_ScriptDir)
 
 ^!r::Reload	
 ^!e::Run %Editor% %A_ScriptName%
 ^!t::Run %Editor% Test.ahk
-!t::Run %A_ScriptDir%\Test.ahk
+!t:: Run %A_ScriptDir%\Test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
 #IfWinActive, ahk_class Valve001
@@ -158,14 +163,8 @@ CapsLock Up::
 	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
 #IfWinActive
 
-;; Quickfire TK - Enable NumLock
-; *RCtrl::SetNumLockState, On
-; *RCtrl Up::SetNumLockState, Off
-
 #Include Appspecific.ahk
 #Include MyMethods.ahk
-#Include Hotstrings.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
-;#Include lib\LedControl.ahk
-#Include lib\ini.ahk
+#Include lib\LedControl.ahk

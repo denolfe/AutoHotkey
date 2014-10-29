@@ -20,15 +20,14 @@ SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 
 total := 0
-global IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|SalesPad.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk|VolumeControl.ahk"
+IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|Hotstrings.ahk|Work.ahk|MyMethods.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
 
-global Editor := "..\SublimePortable\sublime_text.exe"
-global kbdIndex = 0
+Editor := "..\SublimePortable\sublime_text.exe"
+kbdIndex = 0
 
-;SetTimer, AutoUpdate, 1000
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
 
@@ -37,24 +36,16 @@ If ! A_IsAdmin
 	IfMsgBox No
 		ExitApp
 
-If A_UserName = elliotd
+Run %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
+Run %A_ScriptDir%\AutoCorrect.ahk
+Run %A_ScriptDir%\WindowPadX\WindowPadX.ahk
+
+SplitPath, A_ScriptName, , , , OutNameNoExt 
+LinkFile := A_Startup "\" OutNameNoExt ".lnk"
+IfNotExist, %LinkFile%
 {
-	Run %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
-	Run %A_ScriptDir%\AutoCorrect.ahk
-
-	SplitPath, A_ScriptName, , , , OutNameNoExt 
-	LinkFile := A_Startup "\" OutNameNoExt ".lnk"
-	IfNotExist, %LinkFile%
-	{
-		FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
-		Notify("Startup Shortcut Created.","",-3,"Style=Alert")
-	}
-
-	IfWinNotExist, Test Configuration
-	{
-		WinWait, Test Configuration, 2
-		WinMinimize, Test Configuration
-	}
+	FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
+	Notify("Startup Shortcut Created.","",-3,"Style=Alert")
 }
 Return ;End Auto-Execute
 
@@ -77,39 +68,24 @@ IntroLights:
 	KeyboardLED(0,"off", kbdIndex)
 	Return
 
-AutoUpdate:
-	Loop, Parse, IncludedFiles, |
-	{	
-		FileGetAttrib, Attribs, %A_LoopField%
-		IfInString, Attribs, A
-		{
-			FileSetAttrib, -A, %A_LoopField%
-			Notify("Reloading Script","",-1,"Style=Alert")
-			Sleep 750
-			Reload
-		}
-	}
-Return
-
-
 #Include %A_ScriptDir%\MyMethods.ahk
 #Include %A_ScriptDir%\Shortcuts.ahk
 #Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
 #Include %A_ScriptDir%\CapsNav.ahk
-#Include *i %A_ScriptDir%\SalesPad.ahk
 #Include %A_ScriptDir%\Utilities\FormatAHK.ahk
+#Include %A_ScriptDir%\TSQLKeywords.ahk
 
 ^!r::	Reload
-^!e::	SublimeOpen(A_ScriptName)
-^!t::	SublimeOpen("test.ahk")
-^!h::	SublimeOpen("Hotstrings.ahk")
-^!a::	SublimeOpen("AppSpecific.ahk")
-^!m::	SublimeOpen("MyMethods.ahk")
+^!e::	SublimeOpen(A_ScriptName, Editor)
+^!t::	SublimeOpen("test.ahk", Editor)
+^!h::	SublimeOpen("Hotstrings.ahk", Editor)
+^!a::	SublimeOpen("AppSpecific.ahk", Editor)
+^!m::	SublimeOpen("MyMethods.ahk", Editor)
 !t::	Run, Test.ahk
 
-^NumpadEnter::SublimeOpen("Shortcuts.ahk")
+^NumpadEnter::SublimeOpen("Shortcuts.ahk", Editor)
 
 +Pause::Suspend
 

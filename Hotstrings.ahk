@@ -14,54 +14,39 @@
 	Return
 :*:comspec;::RunWait, `%comspec`% /c "",, Hide{Ctrl Down}{Left 2}{Ctrl Up}{Right}
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;; DokuWiki ;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-:*:ref;::[([[link|name]])]{Ctrl Down}{Left 2}{Shift Down}{Right}{Shift Up}{Ctrl Up}
-:*:refnotes;::~~REFNOTES~~
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; SQL ;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-:*:findt::select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_NAME like '`%`%' order by TABLE_NAME{left 22}
-:*:findv::select TABLE_NAME from INFORMATION_SCHEMA.VIEWS where TABLE_NAME like '`%`%' order by TABLE_NAME{left 22}
-:*:findc::select TABLE_NAME, COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME like '`%`%' order by TABLE_NAME{left 22}
-:*:findp::select SPECIFIC_NAME from INFORMATION_SCHEMA.ROUTINES where ROUTINE_NAME like '%%' order by SPECIFIC_NAME{left 25}
-:*:like;::like '`%`%'{left 2}
-:*:in;::in ('){left}
-:*:temp;::If object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
-:*:ssf::select * from{Space}
-:*:ssi::select * into{Space}
-:*:ddf::delete from{Space}
-:*:scf::select COUNT(*) from{Space}
-:*:sph;::sp_help{Space}''{Left}
-:*:ii;::SET IDENTITY_INSERT TABLENAME ON {Ctrl Down}{Left 2}{Shift Down}{Right}{Shift Up}{Ctrl Up}
-:*:singleuser::ALTER DATABASE DBNAME SET SINGLE_USER WITH ROLLBACK IMMEDIATE{Ctrl Down}{Left 6}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-:*:multiuser::ALTER DATABASE DBNAME SET MULTI_USER{Ctrl Down}{Left 3}{Shift Down}{Right}{Ctrl Up}{Shift Up}
-:*:killconn::USE master`n`nGO`n`nDECLARE @dbname sysname`nSET @dbname = 'yourdbname'`nDECLARE @spid int`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname)`nWHILE @spid IS NOT NULL`nBEGIN`nEXECUTE ('KILL ' {+} @spid)`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname) AND spid > @spid`n`nEND
-:*:obd::order by date desc
-
-:*:sv;::'"  "'{Left 3}
+#IfWinActive, SQL Server Management Studio
+	:*:findt::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
+	:*:findv::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
+	:*:findc::SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
+	:*:findp::SELECT SPECIFIC_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_NAME LIKE '%%' ORDER BY SPECIFIC_NAME{left 25}
+	:*:like;::LIKE '`%`%'{left 2}
+	:*:in;::IN ('){left}
+	:*:temp;::If object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
+	:*:ssf::SELECT * FROM{Space}
+	:*:ssi::SELECT * into{Space}
+	:*:ddf::DELETE FROM{Space}
+	:*:scf::SELECT COUNT(*) FROM{Space}
+	:*:sph;::sp_help{Space}''{Left}
+	:*:ii;::SET IDENTITY_INSERT TABLENAME ON {Ctrl Down}{Left 2}{Shift Down}{Right}{Shift Up}{Ctrl Up}
+	:*:singleuser::ALTER DATABASE DBNAME SET SINGLE_USER WITH ROLLBACK IMMEDIATE{Ctrl Down}{Left 6}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+	:*:multiuser::ALTER DATABASE DBNAME SET MULTI_USER{Ctrl Down}{Left 3}{Shift Down}{Right}{Ctrl Up}{Shift Up}
+	:*:killconn::USE master`n`nGO`n`nDECLARE @dbname SYSNAME`nSET @dbname = 'yourdbname'`nDECLARE @spid INT`nSELECT @spid = min(spid) FROM master.dbo.sysprocesses where dbid = db_id(@dbname)`nWHILE @spid IS NOT NULL`nBEGIN`nEXECUTE ('KILL ' {+} @spid)`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname) AND spid > @spid`n`nEND
+	:*:obd::ORDER BY date desc
+	:*:sv;::'"  "'{Left 3}
+#IfWinActive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Code ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-:*:kbd;::
-	Output := "<kbd></kbd>"
-	Send, %Output%{left 6}
-	Keywait, Space, D T5
-	If ErrorLevel
-		Return
-	Send {Backspace}{right 6}{Space}
-	Return
-
-:*:+la::(?=){Left}
-:*:-la::(?{!}){Left}
-:*:+lb::(?<=){Left}
-:*:-lb::(?<{!}){Left}
+:*:+la;::(?=){Left}
+:*:-la;::(?{!}){Left}
+:*:+lb;::(?<=){Left}
+:*:-lb;::(?<{!}){Left}
 
 :*:header;::
 	linelen := strlen(clipboard) + 20
