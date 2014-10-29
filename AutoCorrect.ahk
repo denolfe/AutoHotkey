@@ -5332,3 +5332,17 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::purcahse::purchase
 ::instaed::instead
 ::pust::puts
+::mena::mean
+::somewehre::somewhere
+::uesr::user
+::wher::where
+::gao::ago
+::daet::date
+::serach::search
+::reutrn::return
+::focsu::focus
+::someoen::someone
+::aruond::around
+::loclahost::localhost
+::remoev::remove
+::isnert::insert
