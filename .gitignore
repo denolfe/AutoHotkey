@@ -11,3 +11,5 @@
 !AutoCorrect.ahk
 !CapsNav.ahk
 !TSQLKeywords.ahk
+
+!AppSpecific\*.ahk

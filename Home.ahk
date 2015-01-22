@@ -4,16 +4,14 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetTitleMatchMode, RegEx
-;SetNumlockState, AlwaysOn
-DetectHiddenWindows, On 
-;KeyboardLED(2,"off")
+DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
 Run, AutoCorrect.ahk
 Run, %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
 
 total := 0
-IncludedFiles := "Home.ahk|MyMethods.ahk|AppSpecific.ahk|VolumeControl.ahk"
+IncludedFiles := "Home.ahk|Functions.ahk|AppSpecific.ahk|VolumeControl.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
 Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Mine")
@@ -23,7 +21,15 @@ global Editor := "D:\Dropbox\HomeShare\SublimePortable\sublime_text.exe"
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SetTimer, IntroSound, -1
-SetTimer, IntroLights, -1
+SetTimer, IntroLights, -1000
+
+FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-home.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
+Run, WindowPadX\WindowPadX.ahk
+
+; Disable Aero
+Run, %comspec% /c "net stop uxsms",,Hide
+
+Return
 
 IntroSound:
 	SoundPlay, lib\sounds\load.wav
@@ -55,6 +61,10 @@ IntroLights:
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
 
+:*:pd;::
+	SendInput, playdemo picks\%clipboard%{Enter}
+	Return
+
 #l::
 	Run,%A_WinDir%\System32\rundll32.exe user32.dll`,LockWorkStation
 	Sleep 1000
@@ -82,8 +92,6 @@ Spotify:
 	}
 	Return
 
-+CapsLock::CapsLock
-
 RCtrl & 1::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
 RCtrl & 2::ShowStart("Cmder", "../cmder/cmder.exe")
 RCtrl & 3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
@@ -96,38 +104,10 @@ RCtrl & 9::Return
 
 RCtrl & Enter::Gosub, Spotify
 
-;; CapsLock Shortcuts
-CapsLock:: 		Caps := 1
-CapsLock Up::	Caps := 0
+RCtrl & ]::SendInput, {Media_Play_Pause}
+RCtrl & |::SendInput, {Media_Next}
 
-
-#If Caps
-
-	;;;;; CapsNav ;;;;;;;
-	h::CapsNav("Left")
-	j::CapsNav("Down")
-	k::CapsNav("Up")
-	l::CapsNav("Right")
-
-	n::CapsNav("Home")
-	p::CapsNav("End")
-
-	o::
-	.::CapsNav("Right", "!")
-	m::CapsNav("Left", "!")
-
-	u::
-	`;::
-	,::
-	i::
-	Return
-
-	;;;;; Media Keys ;;;;;
-	\::Send, {Media_Next}
-	]::Send, {Media_Play_Pause}
-#If
-
-#NumpadEnter::
+^!Enter::
 	loop
 	{
 		WinClose, ahk_class CabinetWClass
@@ -150,21 +130,25 @@ CapsLock Up::	Caps := 0
 !7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
 !0:: ShowDir(A_ScriptDir)
 
-^!r::Reload	
+^!r::Reload
 ^!e::Run %Editor% %A_ScriptName%
 ^!t::Run %Editor% Test.ahk
 !t:: Run %A_ScriptDir%\Test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
 #IfWinActive, ahk_class Valve001
-	#Up::ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow 
+	#Up::ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow
 	#Down::ControlSend, ahk_parent, ^{Down}, ahk_class SpotifyMainWindow
-	#Left::Send {Media_Play_Pause} ;ControlSend, ahk_parent, ^{Space}, ahk_class SpotifyMainWindow 
-	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow 
+	#Left::Send {Media_Play_Pause} ;ControlSend, ahk_parent, ^{Space}, ahk_class SpotifyMainWindow
+	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow
 #IfWinActive
 
-#Include Appspecific.ahk
-#Include MyMethods.ahk
+#Include %A_ScriptDir%\AppSpecific\Everything.ahk
+#Include %A_ScriptDir%\AppSpecific\SublimeText.ahk
+#Include %A_ScriptDir%\AppSpecific\WindowsExplorer.ahk
+
+#Include Functions.ahk
+#Include CapsNav.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
 #Include lib\LedControl.ahk

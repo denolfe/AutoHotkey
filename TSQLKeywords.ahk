@@ -1,4 +1,13 @@
-#IfWinActive, SQL Server Management Studio
+#If WinActive("SQL Server Management Studio")
+	Pause::
+		If (sqlDisabled:=!sqlDisabled) ; use () to indicate an expression in which a variable is assigned the value of its boolean negation
+   			Notify("SQL Keywords Disabled","",-2,"Style=Fast TC=Black GC=Yellow")
+   		Else
+   			Notify("SQL Keywords Enabled","",-2,"Style=Fast GC=Green")
+   		Return
+#If
+
+#If WinActive("SQL Server Management Studio") and !sqlDisabled
 	::absolute::ABSOLUTE
 	::action::ACTION
 	::ada::ADA
@@ -7,7 +16,9 @@
 	::allocate::ALLOCATE
 	::alter::ALTER
 	::and::AND
+	::ansi_nulls::ANSI_NULLS
 	::any::ANY
+	::apply::APPLY
 	::are::ARE
 	::as::AS
 	::asc::ASC
@@ -173,6 +184,7 @@
 	::next::NEXT
 	::no::NO
 	::nocheck::NOCHECK
+	::nocount::NOCOUNT
 	::nonclustered::NONCLUSTERED
 	::none::NONE
 	::not::NOT
@@ -203,7 +215,6 @@
 	::pascal::PASCAL
 	::percent::PERCENT
 	::plan::PLAN
-	::position::POSITION
 	::precision::PRECISION
 	::prepare::PREPARE
 	::preserve::PRESERVE

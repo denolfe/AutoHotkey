@@ -2,37 +2,28 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; !Numpad0::		ShowDir("D:\Dropbox\HomeShare\AutoHotkey")
-; !NumpadDot:: 	ShowDir("D:\Downloads")
-; !Numpad1:: 		ShowDir("D:\Dropbox")
-; !Numpad2:: 		ShowDir("D:\Dropbox\HomeShare")
-; !Numpad3:: 		ShowDir("D:\Dropbox\ScreenShots")
-; !Numpad4:: 		ShowDir("\\katrina\public\LatestRelease\")
-; !Numpad5:: 		ShowDir("\\Nasus\Builds\SalesPad.GP")
-; !Numpad6:: 		ShowDir("\\Karma\Team QA\Database Files\")
-; !Numpad7:: 		ShowDir("\\Karma\Team QA\")
-; !Numpad8:: 		ShowDir("\\Nasus\Shared Folders")
-; !Numpad9:: 		ShowDir("\\Karma\Team QA\Logs")
+!Numpad0::		ShowDir("C:\Users\elliotdenolf\Dropbox\HomeShare\AutoHotkey")
+!NumpadDot:: 	ShowDir("C:\Users\elliotdenolf\Downloads")
+!Numpad1:: 		ShowDir("C:\Users\elliotdenolf\Dropbox")
+!Numpad2:: 		ShowDir("C:\Users\elliotdenolf\Dropbox\HomeShare")
+!Numpad3:: 		ShowDir("C:\Users\elliotdenolf\Pictures")
+!Numpad4:: 		ShowDir("C:\tfs\main\FinFolio")
+; !Numpad5:: 		ShowDir("")
+; !Numpad6:: 		ShowDir("")
+; !Numpad7:: 		ShowDir("")
+; !Numpad8:: 		ShowDir("")
+; !Numpad9:: 		ShowDir("")
 
 #c::			ShowDir("C:\")
 #p::			ShowDir("C:\Program Files (x86)\")
 
-; #NumpadDot::ShowStart("Remote Desktop Connection Manager", "C:\Program Files (x86)\Remote Desktop Connection Manager\RDCMan.exe")
-; #Numpad1::	ShowStart("(testing1).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing1")
-; #NumPad2::	ShowStart("(smartbear).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe smartbear")
-; #NumPad3::	ShowStart("(testing3).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing3")
-; #Numpad4::	ShowStart("(testing4).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing4")
-; #Numpad5::	ShowStart("(testing5).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing5")
-; #Numpad6::	ShowStart("(testing6).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe testing6")
-; #Numpad7::	ShowStart("(sql2005).+(TightVNC Viewer)", "C:\Program Files\TightVNC\tvnviewer.exe sql2005")
-
-; !#NumpadDot::	ShowDir("\\Testing-PC\c$")
-; !#Numpad1::		ShowDir("\\testing1\c$")
-; !#NumPad2::		ShowDir("\\smartbear\c$")
-; !#NumPad3::		ShowDir("\\testing3\c$")
-; !#Numpad4::		ShowDir("\\testing4\c$")
-; !#Numpad5::		ShowDir("\\testing5\c$")
-; !#Numpad6::		ShowDir("\\sql2005\c$")
+; !#NumpadDot::		ShowDir("")
+; !#Numpad1::		ShowDir("")
+; !#NumPad2::		ShowDir("")
+; !#NumPad3::		ShowDir("")
+; !#Numpad4::		ShowDir("")
+; !#Numpad5::		ShowDir("")
+; !#Numpad6::		ShowDir("")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
@@ -62,8 +53,6 @@ Return
 Return
 
 +AppsKey::Run, MyMenu.ahk
-^AppsKey::Send, {AppsKey}
-AppsKey::Return
 
 #If GetKeyState("AppsKey", "p")
 	w::Up
@@ -123,7 +112,7 @@ RCtrl & Enter:: Gosub, Spotify ;ShowStart("Spotify", A_Appdata . "\Spotify\spoti
 ; #NumpadAdd::	Gosub, ResetDB
 ; ^!NumpadAdd::	Run, WorkScripts\BuildPrompt.ahk
 
-ScrollLock::	ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
+; ScrollLock::	ShowStart("Test Configuration", "WorkScripts\ConfigTests.ahk", 1)
 
 Spotify:
 	WinGetClass, this_class, A

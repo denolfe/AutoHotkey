@@ -1,13 +1,6 @@
 ;;;;; CapsNav ;;;;;;;
 
-*CapsLock::SetCapsLockState, Off
-
-+CapsLock::
-	If GetKeyState("CapsLock", "T")
-		SetCapsLockState, Off
-	Else
-		SetCapsLockState, On
-	Return
+^+CapsLock::CapsLock
 
 CapsLock & h::CapsNav("Left")
 CapsLock & j::CapsNav("Down")

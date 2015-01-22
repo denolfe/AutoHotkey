@@ -60,10 +60,8 @@
 #SingleInstance force
 Menu, Tray, Tip, Auto Correct
 #NoTrayIcon
-;If A_ComputerName = elliot-pc
-;	Menu, Tray, Icon, lib\images\AutoCorrect.ico
-;else
-;	Menu, Tray, NoIcon
+
+#Hotstring EndChars -()[]{}':;"/\,.?!`n `t_
 
 ;------------------------------------------------------------------------------
 ; AUto-COrrect TWo COnsecutive CApitals.
@@ -5346,3 +5344,18 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::loclahost::localhost
 ::remoev::remove
 ::isnert::insert
+::tbale::table
+::datetiem::datetime
+::positin::position
+::positoin::position
+::insatll::install
+::upate::update
+::postiion::position
+::updtae::update
+::whwer::where
+::thtat::that
+::balacne::balance
+::abalcne::balance
+::baalnce::balance
+::headphoens::headphones
+::srue::sure

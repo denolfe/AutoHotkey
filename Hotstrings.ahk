@@ -26,7 +26,8 @@
 	:*:like;::LIKE '`%`%'{left 2}
 	:*:in;::IN ('){left}
 	:*:temp;::If object_id('tempdb..{#}tmp') IS NOT NULL DROP TABLE {#}tmp{Space}
-	:*:ssf::SELECT * FROM{Space}
+	:*:ssf::SELECT *{Space}FROM{Space}
+	:*:sff::SELECT *{Enter}FROM{Space}
 	:*:ssi::SELECT * into{Space}
 	:*:ddf::DELETE FROM{Space}
 	:*:scf::SELECT COUNT(*) FROM{Space}
@@ -37,11 +38,44 @@
 	:*:killconn::USE master`n`nGO`n`nDECLARE @dbname SYSNAME`nSET @dbname = 'yourdbname'`nDECLARE @spid INT`nSELECT @spid = min(spid) FROM master.dbo.sysprocesses where dbid = db_id(@dbname)`nWHILE @spid IS NOT NULL`nBEGIN`nEXECUTE ('KILL ' {+} @spid)`nSELECT @spid = min(spid) from master.dbo.sysprocesses where dbid = db_id(@dbname) AND spid > @spid`n`nEND
 	:*:obd::ORDER BY date desc
 	:*:sv;::'"  "'{Left 3}
+	:*:st1::SELECT TOP 10 * FROM{Space}
+	:*:st2::SELECT TOP 100 * FROM{Space}
+	:*:bt;::BEGIN TRANSACTION{Enter}
+	:*:rb;::ROLLBACK
+	:*:btrb;::BEGIN TRANSACTION{Enter 2}ROLLBACK{Up}{Tab}
 #IfWinActive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Code ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+#IfWinActive, Microsoft Visual Studio
+
+	;; String.Format
+
+	:*:0;;::'{{}0{}}'
+	:*:1;;::'{{}1{}}'
+	:*:2;;::'{{}2{}}'
+	:*:3;;::'{{}3{}}'
+	:*:4;;::'{{}4{}}'
+	:*:5;;::'{{}5{}}'
+	:*:6;;::'{{}6{}}'
+	:*:7;;::'{{}7{}}'
+	:*:8;;::'{{}8{}}'
+	:*:9;;::'{{}9{}}'
+
+	:*:0:;::{{}0{}}
+	:*:1:;::{{}1{}}
+	:*:2:;::{{}2{}}
+	:*:3:;::{{}3{}}
+	:*:4:;::{{}4{}}
+	:*:5:;::{{}5{}}
+	:*:6:;::{{}6{}}
+	:*:7:;::{{}7{}}
+	:*:8:;::{{}8{}}
+	:*:9:;::{{}9{}}
+
+#IfWinActive
 
 :*:+la;::(?=){Left}
 :*:-la;::(?{!}){Left}
@@ -65,3 +99,11 @@ Return
 
 :*:pd;::`%ProgramData`%
 :*:ad;::`%AppData`%
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;; URLS ;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+:*:twopair;::http://twopair:8080/tfs{Tab}$/FinFolio{Tab 5}Elliot DeNolf

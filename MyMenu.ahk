@@ -3,7 +3,7 @@
 
 #Include lib\Notify.ahk
 #Include lib\HttpQueryInfo.ahk
-#Include MyMethods.ahk
+#Include Functions.ahk
 
 A_ProgramFiles86 := "C:\Program Files (x86)\"
 

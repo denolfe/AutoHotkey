@@ -45,7 +45,7 @@ SublimeOpen(file, sublime_path) ; Refocuses Sublime if file is opened while focu
 
 CapsNav(action, initmod = "", mod = "+")
 {
-	If ! GetKeyState("alt")
+	If ! GetKeyState("shift")
 		Send % initmod "{" action "}"
 	Else
 		Send % mod . initmod "{" action "}"
