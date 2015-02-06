@@ -5359,3 +5359,6 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::baalnce::balance
 ::headphoens::headphones
 ::srue::sure
+::softwrae::software
+::jion::join
+::ovid::void
