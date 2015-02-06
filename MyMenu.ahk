@@ -39,7 +39,7 @@ DirectoryCompare:
 	Run, Utilities\DirectoryCompare.ahk
 	Return
 KDiff3:
-	Run, %A_ProgramFiles86%\KDiff3\kdiff3.exe
+	RunProgFiles("KDiff3\kdiff3.exe")
 	Return
 AHKDocumentation:
 	Run, chrome.exe http://l.autohotkey.net/docs/

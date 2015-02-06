@@ -101,6 +101,14 @@ WinWaitText(search, window, windowtext, timeout=10000, interval=50)
     
 }
 
+RunProgFiles(exe)
+{
+    If FileExist(A_ProgramFiles "\" exe)
+        Run % A_ProgramFiles "\" exe
+    else If FileExist(A_ProgramFiles86 "\" exe)
+        Run % A_ProgramFiles86 "\" exe
+}
+
 UserName(username)
 {
 	Return % (A_Username = %username%) ? 1 : 0
