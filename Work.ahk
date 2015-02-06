@@ -32,9 +32,17 @@ SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
 
 If ! A_IsAdmin
+{
 	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
 	IfMsgBox No
+	{
+		SplitPath, A_AhkPath,, A_AhkDir
+		Run % A_AhkDir	
 		ExitApp
+	}
+	SplitPath, A_AhkPath,, A_AhkDir
+	Run % A_AhkDir
+}
 
 Run %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
 Run %A_ScriptDir%\AutoCorrect.ahk
@@ -42,7 +50,7 @@ Run %A_ScriptDir%\AutoCorrect.ahk
 FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-work.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
 Run %A_ScriptDir%\WindowPadX\WindowPadX.ahk
 
-SplitPath, A_ScriptName, , , , OutNameNoExt 
+SplitPath, A_ScriptName, , , , OutNameNoExt
 LinkFile := A_Startup "\" OutNameNoExt ".lnk"
 IfNotExist, %LinkFile%
 {
