@@ -143,11 +143,10 @@ RCtrl & |::SendInput, {Media_Next}
 	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow
 #IfWinActive
 
-#Include %A_ScriptDir%\AppSpecific\Everything.ahk
-#Include %A_ScriptDir%\AppSpecific\SublimeText.ahk
-#Include %A_ScriptDir%\AppSpecific\WindowsExplorer.ahk
+#Include %A_ScriptDir%\AppSpecific.ahk
 
 #Include Functions.ahk
+#Include HotStrings.ahk
 #Include CapsNav.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
