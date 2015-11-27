@@ -11,22 +11,25 @@ CoordMode, Mouse, Screen
 DetectHiddenWindows, On
 SetScrollLockState, Off
 
-If FileExist("lib\images\eve.ico")
-	Menu, Tray, Icon, lib\images\eve.ico
-
 Menu, Tray, Tip, Work Script
 
+If (FileExist(A_ScriptDir "\lib\images\testing.ico")) 
+	Menu, Tray, Icon, % A_ScriptDir "\lib\images\testing.ico"
+
+; Globals
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
+EnvGet, Domain, USERDOMAIN
+Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
+kbdIndex := 3
 
 total := 0
 IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|Hotstrings.ahk|Work.ahk|Functions.ahk"
 Loop, Parse, IncludedFiles, |
 	total += TF_CountLines(A_LoopField)
-Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Mine")
-
-Editor := "C:\Users\elliotdenolf\Dropbox\HomeShare\SublimePortable\sublime_text.exe"
-kbdIndex := 3
+Loop, AppSpecific\*.ahk
+	total += TF_CountLines(A_LoopFileFullPath)
+Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Win10")
 
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
@@ -44,11 +47,18 @@ If ! A_IsAdmin
 	Run % A_AhkDir
 }
 
-Run %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
-Run %A_ScriptDir%\AutoCorrect.ahk
+RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
+RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
+RunIfExist(A_ScriptDir "\WindowPadX\WindowPadX.ahk")
 
-FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-work.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
-Run %A_ScriptDir%\WindowPadX\WindowPadX.ahk
+IfWinNotExist, ahk_exe clipx.exe
+	RunProgFiles("ClipX\clipx.exe")
+
+if FileExist(A_ScriptDir "\WindowPadX\WindowPadX-work.ini")
+{
+	FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-work.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
+	Run %A_ScriptDir%\WindowPadX\WindowPadX.ahk
+}
 
 SplitPath, A_ScriptName, , , , OutNameNoExt
 LinkFile := A_Startup "\" OutNameNoExt ".lnk"
@@ -80,22 +90,23 @@ IntroLights:
 
 #Include %A_ScriptDir%\Functions.ahk
 #Include %A_ScriptDir%\Shortcuts.ahk
-#Include %A_ScriptDir%\WinControl.ahk
 #Include %A_ScriptDir%\AppSpecific.ahk
 #Include %A_ScriptDir%\Hotstrings.ahk
-#Include %A_ScriptDir%\CapsNav.ahk
-#Include %A_ScriptDir%\Utilities\FormatAHK.ahk
-#Include %A_ScriptDir%\TSQLKeywords.ahk
+
+#Include *i %A_ScriptDir%\CapsNav.ahk
+#Include *i %A_ScriptDir%\Utilities\FormatAHK.ahk
+#Include *i %A_ScriptDir%\TSQLKeywords.ahk
+#Include *i %A_ScriptDir%\WinControl.ahk
 
 ^!r::	Reload
-^!e::	SublimeOpen(A_ScriptName, Editor)
-^!t::	SublimeOpen("test.ahk", Editor)
-^!h::	SublimeOpen("Hotstrings.ahk", Editor)
-^!a::	SublimeOpen("AppSpecific.ahk", Editor)
-^!m::	SublimeOpen("MyMethods.ahk", Editor)
+^!e::	Edit(A_ScriptName, Editor)
+^!t::	Edit("test.ahk", Editor)
+^!h::	Edit("Hotstrings.ahk", Editor)
+^!a::	Edit("AppSpecific.ahk", Editor)
+^!m::	Edit("Functions.ahk", Editor)
 !t::	Run, Test.ahk
 
-^NumpadEnter::SublimeOpen("Shortcuts.ahk", Editor)
+^NumpadEnter::Edit("Shortcuts.ahk", Editor)
 
 +Pause::Suspend
 
