@@ -7,8 +7,8 @@
 :*:ahkskel::{#}NoEnv`n{#}WinActivateForce`n{#}SingleInstance force`nSendMode Input`nSetWorkingDir %A_ScriptDir%`nSetTitleMatchMode, 2`n
 :*:ahk;::AutoHotkey
 :*:st;::Sublime Text
+:*:js;::javascript
 :*:date;::
-:*:now;::
 	FormatTime, now, A_Now, M/d/yyyy
 	SendInput % now
 	Return
@@ -18,7 +18,7 @@
 ;;;;;;;;; SQL ;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#IfWinActive, SQL Server Management Studio
+#If WinActive("SQL Server Management Studio") or WinActive("ahk_exe sqldeveloper64W.exe")
 	:*:findt::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
 	:*:findv::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
 	:*:findc::SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
@@ -43,6 +43,10 @@
 	:*:bt;::BEGIN TRANSACTION{Enter}
 	:*:rb;::ROLLBACK
 	:*:btrb;::BEGIN TRANSACTION{Enter 2}ROLLBACK{Up}{Tab}
+#If
+
+#IfWinActive, Windows Security
+	:*:adm;::Administrator{Tab}
 #IfWinActive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -105,5 +109,3 @@ Return
 ;;;;;;;;; URLS ;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-:*:twopair;::http://twopair:8080/tfs{Tab}$/FinFolio{Tab 5}Elliot DeNolf
