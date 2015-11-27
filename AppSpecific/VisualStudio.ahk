@@ -1,17 +1,22 @@
 VSNamingMode := 0
 #IfWinActive Microsoft Visual Studio
-		
+	
+	^+;::
+		SendInput, {End};`n
+	Return
+	
 	;; Naming Mode
 	^+u::
 		If (VSNamingMode)
 		{
+			SplashImage,,x0 y0 b fs12, VS Naming Disabled
+			SetTimer, VSNamingSplash, -500
 			VSNamingMode := 0
-			msgbox % VSNamingMode ; Replace with Notify soon
 		}
 		Else
 		{
 			VSNamingMode := 1
-			msgbox % VSNamingMode ; Replace with Notify soon
+			SplashImage,,x0 y0 b fs12, VS Naming Enabled
 		}
 	Return
 
@@ -59,3 +64,7 @@ VSNamingMode := 0
 	^XButton2::SendInput !^c{Up}{Enter}
 
 #If
+
+VSNamingSplash:
+   SplashImage, off
+Return
