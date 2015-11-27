@@ -1,5 +1,4 @@
 #IfWinActive ahk_class PX_WINDOW_CLASS
-	F5::
 	+Enter::
 		Send ^s
 		SetTitleMatchMode, 2
@@ -23,7 +22,7 @@
 		SetTitleMatchMode, RegEx
 		Return
 
-	^LButton::
+	!LButton::
 		Send {LButton 2}
 		Return
 
