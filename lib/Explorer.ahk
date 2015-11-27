@@ -93,5 +93,6 @@ Explorer_Get(hwnd="",selection=false)
 		for item in collection
 			ret .= item.path "`n"
 	}
+	Sort, ret, d`n
 	return Trim(ret,"`n")
 }
