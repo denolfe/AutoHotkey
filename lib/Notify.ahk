@@ -152,6 +152,10 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
     Return % Notify(Title,Message,Duration,Saved)
    Else If Style = Mine
     Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=350 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 " Options "Style=")
+   Else If Style = Win10
+    Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=350 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 PB=767676 GR=0 " Options "Style=")
+   Else If Style = Fast
+    Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=100 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 " Options "Style=")
    Else If Style = Alert
     Return % Notify(Title,Message,Duration,"SI=50 GC=Red TC=White MC=White SI=350 ST=450 BC=White GR=9 BR=13 BW=2 BT=105 TS=9 MS=8 " Options "Style=")
   }
