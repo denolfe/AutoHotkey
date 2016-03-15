@@ -5681,3 +5681,15 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::togetehr::together
 ::websotrm::webstorm
 ::moer::more
+::tutorila::tutorial
+::tyeps::types
+::ndoe::node
+::consol::console
+::otuline::outline
+::consoel::console
+::isntance::instance
+::wnidows::windows
+::accuonts::accounts
+::mosue::mouse
+::apge::page
+::seelct::select

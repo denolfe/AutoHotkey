@@ -33,6 +33,8 @@ CapsLock & .::CapsNav("Right", "^")
 CapsLock & u::
 CapsLock & m::CapsNav("Left", "^")
 
+CapsLock & BackSpace::Send, {Delete}
+
 CapsLock & `;::
 CapsLock & ,::
 CapsLock & i::

@@ -77,4 +77,5 @@
 
 #IfWinActive ahk_class ConsoleWindowClass
 	^V::SendInput {Raw}%clipboard%
+	^L::SendInput, {Esc}cls{Enter}
 #IfWinActive

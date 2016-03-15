@@ -17,6 +17,14 @@ Edit(file, editorPath) ; Refocuses Sublime if file is opened while focused
     WinActivate, ahk_class PX_WINDOW_CLASS
 }
 
+LoggedIn()
+{
+    if WinExist("A")
+        return true
+    else
+        return false
+}
+
 WinWaitText(search, window, windowtext, timeout=10000, interval=50)
 {
     loops := timeout / interval
@@ -28,6 +36,7 @@ WinWaitText(search, window, windowtext, timeout=10000, interval=50)
             break  
         Sleep, %interval%
     }
+    
 }
 
 RunProgFiles(exe)
@@ -36,16 +45,29 @@ RunProgFiles(exe)
         Run % A_ProgramFiles "\" exe
     else If FileExist(A_ProgramFiles86 "\" exe)
         Run % A_ProgramFiles86 "\" exe
+    else
+        ErrorLevel = 1
+}
+
+LockWorkstation(screenOff = 0)
+{
+    Run, %A_WinDir%\System32\rundll32.exe user32.dll`, LockWorkStation
+    if (screenOff = 1)
+    {
+        Sleep 1000
+        SendMessage, 0x112, 0xF170, 2,, Program Manager
+    }
+    Return
 }
 
 UserName(username)
 {
-	Return % (A_Username = %username%) ? 1 : 0
+    Return % (A_Username = %username%) ? 1 : 0
 }
 
 AtWork()
 {
-	Return % (A_Username = "elliotd") ? 1 : 0
+    Return % (A_Username = "elliotd") ? 1 : 0
 }
 
 MouseIsOver(Wintitle) {
@@ -61,8 +83,8 @@ MouseIsOverClass(WinClass) {
 
 MouseIsOverControl(winControl)
 {
-	MouseGetPos, , , , Control
-	return (Control = winControl)
+    MouseGetPos, , , , Control
+    return (Control = winControl)
 }
 
 ActiveControlIsOfClass(Class) 
@@ -76,29 +98,29 @@ ActiveControlIsOfClass(Class)
 IsOnline(machine)
 {
     IfExist, \\%machine%\c$
-		return 1
-	else
-		return 0
+        return 1
+    else
+        return 0
 }
 
 Cl(command, hide = 1)
 {
-	if hide
-		RunWait, %comspec% /c "%command%",, Hide
-	Else
-		Run, %comspec% /c %command%
+    if hide
+        RunWait, %comspec% /c "%command%",, Hide
+    Else
+        Run, %comspec% /c %command%
 }
 
 IsFocusOn(current)
 {
-	ControlGetFocus, OutputVar, A
-	IfEqual, current, %OutPutVar%
-		return 1
-	else
-		return 0
+    ControlGetFocus, OutputVar, A
+    IfEqual, current, %OutPutVar%
+        return 1
+    else
+        return 0
 }
 
-Replace(string, find, replace="")
+StringReplace(string, find, replace="")
 {
     Stringreplace, string, string, % find, % replace, All
     return string
@@ -107,7 +129,7 @@ Replace(string, find, replace="")
 RegInStr(haystack, needle)
 {
     return % If Instr(RegExReplace(haystack, needle, "foundit!"), "foundit!") ? 1 : 0
-}
+} 
 
 Log(text, file = "debug.log")
 {
@@ -131,14 +153,15 @@ RxMatch(string, pattern)
     return % Substr(string, RegExMatch(string, "P)" pattern, matchlength), matchlength)
 }
 
-StringFormat(string, zero, one = "", two = "", three = "", four = "", five = "")
+StrFmt(string, zero, one = "", two = "", three = "", four = "", five = "")
 {
-    StringReplace, string, string, `{0`}, % zero
-    StringReplace, string, string, `{1`}, % one
-    StringReplace, string, string, `{2`}, % two
-    StringReplace, string, string, `{3`}, % three
-    StringReplace, string, string, `{4`}, % four
-    StringReplace, string, string, `{5`}, % five
+    return StringFormat(string, zero, one, two, three, four, five)
+}
+
+StringFormat(string, vargs*)
+{
+    for each, varg in vargs
+        StringReplace,string,string,`%s, % varg
     return string
 }
 
@@ -153,4 +176,54 @@ RunIfExist(exe, response = 0)
         Else If response = 1
             msgbox, %exe% does not exist.
     }
+}
+
+UpFolder(folder, numberUp = 1)
+{
+    ; Count available directories
+    DirCount := 0
+    Loop, Parse, folder, \
+    {
+        if (StrLen(A_LoopField) > 0)
+        {
+            FolderArray%A_Index% = %A_Loopfield%
+            DirCount++
+        }
+    }
+    
+    ; Check if file or folder and adjust DirCount
+    If (IsFile(folder))
+        numberUp++
+
+    ; Not enough folders to go that high
+    if (numberUp + 1 > DirCount)
+    {
+        ErrorLevel := 1
+        return ""
+    }
+
+    ; Calculate how far to go up
+    DirCount := DirCount - numberUp
+
+    ; Generate output dir
+    OutDir := ""
+    Loop, %DirCount%
+    {
+        dir := FolderArray%A_Index%
+        OutDir .= dir 
+        if (A_Index != DirCount)
+            OutDir .= "\"
+    }
+    return OutDir
+
+}
+
+IsFolder(fileOrFolder)
+{
+    return InStr( FileExist(fileOrFolder), "D" ) ? 1 : 0
+}
+
+IsFile(fileOrFolder)
+{
+    return InStr( FileExist(fileOrFolder), "D" ) ? 0 : 1
 }
