@@ -1,0 +1,3 @@
+[submodule "VolumeScroll"]
+	path = VolumeScroll
+	url = https://github.com/denolfe/VolumeScroll.git
