@@ -7,7 +7,7 @@
    		Return
 #If
 
-#If WinActive("SQL Server Management Studio") and !sqlDisabled
+#If WinActive("SQL Server Management Studio") or WinActive("ahk_exe sqldeveloper64W.exe") ; and !sqlDisabled
 	::absolute::ABSOLUTE
 	::action::ACTION
 	::ada::ADA
