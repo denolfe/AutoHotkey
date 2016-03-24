@@ -54,7 +54,7 @@ DynamicFunctionTester:
 	Return
 
 Colorette:
-	Run, Utilities\Colorette.ahk
+	Run, Utilities\Colorette\Colorette.ahk
 	Return
 
 PathEditor:
