@@ -13,7 +13,7 @@ SetScrollLockState, Off
 
 Menu, Tray, Tip, Work Script
 
-If (FileExist(A_ScriptDir "\lib\images\testing.ico")) 
+If (FileExist(A_ScriptDir "\lib\images\testing.ico"))
 	Menu, Tray, Icon, % A_ScriptDir "\lib\images\testing.ico"
 
 ; Globals
@@ -40,7 +40,7 @@ If ! A_IsAdmin
 	IfMsgBox No
 	{
 		SplitPath, A_AhkPath,, A_AhkDir
-		Run % A_AhkDir	
+		Run % A_AhkDir
 		ExitApp
 	}
 	SplitPath, A_AhkPath,, A_AhkDir

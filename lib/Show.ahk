@@ -1,4 +1,4 @@
-ShowStart(title, exe, params = "", toggle = 0)
+Show_Start(title, exe, params = "", toggle = 0)
 {
 	If WinActive(title) and toggle
     {
@@ -28,7 +28,7 @@ ShowStart(title, exe, params = "", toggle = 0)
 	}
 }
 
-ShowDir(title)
+Show_Dir(title)
 {
     ;RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState , FullPath, 1
 	SetTitleMatchMode, 3
