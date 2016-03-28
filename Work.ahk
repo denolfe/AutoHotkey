@@ -95,7 +95,6 @@ IntroLights:
 
 #Include *i %A_ScriptDir%\CapsNav.ahk
 #Include *i %A_ScriptDir%\Utilities\FormatAHK.ahk
-#Include *i %A_ScriptDir%\TSQLKeywords.ahk
 #Include *i %A_ScriptDir%\WinControl.ahk
 
 ^!r::	Reload

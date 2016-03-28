@@ -18,7 +18,7 @@
 ;;;;;;;;; SQL ;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#If WinActive("SQL Server Management Studio") or WinActive("ahk_exe sqldeveloper64W.exe")
+#If WinActive("SQL Server Management Studio") or WinActive("ahk_exe sqldeveloper64W.exe") or WinActive("ahk_exe SQLyogCommunity.exe")
 	:*:findt::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
 	:*:findv::SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
 	:*:findc::SELECT TABLE_NAME, COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME LIKE '`%`%' ORDER BY TABLE_NAME{left 22}
