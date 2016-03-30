@@ -11,5 +11,3 @@
 #Include %A_ScriptDir%\AppSpecific\TSQLKeywords.ahk
 #Include %A_ScriptDir%\AppSpecific\VisualStudio.ahk
 #Include %A_ScriptDir%\AppSpecific\WindowsExplorer.ahk
-
-~!PrintScreen::Notify("Screenshot Taken","",-2,"GC=555555 SI=0 SC=0 ST=500 TC=White MC=White")
