@@ -23,13 +23,7 @@ EnvGet, Domain, USERDOMAIN
 Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
 kbdIndex := 3
 
-total := 0
-IncludedFiles := "AppSpecific.ahk|Shortcuts.ahk|Hotstrings.ahk|Work.ahk|Functions.ahk"
-Loop, Parse, IncludedFiles, |
-	total += TF_CountLines(A_LoopField)
-Loop, AppSpecific\*.ahk
-	total += TF_CountLines(A_LoopFileFullPath)
-Notify(A_ScriptName " Started!",total " lines executed",-3,"Style=Win10")
+Notify(A_ScriptName " Started!","",-3,"Style=Win10")
 
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
