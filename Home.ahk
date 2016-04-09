@@ -9,14 +9,16 @@ SetTitleMatchMode, RegEx
 DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
-Run, AutoCorrect.ahk
-Run, %A_ScriptDir%\VolumeScroll\VolumeScroll.ahk
+RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
+RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
 
-total := 0
-IncludedFiles := "Home.ahk|Functions.ahk|AppSpecific.ahk|VolumeControl.ahk"
-Loop, Parse, IncludedFiles, |
-	total += TF_CountLines(A_LoopField)
-Notify(A_ScriptName . " Started!",total . " lines executed",-3,"Style=Win10")
+FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-home.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
+RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
+
+IfWinNotExist, ahk_exe clipx.exe
+	RunProgFiles("ClipX\clipx.exe")
+
+Notify(A_ScriptName . " Started!","",-3,"Style=Win10")
 
 Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
 
@@ -24,9 +26,6 @@ Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1000
-
-FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-home.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
-Run, WindowPadX\WindowPadX.ahk
 
 ; Disable Aero
 Run, %comspec% /c "net stop uxsms",,Hide
