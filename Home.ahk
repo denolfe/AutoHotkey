@@ -96,14 +96,14 @@ Spotify:
 	}
 	Return
 
-RCtrl & 1::ShowStart("ahk_class Chrome_WidgetWin_1", "chrome.exe")
+RCtrl & 1::Show_Start("ahk_class Chrome_WidgetWin_1", "chrome.exe")
 CapsLock & SC027::
-RCtrl & 2::ShowStart("Cmder", "../cmder/cmder.exe")
-RCtrl & 3::ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
-RCtrl & 4::ShowStart("- WebStorm", "C:\Program Files (x86)\JetBrains\WebStorm 10.0.1\bin\WebStorm.exe")
-RCtrl & 5::ShowDir("C:\Dropbox\HomeShare")
-RCtrl & 6::ShowDir("D:\Downloads")
-RCtrl & 7::ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+RCtrl & 2::Show_Start("Cmder", "../cmder/cmder.exe")
+RCtrl & 3::Show_Start("ahk_class PX_WINDOW_CLASS", Editor)
+RCtrl & 4::Show_Start("- WebStorm", "C:\Program Files (x86)\JetBrains\WebStorm 10.0.1\bin\WebStorm.exe")
+RCtrl & 5::Show_Dir("C:\Dropbox\HomeShare")
+RCtrl & 6::Show_Dir("D:\Downloads")
+RCtrl & 7::Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
 RCtrl & 8::Return
 RCtrl & 9::Return
 
@@ -133,12 +133,12 @@ RCtrl & |::SendInput, {Media_Next}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-!1:: ShowDir("C:\Dropbox")
-!2:: ShowDir("C:\Dropbox\HomeShare")
-!3:: ShowDir("D:\Downloads\")
+!1:: Show_Dir("C:\Dropbox")
+!2:: Show_Dir("C:\Dropbox\HomeShare")
+!3:: Show_Dir("D:\Downloads\")
 ; !4:: 
-!7:: ShowDir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
-!0:: ShowDir(A_ScriptDir)
+!7:: Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+!0:: Show_Dir(A_ScriptDir)
 
 ^!r::	Reload
 ^!e::	Edit(A_ScriptName, Editor)
