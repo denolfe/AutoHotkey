@@ -63,6 +63,8 @@ IntroLights:
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
 
+:*:src;::source /c/Dropbox/HomeShare/cmder/config/.bashrc
+
 :*:pd;::
 	SendInput, playdemo picks\%clipboard%{Enter}
 	Return
