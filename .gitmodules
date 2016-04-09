@@ -1,3 +1,6 @@
 [submodule "VolumeScroll"]
 	path = VolumeScroll
 	url = https://github.com/denolfe/VolumeScroll.git
+[submodule "Utilities/Colorette"]
+	path = Utilities/Colorette
+	url = https://github.com/Appifyer/Colorette.git

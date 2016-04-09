@@ -2,28 +2,28 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad0::		ShowDir(A_ScriptDir)
-!NumpadDot:: 	ShowDir("C:\Users\QIDX\Downloads")
-!Numpad1:: 		ShowDir("C:\Users\QIDX\Documents")
-; !Numpad2:: 		ShowDir("")
-; !Numpad3:: 		ShowDir("")
-; !Numpad4:: 		ShowDir("")
-; !Numpad5:: 		ShowDir("")
-; !Numpad6:: 		ShowDir("")
-; !Numpad7:: 		ShowDir("")
-; !Numpad8:: 		ShowDir("")
-; !Numpad9:: 		ShowDir("")
+!Numpad0::		Show_Dir(A_ScriptDir)
+!NumpadDot:: 	Show_Dir("C:\Users\QIDX\Downloads")
+!Numpad1:: 		Show_Dir("C:\Users\QIDX\Documents")
+; !Numpad2:: 		Show_Dir("")
+; !Numpad3:: 		Show_Dir("")
+; !Numpad4:: 		Show_Dir("")
+; !Numpad5:: 		Show_Dir("")
+; !Numpad6:: 		Show_Dir("")
+; !Numpad7:: 		Show_Dir("")
+; !Numpad8:: 		Show_Dir("")
+; !Numpad9:: 		Show_Dir("")
 
-#c::			ShowDir("C:\")
-#p::			ShowDir("C:\Program Files (x86)\")
+#c::			Show_Dir("C:\")
+#p::			Show_Dir("C:\Program Files (x86)\")
 
-; !#NumpadDot::		ShowDir("")
-; !#Numpad1::		ShowDir("")
-; !#NumPad2::		ShowDir("")
-; !#NumPad3::		ShowDir("")
-; !#Numpad4::		ShowDir("")
-; !#Numpad5::		ShowDir("")
-; !#Numpad6::		ShowDir("")
+; !#NumpadDot::		Show_Dir("")
+; !#Numpad1::		Show_Dir("")
+; !#NumPad2::		Show_Dir("")
+; !#NumPad3::		Show_Dir("")
+; !#Numpad4::		Show_Dir("")
+; !#Numpad5::		Show_Dir("")
+; !#Numpad6::		Show_Dir("")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Remaps ;;;;;;;;;
@@ -109,28 +109,28 @@ NumLock::		Gosub, Spotify
 ^NumPad0::		Gosub, RearrangeWindows
 RCtrl & 1::
 CapsLock & /::
-^NumpadDot::	ShowStart("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-^Numpad1::		ShowStart("HipChat","C:\Program Files (x86)\Atlassian\HipChat\hipchat.exe")
+^NumpadDot::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
+^Numpad1::		Show_Start("HipChat","C:\Program Files (x86)\Atlassian\HipChat\hipchat.exe")
 RCtrl & 2::
 CapsLock & SC027::
-^Numpad2::		ShowStart("Cmder", "../cmder/cmder.exe")
+^Numpad2::		Show_Start("Cmder", "../cmder/cmder.exe")
 RCtrl & 3::
 CapsLock & "::
 ^Numpad3::		GoSub, SublimeText
-^Numpad4::		ShowStart(" - Git Extensions","C:\Program Files (x86)\GitExtensions\GitExtensions.exe")
-^Numpad5::		ShowStart("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
-^Numpad6::		ShowStart("First Data Evolve","C:\Reach\Prpro.exe NRDUQ")
-^Numpad7::		ShowStart("- Outlook", "C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE")
-^Numpad8::		ShowStart("ZUI Application Client","C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\java\bin\javaw.exe", "-Xmx512m -Dzui.plugin.location=""C:\Users\QIDX\.zui-client-plugin-cache"" -jar ""C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\zui-client-1.1.0.35-bin.jar""", 0)
-^Numpad9::		ShowStart("Scope Classic","C:\Program Files (x86)\zScope\Classic v6.5\zClassic.exe")
+^Numpad4::		Show_Start(" - Git Extensions","C:\Program Files (x86)\GitExtensions\GitExtensions.exe")
+^Numpad5::		Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
+^Numpad6::		Show_Start("First Data Evolve","C:\Reach\Prpro.exe NRDUQ")
+^Numpad7::		Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE")
+^Numpad8::		Show_Start("ZUI Application Client","C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\java\bin\javaw.exe", "-Xmx512m -Dzui.plugin.location=""C:\Users\QIDX\.zui-client-plugin-cache"" -jar ""C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\zui-client-1.1.0.35-bin.jar""", 0)
+^Numpad9::		Show_Start("Scope Classic","C:\Program Files (x86)\zScope\Classic v6.5\zClassic.exe")
 
 ^!Enter::
 ^!NumpadEnter::		Gosub, PurgeWindows
-; ^!NumpadEnter::	ShowStart("","")
-; #NumpadAdd::		ShowStart("","")
-; ^!NumpadAdd::		ShowStart("","")
+; ^!NumpadEnter::	Show_Start("","")
+; #NumpadAdd::		Show_Start("","")
+; ^!NumpadAdd::		Show_Start("","")
 
-; ScrollLock::		ShowStart("","")
+; ScrollLock::		Show_Start("","")
 
 Everything:
 	;DetectHiddenWindows, Off
@@ -159,13 +159,13 @@ AgentRansack:
 	Return
 
 SublimeText:
-	ShowStart("ahk_class PX_WINDOW_CLASS", Editor)
+	Show_Start("ahk_class PX_WINDOW_CLASS", Editor)
 	WinWaitActive ahk_class PX_WINDOW_CLASS
 	; WinMove, ahk_class PX_WINDOW_CLASS,, 1920, 0, 1317, A_ScreenHeight
 	Return
 	
 Npp:
-	ShowStart("ahk_class Notepad++", Editor)
+	Show_Start("ahk_class Notepad++", Editor)
 	WinWaitActive ahk_class Notepad++
 	; WinMove, ahk_class Notepad++,, 1920, 0, 1317, A_ScreenHeight
 	Return

@@ -1,4 +1,3 @@
-#Include %A_ScriptDir%\lib\ShowLauncher.ahk
 #Include %A_ScriptDir%\lib\GUID.ahk
 #Include %A_ScriptDir%\lib\Process.ahk
 #Include %A_ScriptDir%\lib\ClipboardHelpers.ahk
