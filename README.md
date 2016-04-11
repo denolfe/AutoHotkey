@@ -1,19 +1,20 @@
-AutoHotkey
-==========
+# AutoHotkey
 
 > My personal Autohotkey shortcuts, hotstrings, hotkeys, apps/utilities, AutoCorrect
 
 You can easily set up your own using [my AutoHotkey-Boilerplate project](https://github.com/denolfe/AutoHotkey-Boilerplate).
 
-Contents  
---------------------
-* AppSpecific Shortcuts
-* Text Expansion Hotstrings
+## Contents  
+
 * App Launch Hotkeys
-* Misc AutoHotkey Utilities
-* Misc AutoHotkey functions
-* Universal vim-like movement keys in conjunction with CapsLock
+* App-specific Hotkeys
+* Text Expansion Hotstrings
+* Useful AutoHotkey Utilities
+* Movement keys with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
 * AutoCorrect with personal additions.
 * [VolumeScroll](https://github.com/denolfe/VolumeScroll) helper
 
-Download AutoHotkey_L [here](http://l.autohotkey.net/).
+## How to Use
+
+* Install AutoHotkey_L [here](http://l.autohotkey.net/)
+* Run `Work.ahk`
