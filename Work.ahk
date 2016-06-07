@@ -42,7 +42,7 @@ If ! A_IsAdmin
 }
 
 RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
-RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
+RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
 RunIfExist(A_ScriptDir "\WindowPadX\WindowPadX.ahk")
 
 IfWinNotExist, ahk_exe clipx.exe
@@ -82,14 +82,14 @@ IntroLights:
 	KeyboardLED(0,"off", kbdIndex)
 	Return
 
-#Include %A_ScriptDir%\Functions.ahk
-#Include %A_ScriptDir%\Shortcuts.ahk
-#Include %A_ScriptDir%\AppSpecific.ahk
-#Include %A_ScriptDir%\Hotstrings.ahk
+#Include %A_ScriptDir%\Core\Functions.ahk
+#Include %A_ScriptDir%\Core\Shortcuts.ahk
+#Include %A_ScriptDir%\Core\AppSpecific.ahk
+#Include %A_ScriptDir%\Core\Hotstrings.ahk
 
-#Include *i %A_ScriptDir%\CapsNav.ahk
+#Include *i %A_ScriptDir%\Core\CapsNav.ahk
 #Include *i %A_ScriptDir%\Utilities\FormatAHK.ahk
-#Include *i %A_ScriptDir%\WinControl.ahk
+#Include *i %A_ScriptDir%\Core\WinControl.ahk
 
 ^!r::	Reload
 ^!e::	Edit(A_ScriptName, Editor)
