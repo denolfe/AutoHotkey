@@ -14,14 +14,14 @@
 	; Add folder to existing instance
 	^+Enter::
 		StatusBarGetText, Title
-		Run, %Editor% %Title% -a
+		Run, %Editor% "%Title%" -a
 		WinActivate, ahk_class PX_WINDOW_CLASS
 		Return
 
 	^j::
 		StatusBarGetText, FullFileName
 		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
-		Run, %dir%
+		Run, "%dir%"
 		Return
 
 	^k::
