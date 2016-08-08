@@ -62,7 +62,7 @@ Return
 	KeyboardLED(0,"off", kbdIndex)
 Return
 
-+AppsKey::Run, MyMenu.ahk
++AppsKey::Run, %A_ScriptDir%\Core\MyMenu.ahk
 
 #WheelDown::	Send {WheelRight 2}
 #WheelUp::		Send {WheelLeft 2}
