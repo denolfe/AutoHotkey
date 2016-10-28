@@ -2,9 +2,11 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+UserDir := "C:\Users\" A_UserName
+
 !Numpad0::		Show_Dir(A_ScriptDir)
-!NumpadDot:: 	Show_Dir("C:\Users\QIDX\Downloads")
-!Numpad1:: 		Show_Dir("C:\Users\QIDX\Documents")
+!NumpadDot:: 	Show_Dir(UserDir "\Downloads")
+!Numpad1:: 		Show_Dir(UserDir "\Documents")
 ; !Numpad2:: 		Show_Dir("")
 ; !Numpad3:: 		Show_Dir("")
 ; !Numpad4:: 		Show_Dir("")
@@ -110,7 +112,7 @@ NumLock::		Gosub, Spotify
 RCtrl & 1::
 CapsLock & /::
 ^NumpadDot::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-^Numpad1::		Show_Start("HipChat","C:\Program Files (x86)\Atlassian\HipChat\hipchat.exe")
+^Numpad1::		Show_Start("Slack -","%UserDir%\AppData\Local\slack\app-2.2.1\slack.exe")
 RCtrl & 2::
 CapsLock & SC027::
 ^Numpad2::		Show_Start("Cmder", "../cmder/cmder.exe")
@@ -121,7 +123,7 @@ CapsLock & "::
 ^Numpad5::		Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
 ^Numpad6::		Show_Start("First Data Evolve","C:\Reach\Prpro.exe NRDUQ")
 ^Numpad7::		Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE")
-^Numpad8::		Show_Start("ZUI Application Client","C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\java\bin\javaw.exe", "-Xmx512m -Dzui.plugin.location=""C:\Users\QIDX\.zui-client-plugin-cache"" -jar ""C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\zui-client-1.1.0.35-bin.jar""", 0)
+^Numpad8::		Show_Start("ZUI Application Client","C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\java\bin\javaw.exe", "-Xmx512m -Dzui.plugin.location=""%UserDir%\.zui-client-plugin-cache"" -jar ""C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\zui-client-1.1.0.35-bin.jar""", 0)
 ^Numpad9::		Show_Start("Scope Classic","C:\Program Files (x86)\zScope\Classic v6.5\zClassic.exe")
 
 ^!Enter::
