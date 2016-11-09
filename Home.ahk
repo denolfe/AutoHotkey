@@ -12,8 +12,7 @@ SetCapsLockState, AlwaysOff
 RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
 
-FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-home.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
-RunIfExist(A_ScriptDir "\WindowPadX\WindowPadX.ahk")
+RunIfExist(A_ScriptDir "Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
 RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
 
 IfWinNotExist, ahk_exe clipx.exe
