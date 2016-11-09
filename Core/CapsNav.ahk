@@ -28,6 +28,7 @@ CapsLock & l::CapsNav("Right")
 CapsLock & n::CapsNav("Home")
 CapsLock & p::CapsNav("End")
 
+CapsLock & .::
 CapsLock & o::CapsNav("Right", "^")
 CapsLock & m::CapsNav("Left", "^")
 
