@@ -41,9 +41,9 @@ If ! A_IsAdmin
 	Run % A_AhkDir
 }
 
-RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
+RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
-RunIfExist(A_ScriptDir "\WindowPadX\WindowPadX.ahk")
+RunIfExist(A_ScriptDir "\Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
 
 IfWinNotExist, ahk_exe clipx.exe
 	RunProgFiles("ClipX\clipx.exe")

@@ -1,5 +1,5 @@
 [submodule "VolumeScroll"]
-	path = VolumeScroll
+	path = Utilities/VolumeScroll
 	url = https://github.com/denolfe/VolumeScroll.git
 [submodule "Utilities/Colorette"]
 	path = Utilities/Colorette

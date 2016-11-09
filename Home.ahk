@@ -9,11 +9,8 @@ SetTitleMatchMode, RegEx
 DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
-RunIfExist(A_ScriptDir "\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
-
-RunIfExist(A_ScriptDir "Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
-RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
+RunIfExist(A_ScriptDir "\Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
 
 IfWinNotExist, ahk_exe clipx.exe
 	RunProgFiles("ClipX\clipx.exe")
