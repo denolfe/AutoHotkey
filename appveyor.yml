@@ -7,3 +7,4 @@ build_script:
   - cmd: cd _build
   - cmd: powershell -NoProfile -ExecutionPolicy Unrestricted -Command .\build.ps1
 
+test: off
