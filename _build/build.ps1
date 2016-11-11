@@ -1,29 +1,35 @@
-$ahkCompile = "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
-$arguments = "/in Work.ahk"
-Set-Location -Path ..
-Write-Host COMPILING...
-Start-Process $ahkCompile $arguments -Wait
+$ahkCompiler = "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
+$scriptsToCompile = @("Work","Home")
 
-$proc = "Work"
-if (Test-Path .\$proc.exe)
+Set-Location -Path ..
+
+Foreach ($script in $scriptsToCompile)
 {
-    Write-Host Compiled .exe found!
-    Start-Process .\$proc.exe
-    $ProcessActive = Get-Process $proc -ErrorAction SilentlyContinue
-    if($ProcessActive -eq $null)
+    $arguments = "/in $($script).ahk"
+    Set-Location -Path ..
+    Write-Host COMPILING $($script).ahk...
+    Start-Process $ahkCompiler $arguments -Wait
+
+    if (Test-Path .\$script.exe)
     {
-      Write-Host ERROR: $proc not found
-      $host.SetShouldExit(1)
+        Write-Host Compiled $($script).exe found!
+        Start-Process .\$script.exe
+        $ProcessActive = Get-Process $script -ErrorAction SilentlyContinue
+        if($ProcessActive -eq $null)
+        {
+          Write-Host ERROR: $($script).exe process not found
+          $host.SetShouldExit(1)
+        }
+        else
+        {
+          Write-Host SUCCESS: $($script).exe process is running
+          Stop-Process -name $script
+          $host.SetShouldExit(0)
+        }
     }
     else
     {
-      Write-Host SUCCESS: $proc process is running
-      Stop-Process -name $proc
-      $host.SetShouldExit(0)
+        Write-Host ERROR: $($script).exe not found
+        $host.SetShouldExit(1)
     }
-}
-else
-{
-    Write-Host ERROR: $proc executable not found
-    $host.SetShouldExit(1)
 }
