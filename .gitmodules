@@ -6,4 +6,4 @@
 	url = https://github.com/Appifyer/Colorette.git
 [submodule "Utilities/WindowPadX"]
 	path = Utilities/WindowPadX
-	url = https://github.com/denolfe/WindowPadX
+	url = https://github.com/hoppfrosch/WindowPadX

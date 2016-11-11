@@ -43,16 +43,10 @@ If ! A_IsAdmin
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
-RunIfExist(A_ScriptDir "\Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
+Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
 
 IfWinNotExist, ahk_exe clipx.exe
 	RunProgFiles("ClipX\clipx.exe")
-
-if FileExist(A_ScriptDir "\WindowPadX\WindowPadX-work.ini")
-{
-	FileCopy, %A_ScriptDir%\WindowPadX\WindowPadX-work.ini, %A_ScriptDir%\WindowPadX\WindowPadX.ini, 1
-	Run %A_ScriptDir%\WindowPadX\WindowPadX.ahk
-}
 
 SplitPath, A_ScriptName, , , , OutNameNoExt
 LinkFile := A_Startup "\" OutNameNoExt ".lnk"
