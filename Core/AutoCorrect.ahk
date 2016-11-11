@@ -5693,3 +5693,6 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::mosue::mouse
 ::apge::page
 ::seelct::select
+::somehwere::somewhere
+
+::tseting::testing
