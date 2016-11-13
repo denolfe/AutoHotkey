@@ -10,7 +10,7 @@ DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
 RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
-RunIfExist(A_ScriptDir "\Utilities\WindowPadX\WindowPadX.ahk .\WindowPadX.ini")
+Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
 
 IfWinNotExist, ahk_exe clipx.exe
 	RunProgFiles("ClipX\clipx.exe")
