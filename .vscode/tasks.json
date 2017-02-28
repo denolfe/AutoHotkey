@@ -1,0 +1,27 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "tasks": [
+    {
+      "taskName": "build",
+      "command": "C:\\Program Files\\AutoHotkey\\Compiler\\Ahk2Exe.exe",
+      "args": [
+        "/in",
+        "${workspaceRoot}\\Work.ahk"
+      ],
+      "showOutput": "always",
+      "isShellCommand": true,
+      "isBuildCommand": true
+    },
+    {
+      "taskName": "run",
+      "command": "start",
+      "args": [
+        "${workspaceRoot}\\Work.ahk"
+      ],
+      "showOutput": "silent",
+      "isShellCommand": true
+    }
+  ]
+}
