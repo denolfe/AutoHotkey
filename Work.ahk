@@ -20,7 +20,8 @@ If (FileExist(A_ScriptDir "\lib\images\testing.ico"))
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 EnvGet, Domain, USERDOMAIN
-Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
+; Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
+Editor := "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
 kbdIndex := 3
 
 Notify(A_ScriptName " Started!","",-3,"Style=Win10")
@@ -83,7 +84,7 @@ IntroLights:
 
 #Include *i %A_ScriptDir%\Core\CapsNav.ahk
 #Include *i %A_ScriptDir%\Utilities\FormatAHK.ahk
-#Include *i %A_ScriptDir%\Core\WinControl.ahk
+; #Include *i %A_ScriptDir%\Core\WinControl.ahk
 
 ^!r::	Reload
 ^!e::	Edit(A_ScriptName, Editor)
@@ -93,7 +94,7 @@ IntroLights:
 ^!m::	Edit("Functions.ahk", Editor)
 !t::	Run, Test.ahk
 
-^NumpadEnter::Edit("Shortcuts.ahk", Editor)
+^NumpadEnter::Edit("Core\Shortcuts.ahk", Editor)
 
 +Pause::Suspend
 

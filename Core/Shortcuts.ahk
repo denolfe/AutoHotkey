@@ -86,7 +86,7 @@ Return
 #XButton2::Send #{Right}
 
 ^MButton::
-LCtrl & RCtrl::
+CapsLock & w::
 	Send, {LButton}
 	WinGet, isMaxed, MinMax, A
 	If (isMaxed)
@@ -118,8 +118,8 @@ CapsLock & SC027::
 ^Numpad2::		Show_Start("Cmder", "../cmder/cmder.exe")
 RCtrl & 3::
 CapsLock & "::
-^Numpad3::		GoSub, SublimeText
-^Numpad4::		Show_Start(" - Git Extensions","C:\Program Files (x86)\GitExtensions\GitExtensions.exe")
+^Numpad3::		Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe") ;GoSub, SublimeText
+^Numpad4::		Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe")
 ^Numpad5::		Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
 ^Numpad6::		Show_Start("First Data Evolve","C:\Reach\Prpro.exe NRDUQ")
 ^Numpad7::		Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE")

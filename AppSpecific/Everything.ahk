@@ -8,15 +8,13 @@
 	+Enter::		
 		StatusBarGetText, Title
 		Run %Editor% "%Title%"
-		WinActivate, ahk_class PX_WINDOW_CLASS
 		Return
 
-	; Add folder to existing instance
-	^+Enter::
-		StatusBarGetText, Title
-		Run, %Editor% "%Title%" -a
-		WinActivate, ahk_class PX_WINDOW_CLASS
-		Return
+	;  ; Add folder to existing instance
+	;  ^+Enter::
+	;  	StatusBarGetText, Title
+	;  	Run, %Editor% "%Title%" -a
+	;  	Return
 
 	^j::
 		StatusBarGetText, FullFileName
