@@ -17,7 +17,7 @@ IfWinNotExist, ahk_exe clipx.exe
 
 Notify(A_ScriptName . " Started!","",-3,"Style=Win10")
 
-Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
+Editor := "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
 
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
@@ -26,6 +26,8 @@ SetTimer, IntroLights, -1000
 
 ; Disable Aero
 Run, %comspec% /c "net stop uxsms",,Hide
+
+TaskBar_SetAttr(2)
 
 Return
 
@@ -120,6 +122,11 @@ RCtrl & |::SendInput, {Media_Next}
 	Notify("Windows Purged","",-2,"GC=555555 TC=White MC=White")
 	Return
 
+~*LWin::
+	Sleep, 200
+	TaskBar_SetAttr(2)
+	Return
+	
 ;; Hotstrings
 
 :*:ttv;::http://www.twitch.tv/fathom_
@@ -130,8 +137,8 @@ RCtrl & |::SendInput, {Media_Next}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-!1:: Show_Dir("C:\Dropbox")
-!2:: Show_Dir("C:\Dropbox\HomeShare")
+; !1:: Show_Dir("C:\Dropbox")
+; !2:: Show_Dir("C:\Dropbox\HomeShare")
 !3:: Show_Dir("D:\Downloads\")
 ; !4:: 
 !7:: Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
@@ -158,3 +165,4 @@ RCtrl & |::SendInput, {Media_Next}
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
 #Include lib\LedControl.ahk
+#Include lib\TaskBar_SetAttr.ahk
