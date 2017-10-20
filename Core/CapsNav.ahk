@@ -35,7 +35,12 @@ CapsLock & m::CapsNav("Left", "^")
 CapsLock & u::CapsNav("PgDn")
 CapsLock & i::CapsNav("PgUp")
 
-CapsLock & BackSpace::Send, {Delete}
+CapsLock & BackSpace::
+	If GetKeyState("alt")
+		Send, ^{Delete}
+	Else
+		Send, {Delete}
+Return
 
 CapsLock & `;::
 CapsLock & ,::
