@@ -20,11 +20,13 @@ If (FileExist(A_ScriptDir "\lib\images\testing.ico"))
 SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 EnvGet, Domain, USERDOMAIN
-; Editor := "C:\Program Files\Sublime Text 3\sublime_text.exe"
+UserDir := "C:\Users\" A_UserName
 Editor := "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
 kbdIndex := 3
 
 Notify(A_ScriptName " Started!","",-3,"Style=Win10")
+
+Keyboard_SetDelayAndRepeat(200, 20)
 
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
@@ -87,11 +89,11 @@ IntroLights:
 ; #Include *i %A_ScriptDir%\Core\WinControl.ahk
 
 ^!r::	Reload
-^!e::	Edit(A_ScriptName, Editor)
+^!e::	Edit(".", Editor)
 ^!t::	Edit("test.ahk", Editor)
-^!h::	Edit("Hotstrings.ahk", Editor)
-^!a::	Edit("AppSpecific.ahk", Editor)
-^!m::	Edit("Functions.ahk", Editor)
+^!h::	Edit("Core\Hotstrings.ahk", Editor)
+^!a::	Edit("Core\AppSpecific.ahk", Editor)
+^!m::	Edit("Core\Functions.ahk", Editor)
 !t::	Run, Test.ahk
 
 ^NumpadEnter::Edit("Core\Shortcuts.ahk", Editor)
