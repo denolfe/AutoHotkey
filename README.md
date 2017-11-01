@@ -10,7 +10,7 @@ You can easily set up your own using [my AutoHotkey-Boilerplate project](https:/
 
 * [App Launch Hotkeys](Core/Shortcuts.ahk)
 * [App-specific Hotkeys](AppSpecific)
-* [Text Expansion Hotstrings](Core/HotStrings.ahk)
+* [Text Expansion Hotstrings](Core/Hotstrings.ahk)
 * Useful AutoHotkey Utilities
 * [Movement keys](Core/CapsNav.ahk) with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
 * [AutoCorrect](Core/AutoCorrect.ahk) with personal additions.
