@@ -8,12 +8,12 @@ You can easily set up your own using [my AutoHotkey-Boilerplate project](https:/
 
 ## Contents  
 
-* App Launch Hotkeys
-* App-specific Hotkeys
-* Text Expansion Hotstrings
+* [App Launch Hotkeys](Core/Shortcuts.ahk)
+* [App-specific Hotkeys](AppSpecific)
+* [Text Expansion Hotstrings](Core/HotStrings.ahk)
 * Useful AutoHotkey Utilities
-* Movement keys with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
-* AutoCorrect with personal additions.
+* [Movement keys](Core/CapsNav.ahk) with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
+* [AutoCorrect](Core/AutoCorrect.ahk) with personal additions.
 * [VolumeScroll](https://github.com/denolfe/VolumeScroll) helper
 
 ## How to Use
