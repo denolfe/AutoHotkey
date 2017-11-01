@@ -15,6 +15,7 @@ You can easily set up your own using [my AutoHotkey-Boilerplate project](https:/
 * [Movement keys](Core/CapsNav.ahk) with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
 * [AutoCorrect](Core/AutoCorrect.ahk) with personal additions.
 * [VolumeScroll](https://github.com/denolfe/VolumeScroll) helper
+* [WindowPadX](https://github.com/hoppfrosch/WindowPadX) with [custom config](WindowPadX.Custom.ini)
 
 ## How to Use
 
