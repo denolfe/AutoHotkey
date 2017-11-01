@@ -11,13 +11,14 @@ You can easily set up your own using [my AutoHotkey-Boilerplate project](https:/
 * [App Launch Hotkeys](Core/Shortcuts.ahk)
 * [App-specific Hotkeys](AppSpecific)
 * [Text Expansion Hotstrings](Core/Hotstrings.ahk)
-* Useful AutoHotkey Utilities
-* [Movement keys](Core/CapsNav.ahk) with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd>
+* [Movement keys](Core/CapsNav.ahk) with <kbd>CapsLock</kbd> + <kbd>h</kbd>, <kbd>j</kbd>, <kbd>k</kbd>, <kbd>l</kbd> and more
 * [AutoCorrect](Core/AutoCorrect.ahk) with personal additions.
 * [VolumeScroll](https://github.com/denolfe/VolumeScroll) helper
 * [WindowPadX](https://github.com/hoppfrosch/WindowPadX) with [custom config](WindowPadX.Custom.ini)
+* [Useful AutoHotkey Utilities](Utilities)
 
 ## How to Use
 
 * Install AutoHotkey_L [here](http://l.autohotkey.net/)
+* `git clone https://github.com/denolfe/AutoHotkey.git --recursive`
 * Run `Work.ahk`
