@@ -26,7 +26,7 @@ kbdIndex := 3
 
 Notify(A_ScriptName " Started!","",-3,"Style=Win10")
 
-Keyboard_SetDelayAndRepeat(200, 20)
+Keyboard_SetDelayAndRepeat(200, 25)
 
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
