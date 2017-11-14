@@ -21,7 +21,7 @@ SysGet, MonitorCount, MonitorCount
 SysGet, MonitorWorkArea, MonitorWorkArea
 EnvGet, Domain, USERDOMAIN
 UserDir := "C:\Users\" A_UserName
-Editor := "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
+Editor := "C:\Program Files\Microsoft VS Code\Code.exe"
 kbdIndex := 3
 
 Notify(A_ScriptName " Started!","",-3,"Style=Win10")
