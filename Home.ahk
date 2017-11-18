@@ -9,7 +9,7 @@ SetTitleMatchMode, RegEx
 DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
-RunIfExist(A_ScriptDir "\AutoCorrect.ahk")
+RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
 Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
 
 IfWinNotExist, ahk_exe clipx.exe
@@ -29,6 +29,13 @@ Run, %comspec% /c "net stop uxsms",,Hide
 
 TaskBar_SetAttr(2)
 
+SplitPath, A_ScriptName, , , , OutNameNoExt
+LinkFile := A_Startup "\" OutNameNoExt ".lnk"
+IfNotExist, %LinkFile%
+{
+	FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
+	Notify("Startup Shortcut Created.","",-3,"Style=Alert")
+}
 Return
 
 IntroSound:
@@ -48,15 +55,14 @@ IntroLights:
 	Return
 
 ^!s::
-	; IfWinNotExist Everything
-	; {
-		
-		Run C:\Program Files (x86)\Everything\Everything.exe
-		WinActivate
-	; }
-	; Else
-	; 	WinActivate, ahk_class EVERYTHING
-	WinMove, ahk_class EVERYTHING,, 0,A_ScreenHeight*0.66,A_ScreenWidth,A_ScreenHeight - (A_ScreenHeight*0.66)
+	RunProgFiles("Everything\Everything.exe")
+	WinActivate
+	WinMove, ahk_class EVERYTHING,, 1920,735,1280,705
+	Return
+
+^!0::
+	WinMove, Friends,, 4212,30,269,1408
+	WinMove, - Discord,, 1920, 30, 1280,1410 
 	Return
 
 #c::Run, C:\
@@ -126,7 +132,7 @@ RCtrl & |::SendInput, {Media_Next}
 	Sleep, 200
 	TaskBar_SetAttr(2)
 	Return
-	
+
 ;; Hotstrings
 
 :*:ttv;::http://www.twitch.tv/fathom_
@@ -140,7 +146,7 @@ RCtrl & |::SendInput, {Media_Next}
 ; !1:: Show_Dir("C:\Dropbox")
 ; !2:: Show_Dir("C:\Dropbox\HomeShare")
 !3:: Show_Dir("D:\Downloads\")
-; !4:: 
+; !4::
 !7:: Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
 !0:: Show_Dir(A_ScriptDir)
 
