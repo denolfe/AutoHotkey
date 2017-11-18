@@ -2,8 +2,6 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-UserDir := "C:\Users\" A_UserName
-
 !Numpad0::		Show_Dir(A_ScriptDir)
 !NumpadDot:: 	Show_Dir(UserDir "\Downloads")
 !Numpad1:: 		Show_Dir(UserDir "\Documents")
@@ -38,8 +36,9 @@ UserDir := "C:\Users\" A_UserName
 ;;;;;; Misc Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; Launchy
-CapsLock & Space::Send, !{Space}
+CapsLock & [::SendInput, {Media_Prev}
+CapsLock & ]::SendInput, {Media_Next}
+CapsLock & |::SendInput, {Media_Play_Pause}
 
 ~Media_Next::
 	KeyboardLED(7,"off", kbdIndex)
@@ -98,6 +97,25 @@ CapsLock & w::
 		Monitor_MoveOptimal()
 	Return
 	
+RCtrl::
+	kDown := A_TickCount
+	KeyWait, % A_ThisHotkey
+	If ((A_TickCount-kDown)<200)
+	{
+		Send, {LButton}
+		WinGet, isMaxed, MinMax, A
+		If (isMaxed)
+		{
+			Send #{Down}
+			Monitor_MoveOptimal()
+		}
+		Else
+			Monitor_MoveOptimal()
+	}
+	Else
+		SendInput % "{" A_ThisHotkey "}"
+	Return
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;; Launcher ;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -109,22 +127,29 @@ RCtrl & Enter::
 NumLock::		Gosub, Spotify
 
 ^NumPad0::		Gosub, RearrangeWindows
-RCtrl & 1::
-CapsLock & /::
+
+RCtrl & Esc::
+RCtrl & `::
+CapsLock & SC028:: ; Semicolon
 ^NumpadDot::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
-^Numpad1::		Show_Start("Slack -","%UserDir%\AppData\Local\slack\app-2.2.1\slack.exe")
+
+RCtrl & 1::
+CapsLock & b::
+^Numpad1::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
+
 RCtrl & 2::
-CapsLock & SC027::
-^Numpad2::		Show_Start("Cmder", "../cmder/cmder.exe")
+CapsLock & SC027:: ; Apostrophe
+^Numpad2::		Show_Start("Cmder", UserDir "\cmder\Cmder.exe")
+
 RCtrl & 3::
-CapsLock & "::
-^Numpad3::		Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe") ;GoSub, SublimeText
-^Numpad4::		Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe")
-^Numpad5::		Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe")
-^Numpad6::		Show_Start("First Data Evolve","C:\Reach\Prpro.exe NRDUQ")
-^Numpad7::		Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\Office15\OUTLOOK.EXE")
-^Numpad8::		Show_Start("ZUI Application Client","C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\java\bin\javaw.exe", "-Xmx512m -Dzui.plugin.location=""%UserDir%\.zui-client-plugin-cache"" -jar ""C:\Program Files (x86)\Zoot\Kairos-Client-1.1.0.35\zui-client-1.1.0.35-bin.jar""", 0)
-^Numpad9::		Show_Start("Scope Classic","C:\Program Files (x86)\zScope\Classic v6.5\zClassic.exe")
+CapsLock & /::
+^Numpad3::		Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
+; ^Numpad4::		Show_Start("","")
+^Numpad5::		Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe")
+; ^Numpad6::		Show_Start("","")
+^Numpad7::		Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE")
+; ^Numpad8::		Show_Start("","")
+; ^Numpad9::		Show_Start("","")
 
 ^!Enter::
 ^!NumpadEnter::		Gosub, PurgeWindows
@@ -185,6 +210,7 @@ RearrangeWindows:
 		WinMove, ahk_class Qt5QWindowIcon,, -1600, 300, 800, 900
 		WinActivate, Cmder
 		WinMove, Cmder,, -800, 300, 800, 900
+		WinMove, Slack -,, 1912, -8, 1920, 1178
 	}
 	else if (MonitorCount = 2)
 	{
@@ -231,7 +257,7 @@ Return
 
 ; Guid without formatting ie. cb2d322ee97f4a69a0e5d1cfba11aa5c
 ^+g::
-	newGuid := GUID(3)
+	newGuid := GUID(2)
 	SendInput % newGuid
 	if (!FileExist("logs\"))
 		FileCreateDir, logs\
@@ -252,6 +278,14 @@ Return
 	Sleep, 50
 	clipboard = %bak%`r`n%clipboard%
 	Notify("Appended to Clipboard",clipboard,-1,"Style=Fast")
+Return
+
+^+!c::
+	bak = %clipboard%
+	Send, ^c
+	Sleep, 50
+	clipboard = %clipboard%`r`n%bak%
+	Notify("Prepended to Clipboard",clipboard,-1,"Style=Fast")
 Return
 
 ; Fast minimize

@@ -40,10 +40,12 @@ WinWaitText(search, window, windowtext, timeout=10000, interval=50)
 
 RunProgFiles(exe)
 {
+    ProgramFiles86 := "C:\Program Files (x86)"
+
     If FileExist(A_ProgramFiles "\" exe)
         Run % A_ProgramFiles "\" exe
-    else If FileExist(A_ProgramFiles86 "\" exe)
-        Run % A_ProgramFiles86 "\" exe
+    else If FileExist(ProgramFiles86 "\" exe)
+        Run % ProgramFiles86 "\" exe
     else
         ErrorLevel = 1
 }
