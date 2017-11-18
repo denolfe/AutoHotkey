@@ -1,20 +1,17 @@
 #If WinActive("ahk_class EVERYTHING") and !GetKeyState("Alt")
 	
+	; Needs Everything version 1.3.4.686
+	; Statusbar does not show full filename in later verions
+
 	Tab::Down
 	+Tab::Send, {Up}{Shift Up}
 	Shift::Return
 
 	; Open file/folder
 	+Enter::		
-		StatusBarGetText, Title
-		Run %Editor% "%Title%"
+		StatusBarGetText, FullFileName
+		Run %Editor% "%FullFileName%"
 		Return
-
-	;  ; Add folder to existing instance
-	;  ^+Enter::
-	;  	StatusBarGetText, Title
-	;  	Run, %Editor% "%Title%" -a
-	;  	Return
 
 	^j::
 		StatusBarGetText, FullFileName
