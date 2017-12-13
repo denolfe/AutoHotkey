@@ -83,6 +83,7 @@ IntroLights:
 #Include %A_ScriptDir%\Core\Hotstrings.ahk
 
 #Include *i %A_ScriptDir%\Core\CapsNav.ahk
+#Include %A_ScriptDir%\Core\Keypad.ahk
 #Include *i %A_ScriptDir%\Utilities\FormatAHK.ahk
 ; #Include *i %A_ScriptDir%\Core\WinControl.ahk
 
