@@ -22,7 +22,7 @@ SysGet, MonitorWorkArea, MonitorWorkArea
 EnvGet, Domain, USERDOMAIN
 UserDir := "C:\Users\" A_UserName
 Editor := "C:\Program Files\Microsoft VS Code\Code.exe"
-kbdIndex := 3
+kbdIndex := 17 ; GMMK
 
 Notify(A_ScriptName " Started!","",-3,"Style=Win10")
 
@@ -39,6 +39,7 @@ If ! A_IsAdmin
 		ExitApp
 	}
 	SplitPath, A_AhkPath,, A_AhkDir
+
 	Run % A_AhkDir
 }
 
@@ -63,15 +64,11 @@ IntroSound:
 	Return
 
 IntroLights:
-	Loop, 2 ; Knight Rider KITT cycling all LEDs ;-)
+	Loop, 4 ; Single controllable LED on GMMK
 	{
-		KeyboardLED(2,"switch", kbdIndex)
-		Sleep, 100
 		KeyboardLED(4,"switch", kbdIndex)
 		Sleep, 100
-		KeyboardLED(1,"switch", kbdIndex)
-		Sleep, 100
-		KeyboardLED(4,"switch", kbdIndex)
+		KeyboardLED(0,"off", kbdIndex)
 		Sleep, 100
 	}
 	KeyboardLED(0,"off", kbdIndex)

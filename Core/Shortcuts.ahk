@@ -56,6 +56,8 @@ CapsLock & |::SendInput, {Media_Play_Pause}
 	KeyboardLED(0,"off", kbdIndex)
 Return
 
+AppsKey::RWin ; GMMK Keyboard
+
 #WheelDown::	Send {WheelRight 2}
 #WheelUp::		Send {WheelLeft 2}
 
