@@ -1,5 +1,5 @@
 #If WinActive("ahk_class EVERYTHING") and !GetKeyState("Alt")
-	
+
 	; Needs Everything version 1.3.4.686
 	; Statusbar does not show full filename in later verions
 
@@ -8,7 +8,7 @@
 	Shift::Return
 
 	; Open file/folder
-	+Enter::		
+	+Enter::
 		StatusBarGetText, FullFileName
 		Run %Editor% "%FullFileName%"
 		Return
@@ -23,7 +23,7 @@
 		StatusBarGetText, FullFileName
 		clipboard := FullFileName
 		ClipWait
-		Notify("Full Filename Copied",clipboard,-1,"Style=Mine")
+		Notify("Full Filename Copied",clipboard,-1,"Style=Win10")
 		Return
 
 	^l::
@@ -31,6 +31,6 @@
 		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
 		clipboard := dir
 		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		Notify("File Dir Copied",clipboard,-1,"Style=Win10")
 		Return
 #If

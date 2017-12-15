@@ -20,7 +20,7 @@ Show_Start(title, exe, params = "", toggle = 0)
         	Run, %exe% %params%,, UseErrorLevel
             If ErrorLevel
             {
-                Notify("Executable not found", title,-3,"Style=Mine")
+                Notify("Executable not found", title,-3,"Style=Win10")
                 Return
             }
             WinActivate

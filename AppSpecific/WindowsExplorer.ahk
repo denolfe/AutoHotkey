@@ -23,37 +23,37 @@
 		Else
 			Send, {Esc}
 		Return
-		
+
 	+Backspace::Send !{Up}
 
 	^k::
 		clipboard := Explorer_GetSelected()
 		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		Notify("File Dir Copied",clipboard,-1,"Style=Win10")
 		return
 
 	^l::
 		dir := Explorer_GetPath()
 		clipboard := dir
 		ClipWait
-		Notify("File Dir Copied",clipboard,-1,"Style=Mine")
+		Notify("File Dir Copied",clipboard,-1,"Style=Win10")
 		return
 
 	CapsLock::
-		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500) 
-		{		
+		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
+		{
 			FullFileName := Explorer_GetSelected()
 			SplitPath, FullFileName, name, dir, ext, name_no_ext, drive
 			clipboard := name
 			ClipWait
-			Notify("Filename Copied",clipboard,-1,"Style=Mine")
+			Notify("Filename Copied",clipboard,-1,"Style=Win10")
 		}
 	Return
 
 	^e::
 	+Enter::
 		sel := Explorer_GetSelected()
-		Run %Editor% "%sel%" 
+		Run %Editor% "%sel%"
 		Return
 #IfWinActive
 
@@ -64,7 +64,7 @@
 #If MouseIsOver("ahk_class Shell_TrayWnd")
 	MButton::
 		If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
-		{	
+		{
 			Run taskmgr.exe
 			WinWait, Task Manager
 			WinActivate, Task Manager

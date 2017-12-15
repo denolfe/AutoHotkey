@@ -65,7 +65,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
   {
       If Wait Is Number   ; waits for a specific notify
       {
-        Gui %Wait%:+LastFound   ; i'd like to remove this to not affect calling script... 
+        Gui %Wait%:+LastFound   ; i'd like to remove this to not affect calling script...
         If NotifyGuiID := WinExist()  ; but think i have to use hWnd's for reference instead of gui numbers which will
         {     ; probably happen in my AHK_L transition since gui numbers won't matter anymore
           WinWaitClose, , , % Abs(Duration) ; wait to close for duration
@@ -79,7 +79,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
         }
       }
       Else      ; wait for all notify's if "Wait=All" is used in the options string
-      {     ; loops through all existing notify's and performs the same wait logic 
+      {     ; loops through all existing notify's and performs the same wait logic
         Loop, % GL-GF   ; (with or without destroying if negative or not)
         {
           Wait := A_Index + GF - 1
@@ -128,7 +128,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
    If Style = Default
     Return % Notify(Title,Message,Duration, ; maybe handled poorly by calling itself, but it saves having to have the defaults set in two areas... thoughts?
 (
-"GC= GR= GT= BC= BK= BW= BR= BT= BF= TS= TW= TC= TF= 
+"GC= GR= GT= BC= BK= BW= BR= BT= BF= TS= TW= TC= TF=
  MS= MW= MC= MF= SI= ST= SC= IW=
  IH= IN= XC= XS= XW= PC= PB= " Options "Style=")
 )     ; below are more internally saved styles, which may move to an auxiliary function at some point, but could use some improvement
@@ -153,7 +153,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
    Else If Style = Mine
     Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=350 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 " Options "Style=")
    Else If Style = Win10
-    Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=350 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 PB=767676 GR=0 " Options "Style=")
+    Return % Notify(Title,Message,Duration,"SI=50 GC=000000 TC=White MC=White SI=350 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 PB=767676 GR=0 " Options "Style=")
    Else If Style = Fast
     Return % Notify(Title,Message,Duration,"SI=50 GC=555555 TC=White MC=White SI=100 ST=450 BC=00000 GR=9 BR=13 BW=0 BT=105 TS=9 MS=8 " Options "Style=")
    Else If Style = Alert
@@ -263,7 +263,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
   Gui, %GN%:Add, Text, BackgroundTrans v_Message_, % Message
  }
  If ((Title) && (Message))      ; final spacing
-  Gui, %GN%:Margin, , 8     
+  Gui, %GN%:Margin, , 8
  Gui, %GN%:Show, Hide %wGW% %hGH%, _Notify()_GUI_   ; final sizing
  Gui  %GN%:+LastFound     ; would like to get rid of this to prevent calling script being affected
  WinGetPos, GX, GY, GW, GH      ; final positioning
@@ -311,7 +311,7 @@ Notify(Title="Notify()",Message="",Duration="",Options="")
 
  If ((Duration < 0) OR (Duration = "-0"))       ; saves internally that ExitApp should happen when this
   Exit := GN            ; notify dissappears
- If (Duration)  
+ If (Duration)
   SetTimer, % "_Notify_Kill_" GN - GF + 1, % - Abs(Duration) * 1000     ; timer set depending on Duration parameter
  Else
   SetTimer, % "_Notify_Flash_" GN - GF + 1, % BF_       ; timer set to flash border if the Notify has 0 (infinite) duration
