@@ -11,4 +11,5 @@
 #Include %A_ScriptDir%\AppSpecific\TSQLKeywords.ahk
 #Include %A_ScriptDir%\AppSpecific\VisualStudio.ahk
 #Include %A_ScriptDir%\AppSpecific\WindowsExplorer.ahk
+#Include %A_ScriptDir%\AppSpecific\CmdPrompt.ahk
 #Include %A_ScriptDir%\AppSpecific\Games.ahk

@@ -74,8 +74,3 @@
 #IfWinActive, ahk_class #32770 Run
 	Tab::Down
 #IfWinActive
-
-#IfWinActive ahk_class ConsoleWindowClass
-	^V::SendInput {Raw}%clipboard%
-	^L::SendInput, {Esc}cls{Enter}
-#IfWinActive
