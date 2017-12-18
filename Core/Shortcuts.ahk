@@ -106,7 +106,7 @@ RCtrl & Esc:: ; 60% keyboard
 RCtrl & Delete::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 
 RCtrl & 1::
-RCtrl & Insert::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
+RCtrl & Insert::Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE")
 
 RCtrl & 2::
 RCtrl & End::
@@ -118,7 +118,7 @@ CapsLock & /::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS 
 
 RCtrl & Home::Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe")
 
-RCtrl & PgUp::Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE")
+RCtrl & PgUp::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
 
 ^!Enter::Gosub, PurgeWindows
 
