@@ -101,16 +101,16 @@ Spotify:
 	}
 	Return
 
-RCtrl & 1::Show_Start("ahk_class Chrome_WidgetWin_1", "chrome.exe")
+RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 CapsLock & SC027::
-RCtrl & 2::Show_Start("Cmder", "../cmder/cmder.exe")
-RCtrl & 3::Show_Start("ahk_class PX_WINDOW_CLASS", Editor)
-RCtrl & 4::Show_Start("- WebStorm", "C:\Program Files (x86)\JetBrains\WebStorm 10.0.1\bin\WebStorm.exe")
-RCtrl & 5::Show_Dir("C:\Dropbox\HomeShare")
-RCtrl & 6::Show_Dir("D:\Downloads")
-RCtrl & 7::Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
-RCtrl & 8::Return
-RCtrl & 9::Return
+RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
+RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
+; RCtrl & 4::Return
+; RCtrl & 5::Return
+; RCtrl & 6::Return
+; RCtrl & 7::Return
+; RCtrl & 8::Return
+; RCtrl & 9::Return
 
 RCtrl & Enter::Gosub, Spotify
 
