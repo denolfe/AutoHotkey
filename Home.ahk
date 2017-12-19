@@ -61,9 +61,10 @@ IntroLights:
 	WinMove, ahk_class EVERYTHING,, 1920,735,1280,705
 	Return
 
+; Rearrange windows
 ^!0::
-	WinMove, Friends,, 4212,30,269,1408
-	WinMove, - Discord,, 1920, 30, 1280,1410 
+	WinMove, Friends,, 4723,-307,269,1698
+	WinMove, - Discord,, 1920,-307,1536,1698
 	Return
 
 #c::Run, C:\
