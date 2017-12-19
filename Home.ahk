@@ -18,6 +18,7 @@ IfWinNotExist, ahk_exe clipx.exe
 Notify(A_ScriptName . " Started!","",-3,"Style=Win10")
 
 Editor := "C:\Program Files (x86)\Microsoft VS Code\Code.exe"
+UserDir := "C:\Users\" A_UserName
 
 Menu, Tray, Icon, lib\images\Portal.ico
 Menu, Tray, Tip, Home Script
@@ -105,7 +106,7 @@ RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome
 CapsLock & SC027::
 RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
 RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
-; RCtrl & 4::Return
+RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.299\Discord.exe")
 ; RCtrl & 5::Return
 ; RCtrl & 6::Return
 ; RCtrl & 7::Return
