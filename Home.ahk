@@ -105,7 +105,7 @@ Spotify:
 RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 CapsLock & SC027::
 RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
-RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
+RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe")
 RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.299\Discord.exe")
 ; RCtrl & 5::Return
 ; RCtrl & 6::Return
