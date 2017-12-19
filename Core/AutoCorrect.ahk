@@ -1,37 +1,37 @@
 ;------------------------------------------------------------------------------
 ; CHANGELOG:
-; 
+;
 ; Sep 13 2007: Added more misspellings.
 ;              Added fix for -ign -> -ing that ignores words like "sign".
 ;              Added word beginnings/endings sections to cover more options.
-;              Added auto-accents section for words like fiancée, naïve, etc.
+;              Added auto-accents section for words like fiancï¿½e, naï¿½ve, etc.
 ; Feb 28 2007: Added other common misspellings based on MS Word AutoCorrect.
 ;              Added optional auto-correction of 2 consecutive capital letters.
 ; Sep 24 2006: Initial release by Jim Biancolo (http://www.biancolo.com)
-; 
+;
 ; INTRODUCTION
-; 
+;
 ; This is an AutoHotKey script that implements AutoCorrect against several
 ; "Lists of common misspellings":
-; 
+;
 ; This does not replace a proper spellchecker such as in Firefox, Word, etc.
 ; It is usually better to have uncertain typos highlighted by a spellchecker
 ; than to "correct" them incorrectly so that they are no longer even caught by
 ; a spellchecker: it is not the job of an autocorrector to correct *all*
 ; misspellings, but only those which are very obviously incorrect.
-; 
+;
 ; From a suggestion by Tara Gibb, you can add your own corrections to any
 ; highlighted word by hitting Win+H. These will be added to a separate file,
 ; so that you can safely update this file without overwriting your changes.
-; 
+;
 ; Some entries have more than one possible resolution (achive->achieve/archive)
 ; or are clearly a matter of deliberate personal writing style (wanna, colour)
-; 
+;
 ; These have been placed at the end of this file and commented out, so you can
 ; easily edit and add them back in as you like, tailored to your preferences.
-; 
+;
 ; SOURCES
-; 
+;
 ; http://en.wikipedia.org/wiki/Wikipedia:Lists_of_common_misspellings
 ; http://en.wikipedia.org/wiki/Wikipedia:Typo
 ; Microsoft Office autocorrect list
@@ -39,9 +39,9 @@
 ; OpenOffice autocorrect list
 ; TextTrust press release
 ; User suggestions.
-; 
+;
 ; CONTENTS
-; 
+;
 ;   Settings
 ;   AUto-COrrect TWo COnsecutive CApitals (commented out by default)
 ;   Win+H code
@@ -88,8 +88,6 @@ Return
 ;------------------------------------------------------------------------------
 ; Win+H to enter misspelling correction.  It will be added to this script.
 ;------------------------------------------------------------------------------
-
-Pause::Suspend
 
 #h::
 ; Get the selected text. The clipboard is used instead of "ControlGet Selected"
@@ -308,296 +306,296 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ; Accented English words, from, amongst others,
 ; http://en.wikipedia.org/wiki/List_of_English_words_with_diacritics
 ; I have included all the ones compatible with reasonable codepages, and placed
-; those that may often not be accented either from a clash with an unaccented 
+; those that may often not be accented either from a clash with an unaccented
 ; word (resume), or because the unaccented version is now common (cafe).
 ;------------------------------------------------------------------------------
-::aesop::Æsop
-::a bas::à bas
-::a la::à la
-::ancien regime::Ancien Régime
-::angstrom::Ångström
-::angstroms::Ångströms
-::anime::animé
-::animes::animés
-::ao dai::ào dái
-::apertif::apértif
-::apertifs::apértifs
-::applique::appliqué
-::appliques::appliqués
-::apres::après
-::arete::arête
-::attache::attaché
-::attaches::attachés
-::auto-da-fe::auto-da-fé
-::belle epoque::belle époque
-::bete noire::bête noire
-::betise::bêtise
-::Bjorn::Bjørn
-::blase::blasé
-::boite::boîte
-::boutonniere::boutonnière
-::canape::canapé
-::canapes::canapés
-::celebre::célèbre
-::celebres::célèbres
-::chaines::chaînés
-::cinema verite::cinéma vérité
-::cinemas verite::cinémas vérité
-::cinema verites::cinéma vérités
-::champs-elysees::Champs-Élysées
-::charge d'affaires::chargé d'affaires
-::chateau::château
-::chateaux::châteaux
-::chateaus::châteaus
-::cliche::cliché
-::cliched::clichéd
-::cliches::clichés
-::cloisonne::cloisonné
-::consomme::consommé
-::consommes::consommés
-::communique::communiqué
-::communiques::communiqués
-::confrere::confrère
-::confreres::confrères
-::cortege::cortège
-::corteges::cortèges
-::coup d'etat::coup d'état
-::coup d'etats::coup d'états
-::coup de tat::coup d'état
-::coup de tats::coup d'états
-::coup de grace::coup de grâce
-::creche::crèche
-::creches::crèches
-::coulee::coulée
-::coulees::coulées
-::creme brulee::crème brûlée
-::creme brulees::crème brûlées
-::creme caramel::crème caramel
-::creme caramels::crème caramels
-::creme de cacao::crème de cacao
-::creme de menthe::crème de menthe
-::crepe::crêpe
-::crepes::crêpes
-::creusa::Creüsa
-::crouton::croûton
-::croutons::croûtons
-::crudites::crudités
-::curacao::curaçao
-::dais::daïs
-::daises::daïses
-::debacle::débâcle
-::debacles::débâcles
-::debutante::débutante
-::debutants::débutants
-::declasse::déclassé
-::decolletage::décolletage
-::decollete::décolleté
-::decor::décor
-::decors::décors
-::decoupage::découpage
-::degage::dégagé
-::deja vu::déjà vu
-::demode::démodé
-::denoument::dénoument
-::derailleur::dérailleur
-::derriere::derrière
-::deshabille::déshabillé
-::detente::détente
-::diamante::diamanté
-::discotheque::discothèque
-::discotheques::discothèques
-::divorcee::divorcée
-::divorcees::divorcées
-::doppelganger::doppelgänger
-::doppelgangers::doppelgängers
-::eclair::éclair
-::eclairs::éclairs
-::eclat::éclat
-::el nino::El Niño
-::elan::élan
-::emigre::émigré
-::emigres::émigrés
-::entree::entrée
-::entrees::entrées
-::entrepot::entrepôt
-::entrecote::entrecôte
-::epee::épée
-::epees::épées
-::etouffee::étouffée
-::facade::façade
-::facades::façades
-::fete::fête
-::fetes::fêtes
-::faience::faïence
-::fiance::fiancé
-::fiances::fiancés
-::fiancee::fiancée
-::fiancees::fiancées
-::filmjolk::filmjölk
-::fin de siecle::fin de siècle
-::flambe::flambé
-::flambes::flambés
-::fleche::flèche
-::Fohn wind::Föhn wind
-::folie a deux::folie à deux
-::folies a deux::folies à deux
-::fouette::fouetté
-::frappe::frappé
-::frappes::frappés
-:?*:fraulein::fräulein
-:?*:fuhrer::Führer
-::garcon::garçon
-::garcons::garçons
-::gateau::gâteau
-::gateaus::gâteaus
-::gateaux::gâteaux
-::gemutlichkeit::gemütlichkeit
-::glace::glacé
-::glogg::glögg
-::gewurztraminer::Gewürztraminer
-::gotterdammerung::Götterdämmerung
-::grafenberg spot::Gräfenberg spot
-::habitue::habitué
-::ingenue::ingénue
-::jager::jäger
-::jalapeno::jalapeño
-::jalapenos::jalapeños
-::jardiniere::jardinière
-::krouzek::kroužek
-::kummel::kümmel
-::kaldolmar::kåldolmar
-::landler::ländler
-::langue d'oil::langue d'oïl
-::la nina::La Niña
-::litterateur::littérateur
-::lycee::lycée
-::macedoine::macédoine
-::macrame::macramé
-::maitre d'hotel::maître d'hôtel
-::malaguena::malagueña
-::manana::mañana
-::manege::manège
-::manque::manqué
-::materiel::matériel
-::matinee::matinée
-::matinees::matinées
-::melange::mélange
-::melee::mêlée
-::melees::mêlées
-::menage a trois::ménage à trois
-::menages a trois::ménages à trois
-::mesalliance::mésalliance
-::metier::métier
-::minaudiere::minaudière
-::mobius strip::Möbius strip
-::mobius strips::Möbius strips
-::moire::moiré
-::moireing::moiréing
-::moires::moirés
-::motley crue::Mötley Crüe
-::motorhead::Motörhead
-::naif::naïf
-::naifs::naïfs
-::naive::naïve
-::naiver::naïver
-::naives::naïves
-::naivete::naïveté
-::nee::née
-::negligee::negligée
-::negligees::negligées
-::neufchatel cheese::Neufchâtel cheese
-::nez perce::Nez Percé
-::noël::Noël
-::noëls::Noëls
-::número uno::número uno
-::objet trouve::objet trouvé
-::objets trouve::objets trouvé
-::ombre::ombré
-::ombres::ombrés
-::omerta::omertà
-::opera bouffe::opéra bouffe
-::operas bouffe::opéras bouffe
-::opera comique::opéra comique
-::operas comique::opéras comique
-::outre::outré
-::papier-mache::papier-mâché
-::passe::passé
-::piece de resistance::pièce de résistance
-::pied-a-terre::pied-à-terre
-::plisse::plissé
-::pina colada::Piña Colada
-::pina coladas::Piña Coladas
-::pinata::piñata
-::pinatas::piñatas
-::pinon::piñon
-::pinons::piñons
-::pirana::piraña
-::pique::piqué
-::piqued::piquéd
-::più::più
-::plie::plié
-::precis::précis
-::polsa::pölsa
-::pret-a-porter::prêt-à-porter
-::protoge::protégé
-::protege::protégé
-::proteged::protégéd
-::proteges::protégés
-::protegee::protégée
-::protegees::protégées
-::protegeed::protégéed
-::puree::purée
-::pureed::puréed
-::purees::purées
-::Quebecois::Québécois
-::raison d'etre::raison d'être
-::recherche::recherché
-::reclame::réclame
-::résume::résumé
-::resumé::résumé
-::résumes::résumés
-::resumés::résumés
-::retrousse::retroussé
-::risque::risqué
-::riviere::rivière
-::roman a clef::roman à clef
-::roue::roué
-::saute::sauté
-::sauted::sautéd
-::seance::séance
-::seances::séances
-::senor::señor
-::senors::señors
-::senora::señora
-::senoras::señoras
-::senorita::señorita
-::senoritas::señoritas
-::sinn fein::Sinn Féin
-::smorgasbord::smörgåsbord
-::smorgasbords::smörgåsbords
-::smorgastarta::smörgåstårta
-::soigne::soigné
-::soiree::soirée
-::soireed::soiréed
-::soirees::soirées
-::souffle::soufflé
-::souffles::soufflés
-::soupcon::soupçon
-::soupcons::soupçons
-::surstromming::surströmming
-::tete-a-tete::tête-à-tête
-::tete-a-tetes::tête-à-têtes
-::touche::touché
-::tourtiere::tourtière
-::ubermensch::Übermensch
-::ubermensches::Übermensches
-::ventre a terre::ventre à terre
-::vicuna::vicuña
-::vin rose::vin rosé
-::vins rose::vins rosé
-::vis a vis::vis à vis
-::vis-a-vis::vis-à-vis
-::voila::voilà 
+::aesop::ï¿½sop
+::a bas::ï¿½ bas
+::a la::ï¿½ la
+::ancien regime::Ancien Rï¿½gime
+::angstrom::ï¿½ngstrï¿½m
+::angstroms::ï¿½ngstrï¿½ms
+::anime::animï¿½
+::animes::animï¿½s
+::ao dai::ï¿½o dï¿½i
+::apertif::apï¿½rtif
+::apertifs::apï¿½rtifs
+::applique::appliquï¿½
+::appliques::appliquï¿½s
+::apres::aprï¿½s
+::arete::arï¿½te
+::attache::attachï¿½
+::attaches::attachï¿½s
+::auto-da-fe::auto-da-fï¿½
+::belle epoque::belle ï¿½poque
+::bete noire::bï¿½te noire
+::betise::bï¿½tise
+::Bjorn::Bjï¿½rn
+::blase::blasï¿½
+::boite::boï¿½te
+::boutonniere::boutonniï¿½re
+::canape::canapï¿½
+::canapes::canapï¿½s
+::celebre::cï¿½lï¿½bre
+::celebres::cï¿½lï¿½bres
+::chaines::chaï¿½nï¿½s
+::cinema verite::cinï¿½ma vï¿½ritï¿½
+::cinemas verite::cinï¿½mas vï¿½ritï¿½
+::cinema verites::cinï¿½ma vï¿½ritï¿½s
+::champs-elysees::Champs-ï¿½lysï¿½es
+::charge d'affaires::chargï¿½ d'affaires
+::chateau::chï¿½teau
+::chateaux::chï¿½teaux
+::chateaus::chï¿½teaus
+::cliche::clichï¿½
+::cliched::clichï¿½d
+::cliches::clichï¿½s
+::cloisonne::cloisonnï¿½
+::consomme::consommï¿½
+::consommes::consommï¿½s
+::communique::communiquï¿½
+::communiques::communiquï¿½s
+::confrere::confrï¿½re
+::confreres::confrï¿½res
+::cortege::cortï¿½ge
+::corteges::cortï¿½ges
+::coup d'etat::coup d'ï¿½tat
+::coup d'etats::coup d'ï¿½tats
+::coup de tat::coup d'ï¿½tat
+::coup de tats::coup d'ï¿½tats
+::coup de grace::coup de grï¿½ce
+::creche::crï¿½che
+::creches::crï¿½ches
+::coulee::coulï¿½e
+::coulees::coulï¿½es
+::creme brulee::crï¿½me brï¿½lï¿½e
+::creme brulees::crï¿½me brï¿½lï¿½es
+::creme caramel::crï¿½me caramel
+::creme caramels::crï¿½me caramels
+::creme de cacao::crï¿½me de cacao
+::creme de menthe::crï¿½me de menthe
+::crepe::crï¿½pe
+::crepes::crï¿½pes
+::creusa::Creï¿½sa
+::crouton::croï¿½ton
+::croutons::croï¿½tons
+::crudites::cruditï¿½s
+::curacao::curaï¿½ao
+::dais::daï¿½s
+::daises::daï¿½ses
+::debacle::dï¿½bï¿½cle
+::debacles::dï¿½bï¿½cles
+::debutante::dï¿½butante
+::debutants::dï¿½butants
+::declasse::dï¿½classï¿½
+::decolletage::dï¿½colletage
+::decollete::dï¿½colletï¿½
+::decor::dï¿½cor
+::decors::dï¿½cors
+::decoupage::dï¿½coupage
+::degage::dï¿½gagï¿½
+::deja vu::dï¿½jï¿½ vu
+::demode::dï¿½modï¿½
+::denoument::dï¿½noument
+::derailleur::dï¿½railleur
+::derriere::derriï¿½re
+::deshabille::dï¿½shabillï¿½
+::detente::dï¿½tente
+::diamante::diamantï¿½
+::discotheque::discothï¿½que
+::discotheques::discothï¿½ques
+::divorcee::divorcï¿½e
+::divorcees::divorcï¿½es
+::doppelganger::doppelgï¿½nger
+::doppelgangers::doppelgï¿½ngers
+::eclair::ï¿½clair
+::eclairs::ï¿½clairs
+::eclat::ï¿½clat
+::el nino::El Niï¿½o
+::elan::ï¿½lan
+::emigre::ï¿½migrï¿½
+::emigres::ï¿½migrï¿½s
+::entree::entrï¿½e
+::entrees::entrï¿½es
+::entrepot::entrepï¿½t
+::entrecote::entrecï¿½te
+::epee::ï¿½pï¿½e
+::epees::ï¿½pï¿½es
+::etouffee::ï¿½touffï¿½e
+::facade::faï¿½ade
+::facades::faï¿½ades
+::fete::fï¿½te
+::fetes::fï¿½tes
+::faience::faï¿½ence
+::fiance::fiancï¿½
+::fiances::fiancï¿½s
+::fiancee::fiancï¿½e
+::fiancees::fiancï¿½es
+::filmjolk::filmjï¿½lk
+::fin de siecle::fin de siï¿½cle
+::flambe::flambï¿½
+::flambes::flambï¿½s
+::fleche::flï¿½che
+::Fohn wind::Fï¿½hn wind
+::folie a deux::folie ï¿½ deux
+::folies a deux::folies ï¿½ deux
+::fouette::fouettï¿½
+::frappe::frappï¿½
+::frappes::frappï¿½s
+:?*:fraulein::frï¿½ulein
+:?*:fuhrer::Fï¿½hrer
+::garcon::garï¿½on
+::garcons::garï¿½ons
+::gateau::gï¿½teau
+::gateaus::gï¿½teaus
+::gateaux::gï¿½teaux
+::gemutlichkeit::gemï¿½tlichkeit
+::glace::glacï¿½
+::glogg::glï¿½gg
+::gewurztraminer::Gewï¿½rztraminer
+::gotterdammerung::Gï¿½tterdï¿½mmerung
+::grafenberg spot::Grï¿½fenberg spot
+::habitue::habituï¿½
+::ingenue::ingï¿½nue
+::jager::jï¿½ger
+::jalapeno::jalapeï¿½o
+::jalapenos::jalapeï¿½os
+::jardiniere::jardiniï¿½re
+::krouzek::krouï¿½ek
+::kummel::kï¿½mmel
+::kaldolmar::kï¿½ldolmar
+::landler::lï¿½ndler
+::langue d'oil::langue d'oï¿½l
+::la nina::La Niï¿½a
+::litterateur::littï¿½rateur
+::lycee::lycï¿½e
+::macedoine::macï¿½doine
+::macrame::macramï¿½
+::maitre d'hotel::maï¿½tre d'hï¿½tel
+::malaguena::malagueï¿½a
+::manana::maï¿½ana
+::manege::manï¿½ge
+::manque::manquï¿½
+::materiel::matï¿½riel
+::matinee::matinï¿½e
+::matinees::matinï¿½es
+::melange::mï¿½lange
+::melee::mï¿½lï¿½e
+::melees::mï¿½lï¿½es
+::menage a trois::mï¿½nage ï¿½ trois
+::menages a trois::mï¿½nages ï¿½ trois
+::mesalliance::mï¿½salliance
+::metier::mï¿½tier
+::minaudiere::minaudiï¿½re
+::mobius strip::Mï¿½bius strip
+::mobius strips::Mï¿½bius strips
+::moire::moirï¿½
+::moireing::moirï¿½ing
+::moires::moirï¿½s
+::motley crue::Mï¿½tley Crï¿½e
+::motorhead::Motï¿½rhead
+::naif::naï¿½f
+::naifs::naï¿½fs
+::naive::naï¿½ve
+::naiver::naï¿½ver
+::naives::naï¿½ves
+::naivete::naï¿½vetï¿½
+::nee::nï¿½e
+::negligee::negligï¿½e
+::negligees::negligï¿½es
+::neufchatel cheese::Neufchï¿½tel cheese
+::nez perce::Nez Percï¿½
+::noï¿½l::Noï¿½l
+::noï¿½ls::Noï¿½ls
+::nï¿½mero uno::nï¿½mero uno
+::objet trouve::objet trouvï¿½
+::objets trouve::objets trouvï¿½
+::ombre::ombrï¿½
+::ombres::ombrï¿½s
+::omerta::omertï¿½
+::opera bouffe::opï¿½ra bouffe
+::operas bouffe::opï¿½ras bouffe
+::opera comique::opï¿½ra comique
+::operas comique::opï¿½ras comique
+::outre::outrï¿½
+::papier-mache::papier-mï¿½chï¿½
+::passe::passï¿½
+::piece de resistance::piï¿½ce de rï¿½sistance
+::pied-a-terre::pied-ï¿½-terre
+::plisse::plissï¿½
+::pina colada::Piï¿½a Colada
+::pina coladas::Piï¿½a Coladas
+::pinata::piï¿½ata
+::pinatas::piï¿½atas
+::pinon::piï¿½on
+::pinons::piï¿½ons
+::pirana::piraï¿½a
+::pique::piquï¿½
+::piqued::piquï¿½d
+::piï¿½::piï¿½
+::plie::pliï¿½
+::precis::prï¿½cis
+::polsa::pï¿½lsa
+::pret-a-porter::prï¿½t-ï¿½-porter
+::protoge::protï¿½gï¿½
+::protege::protï¿½gï¿½
+::proteged::protï¿½gï¿½d
+::proteges::protï¿½gï¿½s
+::protegee::protï¿½gï¿½e
+::protegees::protï¿½gï¿½es
+::protegeed::protï¿½gï¿½ed
+::puree::purï¿½e
+::pureed::purï¿½ed
+::purees::purï¿½es
+::Quebecois::Quï¿½bï¿½cois
+::raison d'etre::raison d'ï¿½tre
+::recherche::recherchï¿½
+::reclame::rï¿½clame
+::rï¿½sume::rï¿½sumï¿½
+::resumï¿½::rï¿½sumï¿½
+::rï¿½sumes::rï¿½sumï¿½s
+::resumï¿½s::rï¿½sumï¿½s
+::retrousse::retroussï¿½
+::risque::risquï¿½
+::riviere::riviï¿½re
+::roman a clef::roman ï¿½ clef
+::roue::rouï¿½
+::saute::sautï¿½
+::sauted::sautï¿½d
+::seance::sï¿½ance
+::seances::sï¿½ances
+::senor::seï¿½or
+::senors::seï¿½ors
+::senora::seï¿½ora
+::senoras::seï¿½oras
+::senorita::seï¿½orita
+::senoritas::seï¿½oritas
+::sinn fein::Sinn Fï¿½in
+::smorgasbord::smï¿½rgï¿½sbord
+::smorgasbords::smï¿½rgï¿½sbords
+::smorgastarta::smï¿½rgï¿½stï¿½rta
+::soigne::soignï¿½
+::soiree::soirï¿½e
+::soireed::soirï¿½ed
+::soirees::soirï¿½es
+::souffle::soufflï¿½
+::souffles::soufflï¿½s
+::soupcon::soupï¿½on
+::soupcons::soupï¿½ons
+::surstromming::surstrï¿½mming
+::tete-a-tete::tï¿½te-ï¿½-tï¿½te
+::tete-a-tetes::tï¿½te-ï¿½-tï¿½tes
+::touche::touchï¿½
+::tourtiere::tourtiï¿½re
+::ubermensch::ï¿½bermensch
+::ubermensches::ï¿½bermensches
+::ventre a terre::ventre ï¿½ terre
+::vicuna::vicuï¿½a
+::vin rose::vin rosï¿½
+::vins rose::vins rosï¿½
+::vis a vis::vis ï¿½ vis
+::vis-a-vis::vis-ï¿½-vis
+::voila::voilï¿½
 
 ;------------------------------------------------------------------------------
 ; Common Misspellings - the main list
@@ -5011,12 +5009,12 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 
 ::alot:: a lot
 /*
-:*:cooperat::coöperat
-::(c)::©
-::(r)::®
-::(tm)::™
-::a gogo::à gogo
-::abbe::abbé
+:*:cooperat::coï¿½perat
+::(c)::ï¿½
+::(r)::ï¿½
+::(tm)::ï¿½
+::a gogo::ï¿½ gogo
+::abbe::abbï¿½
 ::accension::accession, ascension
 ::achive::achieve, archive
 ::achived::achieved, archived
@@ -5028,12 +5026,12 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::affort::afford, effort
 ::agin::again, a gin, aging
 ::agina::again, angina
-::ago-go::àgo-go
+::ago-go::ï¿½go-go
 ::aledge::allege, a ledge
 ::alot::a lot, allot
 ::alusion::allusion, illusion
 ::amature::armature, amateur
-::anu::añu
+::anu::aï¿½u
 ::anual::annual, anal
 ::anual::annual, manual
 ::aparent::apparent, a parent
@@ -5051,19 +5049,19 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::behavour::behavior, behaviour
 ::belives::believes, beliefs
 ::boaut::bout, boat, about
-::Bon::Bön
+::Bon::Bï¿½n
 
 ::assasined::assassinated Broken by ":*:assasin::", but no great loss.
-::Bootes::Boötes
-::bric-a-brac::bric-à-brac
+::Bootes::Boï¿½tes
+::bric-a-brac::bric-ï¿½-brac
 ::buring::burying, burning, burin, during
 ::busineses::business, businesses
-::cafe::café
+::cafe::cafï¿½
 ::calaber::caliber, calibre
 ::calander::calendar, calender, colander
 ::cancelled::canceled  ; commonwealth vs US
 ::cancelling::canceling  ; commonwealth vs US
-::canon::cañon
+::canon::caï¿½on
 ::cant::cannot, can not, can't
 ::carcas::carcass, Caracas
 ::carmel::caramel, carmel-by-the-sea
@@ -5075,9 +5073,9 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::clera::clear, sclera
 ::comander::commander, commandeer
 ::competion::competition, completion
-::continuum::continuüm
-::coopt::coöpt
-::coordinat::coördinat
+::continuum::continuï¿½m
+::coopt::coï¿½pt
+::coordinat::coï¿½rdinat
 ::coorperation::cooperation, corporation
 ::coudl::could, cloud
 ::councellor::councillor, counselor, councilor
@@ -5085,15 +5083,15 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::coururier::courier, couturier
 ::coverted::converted, covered, coveted
 ::cpoy::coy, copy
-::creme::crème
+::creme::crï¿½me
 ::dael::deal, dial, dahl
 ::deram::dram, dream
 ::desparate::desperate, disparate
 ::diea::idea, die
 ::dieing::dying, dyeing
 ::diversed::diverse, diverged
-::divorce::divorcé
-::Dona::Doña
+::divorce::divorcï¿½
+::Dona::Doï¿½a
 ::doub::doubt, daub
 ::dyas::dryas, Dyas (Robert Dyas is a hardware chain), dais
 ::efford::effort, afford
@@ -5101,7 +5099,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::eigth::eighth, eight
 ::electic::eclectic, electric
 ::electon::election, electron
-::elite::élite
+::elite::ï¿½lite
 ::emition::emission, emotion
 ::emminent::eminent, imminent
 ::empirial::empirical, imperial
@@ -5109,8 +5107,8 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::erally::orally, really
 ::erested::arrested, erected
 ::ethose::those, ethos
-::etude::étude
-::expose::exposé
+::etude::ï¿½tude
+::expose::exposï¿½
 ::extint::extinct, extant
 ::eyar::year, eyas
 ::eyars::years, eyas
@@ -5154,7 +5152,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::israelies::Israelis, Israelites
 ::labatory::lavatory, laboratory
 ::labled::labelled, labeled
-::lame::lamé
+::lame::lamï¿½
 ::leanr::lean, learn, leaner
 ::lible::libel, liable
 ::liscense::license, licence
@@ -5173,35 +5171,35 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::manuevers::maneuvers, manoeuvres
 ::mear::wear, mere, mare
 ::meranda::veranda, Miranda
-::Metis::Métis
+::Metis::Mï¿½tis
 ::mit::mitt, M.I.T., German "with"
 ::monestary::monastery, monetary
 ::moreso::more, more so
 ::muscels::mussels, muscles
-::ne::né
+::ne::nï¿½
 ::neice::niece, nice
 ::neigbour::neighbour, neighbor
 ::neigbouring::neighbouring, neighboring
 ::neigbours::neighbours, neighbors
 ::nto:: not ; Replaced with case sensitive for NTO acronym.
 ::oging::going, ogling
-::ole::olé
+::ole::olï¿½
 ::onot::note, not
-::opium::opïum
-::ore::öre
-::ore::øre
+::opium::opï¿½um
+::ore::ï¿½re
+::ore::ï¿½re
 ::orgin::origin, organ
 ::palce::place, palace
-::pate::pâte
-::pate::pâté
+::pate::pï¿½te
+::pate::pï¿½tï¿½
 ::performes::performed, performs
 ::personel::personnel, personal
 ::positon::position, positron
-::preëmpt
-::premiere::première
-::premiered::premièred
-::premieres::premières
-::premiering::premièring
+::preï¿½mpt
+::premiere::premiï¿½re
+::premiered::premiï¿½red
+::premieres::premiï¿½res
+::premiering::premiï¿½ring
 ::procede::proceed, precede
 ::proceded::proceeded, preceded
 ::procedes::proceeds, precedes
@@ -5212,15 +5210,15 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::prominately::prominently, predominately
 ::qtuie::quite, quiet
 ::qutie::quite, quiet
-::reenter::reënter
+::reenter::reï¿½nter
 ::relized::realised, realized
 ::repatition::repetition, repartition
-::residuum::residuüm
+::residuum::residuï¿½m
 ::restraunt::restraint, restaurant
-::resume::résumé
+::resume::rï¿½sumï¿½
 ::rigeur::rigueur, rigour, rigor
-::role::rôle
-::rose::rosé
+::role::rï¿½le
+::rose::rosï¿½
 ::sasy::says, sassy
 ::scholarstic::scholastic, scholarly
 ::secceeded::seceded, succeeded
@@ -5257,7 +5255,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::travelling::traveling   ; commonwealth vs US
 ::troups::troupes, troops
 ::turnk::turnkey, trunk
-::uber::über
+::uber::ï¿½ber
 ::unmanouverable::unmaneuverable, unmanoeuvrable
 ::unsed::used, unused, unsaid
 ::vigeur::vigueur, vigour, vigor
@@ -5271,7 +5269,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::woulf::would, wolf
 ::ws::was, www.example.ws
 ::Yementite::Yemenite, Yemeni
-:?:oology::oölogy
+:?:oology::oï¿½logy
 :?:t he:: the  ; Can't use this. Needs to be cleverer.
 */
 
@@ -5284,7 +5282,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::thursday::Thursday
 ::friday::Friday
 ::saturday::Saturday
-::sunday::Sunday 
+::sunday::Sunday
 
 ::january::January
 ::february::February
