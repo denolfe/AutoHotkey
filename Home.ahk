@@ -158,13 +158,6 @@ RCtrl & |::SendInput, {Media_Next}
 !t:: Run %A_ScriptDir%\test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
-#IfWinActive, ahk_class Valve001
-	#Up::ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow
-	#Down::ControlSend, ahk_parent, ^{Down}, ahk_class SpotifyMainWindow
-	#Left::Send {Media_Play_Pause} ;ControlSend, ahk_parent, ^{Space}, ahk_class SpotifyMainWindow
-	#Right::Send {Media_Next} ;ControlSend, ahk_parent, ^{Right}, ahk_class SpotifyMainWindow
-#IfWinActive
-
 #Include %A_ScriptDir%\Core\AppSpecific.ahk
 #Include %A_ScriptDir%\Core\Functions.ahk
 #Include %A_ScriptDir%\Core\HotStrings.ahk
