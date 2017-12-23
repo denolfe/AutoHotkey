@@ -169,6 +169,7 @@ RCtrl & |::SendInput, {Media_Next}
 #Include %A_ScriptDir%\Core\Functions.ahk
 #Include %A_ScriptDir%\Core\HotStrings.ahk
 #Include %A_ScriptDir%\Core\CapsNav.ahk
+#Include %A_ScriptDir%\Core\Keypad.ahk
 #Include %A_ScriptDir%\Core\WinControl.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
