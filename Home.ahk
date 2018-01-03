@@ -9,6 +9,7 @@ SetTitleMatchMode, RegEx
 DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
+RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
 Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
 
