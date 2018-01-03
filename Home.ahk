@@ -67,6 +67,26 @@ IntroLights:
 	WinMove, - Discord,, 1920,-307,1536,1698
 	Return
 
+; Toggle Audio Device
+^!Ins::
+	AudioIniFile := "AudioDevices.ini"
+	IfNotExist, %AudioIniFile%
+	FileAppend, [AudioDevices], %AudioIniFile%
+	IniRead, DefaultDevice, AudioDevices.ini, AudioDevices, DefaultDevice
+	If (DefaultDevice != "G933")
+	{
+		NewDevice := "G933"
+		IniWrite, "G933", AudioDevices.ini, AudioDevices, DefaultDevice
+	}
+	Else 
+	{
+		NewDevice := "YU3"
+		IniWrite, "YU3", AudioDevices.ini, AudioDevices, DefaultDevice
+	}
+	Run, Utilities\nircmd.exe setdefaultsounddevice %NewDevice%
+	Notify("New Audio Device:" NewDevice,"",-1,"Style=Win10")
+	Return
+
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
 
