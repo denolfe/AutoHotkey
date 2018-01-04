@@ -121,6 +121,7 @@ RCtrl & Home::Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Mi
 RCtrl & PgUp::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
 
 ^!Enter::Gosub, PurgeWindows
+^!0::Gosub, RearrangeWindows
 
 ; ScrollLock::		Show_Start("","")
 
@@ -155,26 +156,25 @@ PurgeWindows:
 	While (WinExist("ahk_class CabinetWClass"))
 		WinClose, ahk_class CabinetWClass
 	WinClose ahk_class EVERYTHING
-	Notify("Windows Purged","",-1,"GC=555555 TC=White MC=White")
+	Notify("Windows Purged","",-1,"Style=Win10")
 	Return
 
 RearrangeWindows:
 	if (MonitorCount = 3)
 	{
-		WinMove, ahk_class Qt5QWindowIcon,, -1600, 300, 800, 900
-		WinActivate, Cmder
-		WinMove, Cmder,, -800, 300, 800, 900
-		WinMove, Slack -,, 1912, -8, 1920, 1178
+		WinMove, Cmder,, -960, 0, 966, 600
+		WinMove, Slack -,, 1912, 119, 1920, 1080
+		WinMaximize, Slack -
 	}
 	else if (MonitorCount = 2)
 	{
 		WinActivate, Cmder
 		WinMove, Cmder,, 1920, 0, 900, 1200
 	}
-	else
-	{
-		WinActivate, Cmder
-	}
+	; else
+	; {
+	; 	WinActivate, Cmder
+	; }
 	Return
 
 Spotify:
