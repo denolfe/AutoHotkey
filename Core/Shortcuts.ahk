@@ -164,7 +164,8 @@ RearrangeWindows:
 	{
 		WinMove, Cmder,, -960, 0, 966, 600
 		WinMove, Slack -,, 1912, 119, 1920, 1080
-		WinMaximize, Slack -
+		; WinMaximize, Slack -
+		WinMove, Inbox -,, -1928, -8, 1920, 1200
 	}
 	else if (MonitorCount = 2)
 	{
