@@ -41,18 +41,3 @@ CapsNav(action, initmod = "", mod = "+")
 KPSplashOff:
    SplashImage, off
 Return
-
-
-#If keypadEnabled
-	j::4
-	k::5
-	l::6
-	u::7
-	i::8
-	o::9
-	m::1
-	,::2
-	.::3
-	Space::0
-	`;::.
-#If
