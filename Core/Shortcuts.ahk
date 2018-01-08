@@ -164,7 +164,6 @@ RearrangeWindows:
 	{
 		WinMove, Cmder,, -960, 0, 966, 600
 		WinMove, Slack -,, 1912, 119, 1920, 1080
-		; WinMaximize, Slack -
 		WinMove, Inbox -,, -1928, -8, 1920, 1200
 	}
 	else if (MonitorCount = 2)
@@ -172,15 +171,13 @@ RearrangeWindows:
 		WinActivate, Cmder
 		WinMove, Cmder,, 1920, 0, 900, 1200
 	}
-	; else
-	; {
-	; 	WinActivate, Cmder
-	; }
+	else
+	{
+		WinActivate, Cmder
+	}
 	Return
 
 Spotify:
-	; WinGetClass, this_class, A
-	; If (IfWinA) ; Toggle
 	If WinActive("ahk_class SpotifyMainWindow")
 	{
 		Send, !{Tab}
