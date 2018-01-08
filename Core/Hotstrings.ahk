@@ -8,10 +8,17 @@
 :*:ahk;::AutoHotkey
 :*:st;::Sublime Text
 :*:js;::javascript
-:*:date;::
-	FormatTime, now, A_Now, M/d/yyyy
-	SendInput % now
+::currdate::
+	FormatTime, today, A_Now, M/d/yyyy
+	Sleep, 100 ; Needed for VS Code
+	SendInput, %today%
 	Return
+::currtime::
+	FormatTime, now, A_Now, h:mmtt
+	Sleep, 100 ; Needed for VS Code
+	Send % now
+	Return
+
 :*:comspec;::RunWait, `%comspec`% /c "",, Hide{Ctrl Down}{Left 2}{Ctrl Up}{Right}
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -108,4 +115,3 @@ Return
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; URLS ;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
-
