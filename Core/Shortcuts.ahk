@@ -44,8 +44,8 @@ CapsLock & ]::SendInput, {Media_Next}
 Pause::
 CapsLock & |::SendInput, {Media_Play_Pause}
 
-CapsLock & Up::SendInput, {Volume_Up}
-CapsLock & Down::SendInput, {Volume_Down}
+CapsLock & PgUp::SendInput, {Volume_Up}
+CapsLock & PgDn::SendInput, {Volume_Down}
 
 ~Media_Next::
 	KeyboardLED(7,"off", kbdIndex)
