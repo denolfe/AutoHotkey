@@ -79,7 +79,7 @@ IntroLights:
 		NewDevice := "G933"
 		IniWrite, "G933", AudioDevices.ini, AudioDevices, DefaultDevice
 	}
-	Else 
+	Else
 	{
 		NewDevice := "YU3"
 		IniWrite, "YU3", AudioDevices.ini, AudioDevices, DefaultDevice
@@ -182,7 +182,9 @@ RCtrl & |::SendInput, {Media_Next}
 #Include %A_ScriptDir%\Core\AppSpecific.ahk
 #Include %A_ScriptDir%\Core\Functions.ahk
 #Include %A_ScriptDir%\Core\HotStrings.ahk
-#Include %A_ScriptDir%\Core\CapsNav.ahk
+#Include %A_ScriptDir%\Shortcuts\Media.ahk
+#Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
+#Include %A_ScriptDir%\Shortcuts\Keypad.ahk
 #Include %A_ScriptDir%\Core\Keypad.ahk
 #Include %A_ScriptDir%\Core\WinControl.ahk
 #Include lib\VA.ahk
