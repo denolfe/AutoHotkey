@@ -185,8 +185,6 @@ RCtrl & |::SendInput, {Media_Next}
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
 #Include %A_ScriptDir%\Shortcuts\Keypad.ahk
-#Include %A_ScriptDir%\Core\Keypad.ahk
-#Include %A_ScriptDir%\Core\WinControl.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
 #Include lib\LedControl.ahk
