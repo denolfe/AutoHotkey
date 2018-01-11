@@ -29,19 +29,7 @@ Notify(A_ScriptName " Started!","",-3,"Style=Win10")
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
 
-If ! A_IsAdmin
-{
-	MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
-	IfMsgBox No
-	{
-		SplitPath, A_AhkPath,, A_AhkDir
-		Run % A_AhkDir
-		ExitApp
-	}
-	SplitPath, A_AhkPath,, A_AhkDir
-
-	Run % A_AhkDir
-}
+#Include %A_ScriptDir%\Core\AdminCheck.ahk
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
