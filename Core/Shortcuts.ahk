@@ -80,9 +80,6 @@ CapsLock & w::
 
 ^!s::			Gosub, Everything
 
-RCtrl & Enter::
-PrintScreen::		Gosub, Spotify
-
 RCtrl & Esc:: ; 60% keyboard
 RCtrl & Delete::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 
@@ -157,30 +154,6 @@ RearrangeWindows:
 		WinActivate, Cmder
 	}
 	Return
-
-Spotify:
-	If WinActive("ahk_class SpotifyMainWindow")
-	{
-		Send, !{Tab}
-		WinMinimize, ahk_class SpotifyMainWindow
-	}
-	Else
-	{
-		If WinExist("ahk_class SpotifyMainWindow")
-			WinActivate
-		else
-		{
-        	Run, % A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
-            If ErrorLevel
-            {
-                Notify("Spotify.exe not found", title,-3,"Style=Error")
-                Return
-            }
-            WinActivate
-		}
-		SetTitleMatchMode, 2
-	}
-Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Misc ;;;;;;;;;

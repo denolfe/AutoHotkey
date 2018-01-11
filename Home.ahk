@@ -103,27 +103,6 @@ IntroLights:
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 
-Spotify:
-	WinGetClass, this_class, A
-	If (RegExMatch(this_class, "Spotify")) ; Toggle
-		WinMinimize, ahk_class SpotifyMainWindow
-	Else
-	{
-		If WinExist("ahk_class SpotifyMainWindow")
-			WinActivate, % "ahk_class SpotifyMainWindow"
-		else
-		{
-        	Run, %  A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
-            If ErrorLevel
-            {
-                Notify("File not found", title,-3,"Style=Win10")
-                Return
-            }
-            WinActivate
-		}
-	}
-	Return
-
 RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 CapsLock & SC027::
 RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
@@ -134,8 +113,6 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 ; RCtrl & 7::Return
 ; RCtrl & 8::Return
 ; RCtrl & 9::Return
-
-RCtrl & Enter::Gosub, Spotify
 
 RCtrl & ]::SendInput, {Media_Play_Pause}
 RCtrl & |::SendInput, {Media_Next}
