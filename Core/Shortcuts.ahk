@@ -1,3 +1,7 @@
+#Include %A_ScriptDir%\Shortcuts\Media.ahk
+#Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
+#Include %A_ScriptDir%\Shortcuts\Keypad.ahk
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -35,29 +39,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;; Misc Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-CapsLock & [::SendInput, {Media_Prev}
-
-ScrollLock::
-CapsLock & ]::SendInput, {Media_Next}
-
-Pause::
-CapsLock & |::SendInput, {Media_Play_Pause}
-
-CapsLock & PgUp::SendInput, {Volume_Up}
-CapsLock & PgDn::SendInput, {Volume_Down}
-
-~Media_Next::
-	KeyboardLED(7,"off", kbdIndex)
-	Sleep, 50
-	KeyboardLED(2,"switch", kbdIndex)
-	Sleep, 75
-	KeyboardLED(4,"switch", kbdIndex)
-	Sleep, 75
-	KeyboardLED(1,"switch", kbdIndex)
-	Sleep, 75
-	KeyboardLED(0,"off", kbdIndex)
-Return
 
 AppsKey::RWin ; GMMK Keyboard
 
@@ -98,9 +79,6 @@ CapsLock & w::
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ^!s::			Gosub, Everything
-
-RCtrl & Enter::
-PrintScreen::		Gosub, Spotify
 
 RCtrl & Esc:: ; 60% keyboard
 RCtrl & Delete::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
@@ -176,30 +154,6 @@ RearrangeWindows:
 		WinActivate, Cmder
 	}
 	Return
-
-Spotify:
-	If WinActive("ahk_class SpotifyMainWindow")
-	{
-		Send, !{Tab}
-		WinMinimize, ahk_class SpotifyMainWindow
-	}
-	Else
-	{
-		If WinExist("ahk_class SpotifyMainWindow")
-			WinActivate
-		else
-		{
-        	Run, % A_Appdata . "\Spotify\spotify.exe", UseErrorLevel
-            If ErrorLevel
-            {
-                Notify("Spotify.exe not found", title,-3,"Style=Error")
-                Return
-            }
-            WinActivate
-		}
-		SetTitleMatchMode, 2
-	}
-Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Misc ;;;;;;;;;
