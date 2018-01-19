@@ -9,7 +9,7 @@ SetTitleMatchMode, RegEx
 DetectHiddenWindows, On
 SetCapsLockState, AlwaysOff
 
-#Include %A_ScriptDir%\Core\AdminCheck.ahk
+CheckAdmin()
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
@@ -33,14 +33,8 @@ Run, %comspec% /c "net stop uxsms",,Hide
 
 TaskBar_SetAttr(2)
 
-SplitPath, A_ScriptName, , , , OutNameNoExt
-LinkFile := A_Startup "\" OutNameNoExt ".lnk"
-IfNotExist, %LinkFile%
-{
-	FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
-	Notify("Startup Shortcut Created.","",-3,"Style=Alert")
-}
-Return
+CreateStartupShortcut()
+Return ; End Auto-Execute
 
 IntroSound:
 	SoundPlay, lib\sounds\load.wav

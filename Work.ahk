@@ -29,7 +29,7 @@ Notify(A_ScriptName " Started!","",-3,"Style=Win10")
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1
 
-#Include %A_ScriptDir%\Core\AdminCheck.ahk
+CheckAdmin()
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
@@ -38,14 +38,8 @@ Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.
 IfWinNotExist, ahk_exe clipx.exe
 	RunProgFiles("ClipX\clipx.exe")
 
-SplitPath, A_ScriptName, , , , OutNameNoExt
-LinkFile := A_Startup "\" OutNameNoExt ".lnk"
-IfNotExist, %LinkFile%
-{
-	FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
-	Notify("Startup Shortcut Created.","",-3,"Style=Alert")
-}
-Return ;End Auto-Execute
+CreateStartupShortcut()
+Return ; End Auto-Execute
 
 IntroSound:
 	SoundPlay, lib\sounds\signon.wav

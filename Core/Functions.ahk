@@ -9,6 +9,34 @@
 #Include %A_ScriptDir%\lib\DBGView.ahk
 #Include %A_ScriptDir%\lib\Json.ahk
 
+CreateStartupShortcut()
+{
+    SplitPath, A_ScriptName, , , , OutNameNoExt
+    LinkFile := A_Startup "\" OutNameNoExt ".lnk"
+    IfNotExist, %LinkFile%
+    {
+        FileCreateShortcut, %A_ScriptFullPath%, %LinkFile%
+        Notify("Startup Shortcut Created.","",-3,"Style=Alert")
+    }
+}
+
+CheckAdmin()
+{
+    If ! A_IsAdmin
+    {
+        MsgBox, 0x34,%A_ScriptName%,  Missing Admin Privileges!`n`nWould you like to continue?
+        IfMsgBox No
+        {
+            SplitPath, A_AhkPath,, A_AhkDir
+            Run % A_AhkDir
+            ExitApp
+        }
+        SplitPath, A_AhkPath,, A_AhkDir
+
+        Run % A_AhkDir
+    }
+}
+
 Edit(file, editorPath) ; Refocuses Sublime if file is opened while focused
 {
     Run %editorPath% %file%
@@ -32,10 +60,10 @@ WinWaitText(search, window, windowtext, timeout=10000, interval=50)
     {
         WinGetText, thetext, %window%, %windowtext%
         if RegExMatch(thetext, search)
-            break  
+            break
         Sleep, %interval%
     }
-    
+
 }
 
 RunProgFiles(exe)
@@ -88,7 +116,7 @@ MouseIsOverControl(winControl)
     return (Control = winControl)
 }
 
-ActiveControlIsOfClass(Class) 
+ActiveControlIsOfClass(Class)
 {
     ControlGetFocus, FocusedControl, A
     ControlGet, FocusedControlHwnd, Hwnd,, %FocusedControl%, A
@@ -130,7 +158,7 @@ StringReplace(string, find, replace="")
 RegInStr(haystack, needle)
 {
     return % If Instr(RegExReplace(haystack, needle, "foundit!"), "foundit!") ? 1 : 0
-} 
+}
 
 Log(text, file = "debug.log")
 {
@@ -191,7 +219,7 @@ UpFolder(folder, numberUp = 1)
             DirCount++
         }
     }
-    
+
     ; Check if file or folder and adjust DirCount
     If (IsFile(folder))
         numberUp++
@@ -211,7 +239,7 @@ UpFolder(folder, numberUp = 1)
     Loop, %DirCount%
     {
         dir := FolderArray%A_Index%
-        OutDir .= dir 
+        OutDir .= dir
         if (A_Index != DirCount)
             OutDir .= "\"
     }
