@@ -134,12 +134,8 @@ RCtrl & |::SendInput, {Media_Next}
 ;;;;;;;;; Folder Shortcuts ;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-; !1:: Show_Dir("C:\Dropbox")
-; !2:: Show_Dir("C:\Dropbox\HomeShare")
-!3:: Show_Dir("D:\Downloads\")
-; !4::
-!7:: Show_Dir("C:\Program Files (x86)\Steam\SteamApps\common\Team Fortress 2\tf")
+!8:: Show_Dir("C:\dev")
+!9:: Show_Dir("F:\Downloads\")
 !0:: Show_Dir(A_ScriptDir)
 
 ^!r::	Reload
