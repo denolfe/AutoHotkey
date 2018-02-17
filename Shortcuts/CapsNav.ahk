@@ -24,10 +24,9 @@ CapsLock & BackSpace::
 		Send, {Delete}
 Return
 
-CapsLock & `;::
-CapsLock & ,::
-
-Return
+; CapsLock & `;::
+; CapsLock & ,::
+; Return
 
 CapsNav(action, initmod = "", mod = "+")
 {

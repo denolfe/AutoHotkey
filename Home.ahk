@@ -96,9 +96,11 @@ IntroLights:
 	SendMessage, 0x112, 0xF170, 2,, Program Manager
 	Return
 
+CapsLock & /::
 RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 CapsLock & SC027::
 RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
+CapsLock & '::
 RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe")
 RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.299\Discord.exe")
 ; RCtrl & 5::Return
@@ -106,9 +108,6 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 ; RCtrl & 7::Return
 ; RCtrl & 8::Return
 ; RCtrl & 9::Return
-
-Pause::SendInput, {Media_Play_Pause}
-ScrollLock::SendInput, {Media_Next}
 
 ^!Enter::
 	loop

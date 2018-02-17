@@ -80,6 +80,7 @@ CapsLock & w::
 
 ^!s::			Gosub, Everything
 
+CapsLock & /::
 RCtrl & Esc:: ; 60% keyboard
 RCtrl & Delete::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 
