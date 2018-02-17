@@ -129,10 +129,6 @@ RCtrl & |::SendInput, {Media_Next}
 	TaskBar_SetAttr(2)
 	Return
 
-;; Hotstrings
-
-:*:ttv;::http://www.twitch.tv/fathom_
-:*:vst;::http://vacstat.us, add me!
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;; Folder Shortcuts ;;;;;;;;;
