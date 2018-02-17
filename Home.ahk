@@ -28,9 +28,6 @@ Menu, Tray, Tip, Home Script
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1000
 
-; Disable Aero
-Run, %comspec% /c "net stop uxsms",,Hide
-
 TaskBar_SetAttr(2)
 
 CreateStartupShortcut()
