@@ -110,8 +110,8 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 ; RCtrl & 8::Return
 ; RCtrl & 9::Return
 
-RCtrl & ]::SendInput, {Media_Play_Pause}
-RCtrl & |::SendInput, {Media_Next}
+Pause::SendInput, {Media_Play_Pause}
+ScrollLock::SendInput, {Media_Next}
 
 ^!Enter::
 	loop
