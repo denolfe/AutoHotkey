@@ -1,18 +1,19 @@
 ; Media Shortcuts
 
-CapsLock & [::SendInput, {Media_Prev}
+CapsLock & [::						SendInput, {Media_Prev}
 
 ScrollLock::
-CapsLock & ]::SendInput, {Media_Next}
+CapsLock & ]::						SendInput, {Media_Next}
 
 Pause::
-CapsLock & |::SendInput, {Media_Play_Pause}
+CapsLock & |::						SendInput, {Media_Play_Pause}
 
-CapsLock & PgUp::SendInput, {Volume_Up}
-CapsLock & PgDn::SendInput, {Volume_Down}
+CapsLock & PgUp::					SendInput, {Volume_Up}
+CapsLock & PgDn::					SendInput, {Volume_Down}
 
 RCtrl & Enter::
-PrintScreen::		Gosub, Spotify
+PrintScreen::							Gosub, Spotify
+CapsLock & PrintScreen::	SendInput, {Volume_Mute}
 
 Spotify:
 	If WinActive("ahk_class SpotifyMainWindow")
