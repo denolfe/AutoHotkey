@@ -6,17 +6,10 @@
 ;;;; Folder Shortcuts ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-!Numpad0::		Show_Dir(A_ScriptDir)
-!NumpadDot:: 	Show_Dir(UserDir "\Downloads")
-!Numpad1:: 		Show_Dir(UserDir "\Documents")
-; !Numpad2:: 		Show_Dir("")
-; !Numpad3:: 		Show_Dir("")
-; !Numpad4:: 		Show_Dir("")
-; !Numpad5:: 		Show_Dir("")
-; !Numpad6:: 		Show_Dir("")
-; !Numpad7:: 		Show_Dir("")
-; !Numpad8:: 		Show_Dir("")
-; !Numpad9:: 		Show_Dir("")
+CapsLock & F9::		Show_Dir(UserDir "\Projects")
+CapsLock & F10:: 	Show_Dir(UserDir "\Downloads")
+CapsLock & F11:: 		Show_Dir(UserDir "\Documents")
+CapsLock & F12:: 		Show_Dir(UserDir "\Documents")
 
 #c::			Show_Dir("C:\")
 #p::			Show_Dir("C:\Program Files (x86)\")
@@ -89,11 +82,11 @@ RCtrl & Insert::Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office
 
 RCtrl & 2::
 RCtrl & End::
-CapsLock & SC027::Show_Start("Cmder", UserDir "\cmder\Cmder.exe")
+CapsLock & SC027::Show_Start("Cmder", "C:\tools\cmdermini\Cmder.exe")
 
 RCtrl & 3::
 RCtrl & PgDn::
-CapsLock & /::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
+CapsLock & '::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
 
 RCtrl & Home::Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe")
 
@@ -161,6 +154,21 @@ RearrangeWindows:
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 #g::Run, chrome.exe %clipboard%
+
+^!l::
+	clipboard := String_ToLower(clipboard)
+	Notify("Clipboard changed to lowercase",clipboard,-1,"Style=Fast")
+	Return
+
+^!+l::
+	clipboard := String_ToUpper(clipboard)
+	Notify("Clipboard changed to uppercase",clipboard,-1,"Style=Fast")
+	Return
+
+!+l::
+	clipboard := String_ToTitle(clipboard)
+	Notify("Clipboard changed to title case",clipboard,-1,"Style=Fast")
+	Return
 
 ; Guid without formatting ie. cb2d322ee97f4a69a0e5d1cfba11aa5c
 ^+g::
