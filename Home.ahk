@@ -57,8 +57,9 @@ IntroLights:
 
 ; Rearrange windows
 ^!0::
-	WinMove, Friends,, 4723,-307,269,1698
-	WinMove, - Discord,, 1920,-307,1536,1698
+	Run, "C:\Program Files (x86)\Steam\Steam.exe" steam://open/friends/
+	WinMove, Friends,, 4680,44,312,1698
+	WinMove, ahk_exe Discord.exe,, 1920,44,1536,1698
 	Return
 
 ; Toggle Audio Device
@@ -84,8 +85,6 @@ IntroLights:
 #c::Run, C:\
 #p::Run, C:\Program Files (x86)\
 
-:*:src;::source /c/Dropbox/cmder/config/.bashrc
-
 :*:pd;::
 	SendInput, playdemo picks\%clipboard%{Enter}
 	Return
@@ -99,7 +98,7 @@ IntroLights:
 CapsLock & /::
 RCtrl & Del::Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 CapsLock & SC027::
-RCtrl & End::Show_Start("Cmder", "../cmder/cmder.exe")
+RCtrl & End::Show_Start("Cmder", "C:\tools\cmdermini\Cmder.exe")
 CapsLock & '::
 RCtrl & PgDn::Show_Start("- Visual Studio Code", "C:\Program Files (x86)\Microsoft VS Code\Code.exe")
 RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.299\Discord.exe")
