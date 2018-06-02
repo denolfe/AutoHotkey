@@ -4,7 +4,7 @@
 
 > My personal Autohotkey productivity suite including shortcuts, hotstrings, hotkeys, apps/utilities, AutoCorrect
 
-You can easily set up your own using [my AutoHotkey-Boilerplate project](https://github.com/denolfe/AutoHotkey-Boilerplate).
+You can easily set up your own using [my AutoHotkey Boilerplate project](https://github.com/denolfe/AutoHotkeyBoilerplate).
 
 ## Contents
 
