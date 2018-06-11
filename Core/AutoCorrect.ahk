@@ -377,7 +377,7 @@ return  ; This makes the above hotstrings do nothing so that they override the i
 ::crepe::cr�pe
 ::crepes::cr�pes
 ::creusa::Cre�sa
-::crouton::cro�ton
+; ::crouton::cro�ton
 ::croutons::cro�tons
 ::crudites::crudit�s
 ::curacao::cura�ao
