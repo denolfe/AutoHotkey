@@ -55,7 +55,6 @@ AppsKey::RWin ; GMMK Keyboard
 #XButton2::Send #{Right}
 
 ^MButton::
-CapsLock & w::
 	Send, {LButton}
 	WinGet, isMaxed, MinMax, A
 	If (isMaxed)
@@ -75,21 +74,27 @@ CapsLock & w::
 
 CapsLock & /::
 RCtrl & Esc:: ; 60% keyboard
+CapsLock & s::
 RCtrl & Delete::	Show_Start("- Google Chrome", "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe")
 
 RCtrl & 1::
+CapsLock & w::
 RCtrl & Insert::Show_Start("- Outlook", "C:\Program Files (x86)\Microsoft Office\root\Office16\OUTLOOK.EXE")
 
 RCtrl & 2::
 RCtrl & End::
+CapsLock & d::
 CapsLock & SC027::Show_Start("Cmder", "C:\tools\cmdermini\Cmder.exe")
 
 RCtrl & 3::
 RCtrl & PgDn::
+CapsLock & f::
 CapsLock & '::Show_Start("- Visual Studio Code", "C:\Program Files\Microsoft VS Code\Code.exe")
 
+CapsLock & e::
 RCtrl & Home::Show_Start("- Microsoft Visual Studio", "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe")
 
+CapsLock & r::
 RCtrl & PgUp::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
 
 ^!Enter::Gosub, PurgeWindows
@@ -99,7 +104,6 @@ RCtrl & PgUp::Show_Start("Slack -", UserDir "\AppData\Local\slack\slack.exe")
 
 
 Everything:
-	;DetectHiddenWindows, Off
 	; Enable setting to focus search field in Everything
 	DetectHiddenWindows, Off
 	If WinExist("ahk_class EVERYTHING")
@@ -107,6 +111,9 @@ Everything:
 	Else
 		RunProgFiles("Everything\Everything.exe")
 	WinWait, ahk_class EVERYTHING,, 2
+	If (A_ScreenWidth > 1920)
+		WinMove, ahk_class EVERYTHING,, 0,A_ScreenHeight*0.66,A_ScreenWidth*0.66,(A_ScreenHeight-40) - (A_ScreenHeight*0.66) ; 4K Monitor
+	Else
 	WinMove, ahk_class EVERYTHING,, 0,A_ScreenHeight*0.66,A_ScreenWidth-62,(A_ScreenHeight-40) - (A_ScreenHeight*0.66)
 	Return
 
@@ -170,8 +177,8 @@ RearrangeWindows:
 	Notify("Clipboard changed to title case",clipboard,-1,"Style=Fast")
 	Return
 
-; Guid without formatting ie. cb2d322ee97f4a69a0e5d1cfba11aa5c
-^+g::
+; Guid with formatting ie. 6a170613-6923-40ef-8743-6bbce457554d
+^!+g::
 	newGuid := GUID(2)
 	SendInput % newGuid
 	if (!FileExist("logs\"))
