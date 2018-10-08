@@ -9,7 +9,9 @@ Pause::
 CapsLock & |::						SendInput, {Media_Play_Pause}
 
 CapsLock & PgUp::					SendInput, {Volume_Up}
+CapsLock & Up::					  SendInput, {Volume_Up}
 CapsLock & PgDn::					SendInput, {Volume_Down}
+CapsLock & Down::					SendInput, {Volume_Down}
 
 RCtrl & Enter::
 PrintScreen::							Gosub, Spotify
