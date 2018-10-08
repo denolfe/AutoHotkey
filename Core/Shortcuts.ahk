@@ -1,6 +1,5 @@
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
-#Include %A_ScriptDir%\Shortcuts\Keypad.ahk
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Folder Shortcuts ;;;;;
@@ -161,6 +160,14 @@ RearrangeWindows:
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 #g::Run, chrome.exe %clipboard%
+
+; MButton::
+; 	SendInput, ^c
+; 	ClipWait, 2
+; 	Sleep, 100
+; 	outp := String_ToUpper(clipboard)
+; 	SendInput, % outp
+; 	Return
 
 ^!l::
 	clipboard := String_ToLower(clipboard)

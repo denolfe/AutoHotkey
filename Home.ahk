@@ -144,7 +144,6 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 #Include %A_ScriptDir%\Core\HotStrings.ahk
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
-#Include %A_ScriptDir%\Shortcuts\Keypad.ahk
 #Include lib\VA.ahk
 #Include lib\Notify.ahk
 #Include lib\LedControl.ahk
