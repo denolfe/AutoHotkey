@@ -13,6 +13,11 @@
 		Run %Editor% "%FullFileName%"
 		Return
 
+	^+Enter::
+		StatusBarGetText, FullFileName
+		Run %Editor% --add "%FullFileName%"
+		Return
+
 	^j::
 		StatusBarGetText, FullFileName
 		SplitPath, FullFileName, name, dir, ext, name_no_ext, drive

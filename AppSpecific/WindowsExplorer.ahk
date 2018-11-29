@@ -55,6 +55,11 @@
 		sel := Explorer_GetSelected()
 		Run %Editor% "%sel%"
 		Return
+
+	^+Enter::
+		sel := Explorer_GetSelected()
+		Run %Editor% --add "%FullFileName%"
+		Return
 #IfWinActive
 
 #IfWinActive ahk_class SearchPane
