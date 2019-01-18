@@ -21,6 +21,8 @@ You can easily set up your own using [my AutoHotkey Boilerplate project](https:/
 
 ![Image](layout.png)
 
+Note that more comprehensive and better designed/tested keyboard layouts exist with more functionality. They also use the caps lock key as additional modifier key. If you just start out, check out [issue 7](https://github.com/denolfe/AutoHotkey/issues/7).
+
 ## How to Use
 
 * Install AutoHotkey_L [here](http://l.autohotkey.net/)
