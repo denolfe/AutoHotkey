@@ -7,8 +7,10 @@ CapsLock & j::CapsNav("Down")
 CapsLock & k::CapsNav("Up")
 CapsLock & l::CapsNav("Right")
 
-CapsLock & n::CapsNav("Home")
-CapsLock & p::CapsNav("End")
+CapsLock & n::
+CapsLock & Left::CapsNav("Home")
+CapsLock & p::
+CapsLock & Right::CapsNav("End")
 
 CapsLock & .::
 CapsLock & o::CapsNav("Right", "^")
