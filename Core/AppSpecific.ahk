@@ -9,6 +9,7 @@
 #Include %A_ScriptDir%\AppSpecific\SQLServer.ahk
 #Include %A_ScriptDir%\AppSpecific\SublimeText.ahk
 #Include %A_ScriptDir%\AppSpecific\TSQLKeywords.ahk
+#Include %A_ScriptDir%\AppSpecific\VSCode.ahk
 #Include %A_ScriptDir%\AppSpecific\VisualStudio.ahk
 #Include %A_ScriptDir%\AppSpecific\WindowsExplorer.ahk
 #Include %A_ScriptDir%\AppSpecific\CmdPrompt.ahk
