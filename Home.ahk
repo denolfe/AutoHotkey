@@ -28,7 +28,7 @@ Menu, Tray, Tip, Home Script
 SetTimer, IntroSound, -1
 SetTimer, IntroLights, -1000
 
-TaskBar_SetAttr(2)
+; TaskBar_SetAttr(2)
 
 CreateStartupShortcut()
 Return ; End Auto-Execute
@@ -116,13 +116,13 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 			break
 	}
 	WinClose ahk_class EVERYTHING
-	Notify("Windows Purged","",-2,"GC=555555 TC=White MC=White")
+	Notify("Windows Purged","",-2,"Style=Win10")
 	Return
 
-~*LWin::
-	Sleep, 200
-	TaskBar_SetAttr(2)
-	Return
+; ~*LWin::
+; 	Sleep, 200
+; 	TaskBar_SetAttr(2)
+; 	Return
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
