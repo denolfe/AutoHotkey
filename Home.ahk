@@ -3,20 +3,22 @@
 #UseHook, On
 #WinActivateForce
 #SingleInstance force
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SendMode, Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
 SetTitleMatchMode, RegEx
-DetectHiddenWindows, On
+SetNumlockState, AlwaysOn
 SetCapsLockState, AlwaysOff
+CoordMode, Mouse, Screen
+DetectHiddenWindows, On
+SetScrollLockState, Off
 
 CheckAdmin()
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
 Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
-
-IfWinNotExist, ahk_exe clipx.exe
-	RunProgFiles("ClipX\clipx.exe")
+Run, %A_ScriptDir%\Utilities\VirtualDesktopEnhancer\virtual-desktop-enhancer.ahk VirtualDesktopEnhancer.settings.ini
 
 Notify(A_ScriptName . " Started!","",-3,"Style=Win10")
 
