@@ -141,12 +141,33 @@ RCtrl & PgUp::Show_Start(" - Discord", UserDir "\AppData\Local\Discord\app-0.0.2
 !t:: Run %A_ScriptDir%\test.ahk
 ^!x::AHKPanic(1,0,0,1)
 
+CapsLock & w::
+	WinGet, isMaxed, MinMax, A
+	If (isMaxed)
+	{
+		Send #{Down}
+		Sleep 20
+		Monitor_MoveOptimal()
+	}
+	Else
+		WPXA_MaximizeToggle("A")
+	Return
+
+CapsLock & q::WPXA_Move(-1, 0,  0.5, 1.0, "A")
+CapsLock & e::WPXA_Move(+1, 0,  0.5, 1.0, "A")
+CapsLock & Tab::WPXA_MoveWindowToMonitor("Prev", "A")
+
+; Virtual Desktop
+CapsLock & d::^#Right
+CapsLock & a::^#Left
+
 #Include %A_ScriptDir%\Core\AppSpecific.ahk
 #Include %A_ScriptDir%\Core\Functions.ahk
 #Include %A_ScriptDir%\Core\HotStrings.ahk
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
-#Include lib\VA.ahk
-#Include lib\Notify.ahk
-#Include lib\LedControl.ahk
-#Include lib\TaskBar_SetAttr.ahk
+#Include %A_ScriptDir%\lib\VA.ahk
+#Include %A_ScriptDir%\lib\Notify.ahk
+#Include %A_ScriptDir%\lib\LedControl.ahk
+#Include %A_ScriptDir%\lib\TaskBar_SetAttr.ahk
+#Include %A_ScriptDir%\lib\WPXA.ahk
