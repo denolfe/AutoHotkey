@@ -17,7 +17,6 @@ CheckAdmin()
 
 RunIfExist(A_ScriptDir "\Utilities\VolumeScroll\VolumeScroll.ahk")
 RunIfExist(A_ScriptDir "\Core\AutoCorrect.ahk")
-Run, %A_ScriptDir%\Utilities\WindowPadX\WindowPadX.ahk %A_ScriptDir%\WindowPadX.Custom.ini
 Run, %A_ScriptDir%\Utilities\VirtualDesktopEnhancer\virtual-desktop-enhancer.ahk VirtualDesktopEnhancer.settings.ini
 
 Notify(A_ScriptName . " Started!","",-3,"Style=Win10")
@@ -157,15 +156,14 @@ CapsLock & q::WPXA_Move(-1, 0,  0.5, 1.0, "A")
 CapsLock & e::WPXA_Move(+1, 0,  0.5, 1.0, "A")
 CapsLock & Tab::WPXA_MoveWindowToMonitor("Prev", "A")
 
-; Virtual Desktop
-CapsLock & d::^#Right
-CapsLock & a::^#Left
+CapsLock & Space::LWin
 
 #Include %A_ScriptDir%\Core\AppSpecific.ahk
 #Include %A_ScriptDir%\Core\Functions.ahk
 #Include %A_ScriptDir%\Core\HotStrings.ahk
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
+#Include %A_ScriptDir%\Shortcuts\VirtualDesktops.ahk
 #Include %A_ScriptDir%\lib\VA.ahk
 #Include %A_ScriptDir%\lib\Notify.ahk
 #Include %A_ScriptDir%\lib\LedControl.ahk

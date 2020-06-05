@@ -1,5 +1,6 @@
 #Include %A_ScriptDir%\Shortcuts\Media.ahk
 #Include %A_ScriptDir%\Shortcuts\CapsNav.ahk
+#Include %A_ScriptDir%\Shortcuts\VirtualDesktops.ahk
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Folder Shortcuts ;;;;;
